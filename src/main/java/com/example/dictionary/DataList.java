@@ -17,13 +17,18 @@ public final class DataList {
     private static final String DATA_FILE_PATH = "data/E_V.txt";
     private static final String MY_LIST_FILE_PATH = "data/my_list.txt";
     private static final String SPLITTING_CHARACTERS = "<html>";
-    private Map<String, Word> data = new HashMap<>();
+    private final Map<String, Word> data = new HashMap<>();
+    private final Trie wordsTrie = new Trie();
 
     public Map<String, Word> getData() {
         return this.data;
     }
 
-    private Set<String> myList = new HashSet<String>();
+    public Trie getWordsTrie() {
+        return wordsTrie;
+    }
+
+    private final Set<String> myList = new HashSet<String>();
 
     public Set<String> getMyList() {
         return this.myList;
@@ -43,6 +48,9 @@ public final class DataList {
         }
     }
 
+    /**
+     * Read data with format in a file, which located in DATA_FILE_PATH.
+     */
     public void readData() {
         try {
             FileReader fr = new FileReader(DATA_FILE_PATH);
@@ -55,6 +63,7 @@ public final class DataList {
                 Word wordObj = new Word(word, definition);
                 data.put(word, wordObj);
             }
+            wordsTrie.insertAll(new ArrayList<>(data.keySet()));
             br.close();
             fr.close();
 
@@ -71,6 +80,9 @@ public final class DataList {
         }
     }
 
+    /**
+     * Write myList data to a file, which located in MY_LIST_FILE_PATH.
+     */
     public void writeListData() {
         try {
             FileWriter fw = new FileWriter(MY_LIST_FILE_PATH);

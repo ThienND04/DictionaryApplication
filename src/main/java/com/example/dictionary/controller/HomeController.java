@@ -64,10 +64,8 @@ public class HomeController {
 
     private void loadWordList() {
         this.listView.getItems().clear();
-        for (String key : DataList.getInstance().getData().keySet()) {
-            if (key.startsWith(wordToFind.getText())) {
-                this.listView.getItems().add(key);
-            }
-        }
+        this.listView.getItems().addAll(
+                DataList.getInstance().getWordsTrie().allWordsStartWith(wordToFind.getText())
+        );
     }
 }

@@ -16,7 +16,7 @@
             <children>
             <HBox fillHeight="false">
                <children>
-                  <Button fx:id="homeNav" focusTraversable="true" mnemonicParsing="false" text="HOME">
+                  <Button fx:id="homeNav" focusTraversable="false" mnemonicParsing="false" style="-fx-background-color: gray;" text="HOME" textFill="WHITE">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
@@ -33,7 +33,7 @@
                   </Button>
                </children>
             </HBox>
-                <TextField>
+                <TextField fx:id="wordToFind">
                     <VBox.margin>
                         <Insets left="10.0" right="10.0" top="20.0" />
                     </VBox.margin>

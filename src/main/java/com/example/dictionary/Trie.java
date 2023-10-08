@@ -28,23 +28,21 @@ public class Trie {
      * @return  True if insert success. Otherwise, false.
      */
     public boolean insert(String word) {
-        if(!word.isEmpty() && contains(word)) {
+        if(word.isEmpty() || this.contains(word)) {
             return false;
         }
 
         Trie tmp = this;
 
         for(char c: word.toCharArray()) {
-            if(tmp.children.containsKey(c)) {
-                tmp.increaseCntWords();
-            }
-            else {
+            tmp.increaseCntWords();
+            if(! tmp.children.containsKey(c)) {
                 Trie newChild = new Trie(c);
-                newChild.increaseCntWords();
                 tmp.children.put(c, newChild);
             }
             tmp = tmp.children.get(c);
         }
+        tmp.increaseCntWords();
         tmp.setEndOfWord(true);
 
         return true;
@@ -78,17 +76,22 @@ public class Trie {
     public boolean remove(String word) {
         if(word.isEmpty()) {
             if(this.isEndOfWord()) {
-                decreaseCntWords();
-                setEndOfWord(false);
+                this.decreaseCntWords();
+                this.setEndOfWord(false);
                 return true;
             }
             return false;
         }
-        if(children.get(word.charAt(0)).remove(word.substring(1))) {
+
+        if(! children.containsKey(word.charAt(0))) {
+            return false;
+        }
+        else if(children.get(word.charAt(0)).remove(word.substring(1))) {
             if(children.get(word.charAt(0)).getCntWords() == 0) {
                 children.remove(word.charAt(0));
-                decreaseCntWords();
             }
+            this.decreaseCntWords();
+            return true;
         }
         return false;
     }
@@ -112,22 +115,23 @@ public class Trie {
         if(prefix.length() <= 1) {
             return tmp.getAllWordChildren("");
         }
-        return tmp.getAllWordChildren(prefix.substring(0, prefix.length() - 1));
+        return tmp.getAllWordChildren(prefix.substring(0, prefix.length()));
     }
 
     /**
      * Get an ArrayList of all word children of the trie and add to start.
-     * @param start start string of all children node.
+     * @param start start string of all children node
+     *              (included current node)
      * @return  an all word children of the trie ArrayList
      */
     private ArrayList<String> getAllWordChildren(String start) {
         ArrayList<String> ans = new ArrayList<>();
-        if(children.isEmpty()) {
-            ans.add(start + this.nodeContent);
-            return ans;
+        if(this.isEndOfWord()) {
+            ans.add(start);
         }
+
         for(Trie child: children.values()) {
-            ans.addAll(child.getAllWordChildren(start + this.nodeContent));
+            ans.addAll(child.getAllWordChildren(start + child.getNodeContent()));
         }
         return ans;
     }
@@ -153,7 +157,7 @@ public class Trie {
      * Decrease cntWords by 1.
      */
     public void decreaseCntWords() {
-        if(cntWords > 0) cntWords ++;
+        if(cntWords > 0) cntWords --;
     }
 
     public boolean isEndOfWord() {
@@ -174,5 +178,34 @@ public class Trie {
 
     public int getCntWords() {
         return cntWords;
+    }
+
+    public void setCntWords(int cntWords) {
+        this.cntWords = cntWords;
+    }
+
+    public Map<Character, Trie> getChildren() {
+        return children;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof Trie otherTrie) {
+            return this.nodeContent.equals(otherTrie.nodeContent)
+                    && this.cntWords == otherTrie.cntWords
+                    && this.endOfWord == otherTrie.endOfWord
+                    && this.children.equals(otherTrie.children);
+        }
+        return false;
+    }
+
+    @Override
+    public String toString() {
+        return "Trie{" +
+                "children=" + children +
+                ", nodeContent=" + nodeContent +
+                ", cntWords=" + cntWords +
+                ", endOfWord=" + endOfWord +
+                '}';
     }
 }

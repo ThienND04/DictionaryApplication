@@ -43,10 +43,12 @@ public class MyListController {
         this.listView.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> {
                     if (newValue != null) {
+                        this.rmBtn.setVisible(true);
                         Word selectedWord = DataList.getInstance().getData().get(newValue.trim());
                         String definition = selectedWord.getDef();
                         definitionView.getEngine().loadContent(definition, "text/html");
                     } else {
+                        this.rmBtn.setVisible(false);
                         definitionView.getEngine().loadContent("", "text/html");
                     }
                 }
@@ -54,12 +56,11 @@ public class MyListController {
         this.rmBtn.setOnAction(event -> {
             String word = listView.getSelectionModel().getSelectedItem();
             DataList.getInstance().removeWordFromList(word);
-            this.listView.getItems().remove(word);
+            loadWordList();
         });
         this.wordToFind.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                definitionView.getEngine().loadContent("");
                 loadWordList();
             }
         });
@@ -67,10 +68,6 @@ public class MyListController {
 
     public void loadWordList() {
         this.listView.getItems().clear();
-        for(String key : DataList.getInstance().getMyList()) {
-            if(key.startsWith(wordToFind.getText())) {
-                this.listView.getItems().add(key);
-            }
-        }
+        this.listView.getItems().addAll(DataList.getInstance().getMyList().allWordsStartWith(wordToFind.getText()));
     }
 }

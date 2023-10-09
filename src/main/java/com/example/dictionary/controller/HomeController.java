@@ -11,7 +11,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.web.WebView;
 
 public class HomeController {
-    private static HomeController instance = new HomeController();
+    private static HomeController instance;
 
     public static HomeController getInstance() {
         return instance;
@@ -34,6 +34,7 @@ public class HomeController {
 
     @FXML
     public void initialize() {
+        instance = this;
         this.initComponents();
         this.loadWordList();
     }
@@ -42,10 +43,12 @@ public class HomeController {
         this.listView.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> {
                     if (newValue != null) {
+                        this.addBtn.setVisible(true);
                         Word selectedWord = DataList.getInstance().getData().get(newValue.trim());
                         String definition = selectedWord.getDef();
                         definitionView.getEngine().loadContent(definition, "text/html");
                     } else {
+                        this.addBtn.setVisible(false);
                         definitionView.getEngine().loadContent("", "text/html");
                     }
                 }
@@ -64,8 +67,6 @@ public class HomeController {
 
     private void loadWordList() {
         this.listView.getItems().clear();
-        this.listView.getItems().addAll(
-                DataList.getInstance().getWordsTrie().allWordsStartWith(wordToFind.getText())
-        );
+        this.listView.getItems().addAll(DataList.getInstance().getWordsTrie().allWordsStartWith(wordToFind.getText()));
     }
 }

@@ -28,15 +28,15 @@ public final class DataList {
         return wordsTrie;
     }
 
-    private final Set<String> myList = new HashSet<String>();
+    private final Trie myList = new Trie();
 
-    public Set<String> getMyList() {
+    public Trie getMyList() {
         return this.myList;
     }
 
     public void addWordToList(String word) {
         if (word != null) {
-            this.myList.add(word.trim());
+            this.myList.insert(word.trim());
             writeListData();
         }
     }
@@ -70,12 +70,11 @@ public final class DataList {
             fr = new FileReader(MY_LIST_FILE_PATH);
             br = new BufferedReader(fr);
             while ((line = br.readLine()) != null) {
-                this.myList.add(line.trim());
+                this.myList.insert(line.trim());
             }
             br.close();
             fr.close();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -87,7 +86,7 @@ public final class DataList {
         try {
             FileWriter fw = new FileWriter(MY_LIST_FILE_PATH);
             BufferedWriter bw = new BufferedWriter(fw);
-            for (String word : myList) {
+            for (String word : myList.allWordsStartWith("")) {
                 bw.write(word);
                 bw.newLine();
             }

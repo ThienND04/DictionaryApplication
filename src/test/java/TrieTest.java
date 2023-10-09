@@ -88,6 +88,32 @@ public class TrieTest {
     }
 
     @Test
+    public void allWordsStartWithTest4() {
+        Trie trie = new Trie();
+        ArrayList<String> arrayList1 = new ArrayList<String>(Arrays.asList(new String[]{"abc", "abcde", "abcdef", "acef", "trie", "tricky", "lec"}));
+        trie.insertAll(arrayList1);
+        String prefix = "t";
+        ArrayList<String> actual = trie.allWordsStartWith(prefix);
+        Collections.sort(actual);
+        ArrayList<String> expected = new ArrayList<>(Arrays.asList(new String[]{"trie", "tricky"}));
+        Collections.sort(expected);
+        Assert.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void allWordsStartWithTest5() {
+        Trie trie = new Trie();
+        ArrayList<String> arrayList1 = new ArrayList<String>(Arrays.asList(new String[]{"abc", "abcde", "abcdef", "acef", "trie", "tricky", "lec"}));
+        trie.insertAll(arrayList1);
+        String prefix = "";
+        ArrayList<String> actual = trie.allWordsStartWith(prefix);
+        Collections.sort(actual);
+        ArrayList<String> expected = new ArrayList<>(Arrays.asList(new String[]{"abc", "abcde", "abcdef", "acef", "trie", "tricky", "lec"}));
+        Collections.sort(expected);
+        Assert.assertEquals(expected, actual);
+    }
+
+    @Test
     public void insertAllTest1() {
         Trie trie1 = new Trie();
         ArrayList<String> arrayList1 = new ArrayList<String>(Arrays.asList(new String[]{"a"}));

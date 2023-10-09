@@ -112,10 +112,7 @@ public class Trie {
                 return new ArrayList<>();
             }
         }
-        if(prefix.length() <= 1) {
-            return tmp.getAllWordChildren("");
-        }
-        return tmp.getAllWordChildren(prefix.substring(0, prefix.length()));
+        return tmp.getAllWordChildren(prefix);
     }
 
     /**

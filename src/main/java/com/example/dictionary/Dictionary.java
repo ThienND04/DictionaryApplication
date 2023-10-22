@@ -14,22 +14,22 @@ public class Dictionary extends Application {
     private Stage window;
     @Override
     public void start(Stage primaryStage) throws Exception {
-        this.window = primaryStage;
         DataList.getInstance().readData();
-        initScenes();
+        this.initScenes();
+        this.window = primaryStage;
         this.setSceneType(0);
         primaryStage.setTitle("Dictionary Demonstration");
         primaryStage.show();
     }
 
     private void initScenes() throws Exception {
-        this.scenes = new ArrayList<AScene>();
-        scenes.add(new HomeScene(this));
-        scenes.add(new GameScene(this));
-        scenes.add(new MyListScene(this));
-        scenes.add(new Game1Scene(this));
+        this.scenes.add(new HomeScene(this));
+        this.scenes.add(new GameScene(this));
+        this.scenes.add(new MyListScene(this));
+        this.scenes.add(new Game1Scene(this));
+        this.scenes.add(new TranslateScene(this));
     }
-    private ArrayList<AScene> scenes;
+    private final ArrayList<AScene> scenes = new ArrayList<AScene>();
     public void setSceneType(int sceneType) {
         this.window.setScene(scenes.get(sceneType).getScene());
     }

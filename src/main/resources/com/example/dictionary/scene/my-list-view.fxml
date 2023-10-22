@@ -31,6 +31,11 @@
                                 <Cursor fx:constant="HAND" />
                             </cursor>
                         </Button>
+                        <Button fx:id="translateNav" focusTraversable="false" layoutX="62.0" layoutY="10.0" mnemonicParsing="false" text="Translate">
+                            <cursor>
+                                <Cursor fx:constant="HAND" />
+                            </cursor>
+                        </Button>
                     </children>
                 </HBox>
                 <TextField fx:id="wordToFind">

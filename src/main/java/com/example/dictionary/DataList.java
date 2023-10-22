@@ -25,7 +25,7 @@ public final class DataList {
     }
 
     public Trie getWordsTrie() {
-        return wordsTrie;
+        return this.wordsTrie;
     }
 
     private final Trie myList = new Trie();
@@ -37,14 +37,14 @@ public final class DataList {
     public void addWordToList(String word) {
         if (word != null) {
             this.myList.insert(word.trim());
-            writeListData();
+            this.writeListData();
         }
     }
 
     public void removeWordFromList(String word) {
         if (word != null) {
             this.myList.remove(word.trim());
-            writeListData();
+            this.writeListData();
         }
     }
 
@@ -61,9 +61,9 @@ public final class DataList {
                 String word = parts[0];
                 String definition = SPLITTING_CHARACTERS + parts[1];
                 Word wordObj = new Word(word, definition);
-                data.put(word, wordObj);
+                this.data.put(word, wordObj);
             }
-            wordsTrie.insertAll(new ArrayList<>(data.keySet()));
+            this.wordsTrie.insertAll(new ArrayList<>(data.keySet()));
             br.close();
             fr.close();
 
@@ -86,7 +86,8 @@ public final class DataList {
         try {
             FileWriter fw = new FileWriter(MY_LIST_FILE_PATH);
             BufferedWriter bw = new BufferedWriter(fw);
-            for (String word : myList.allWordsStartWith("")) {
+            ArrayList<String> allWords = myList.allWordsStartWith("");
+            for (String word : allWords) {
                 bw.write(word);
                 bw.newLine();
             }

@@ -27,10 +27,15 @@
                             <Cursor fx:constant="HAND" />
                         </cursor>
                     </Button>
+                    <Button fx:id="translateNav" focusTraversable="false" layoutX="62.0" layoutY="10.0" mnemonicParsing="false" text="Translate">
+                        <cursor>
+                            <Cursor fx:constant="HAND" />
+                        </cursor>
+                    </Button>
                 </children>
             </HBox>
-         <WebView fx:id="gameView" maxHeight="100000.0" maxWidth="100000.0" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
-         <Button mnemonicParsing="false" text="Next question" fx:id="startBtn"/>
+            <WebView fx:id="gameView" maxHeight="100000.0" maxWidth="100000.0" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+            <Button mnemonicParsing="false" text="Next question" fx:id="startBtn"/>
         </VBox>
     </children>
 </AnchorPane>

@@ -4,6 +4,8 @@ module com.example.dictionary {
 
     requires com.dlsc.formsfx;
     requires javafx.web;
+    requires java.net.http;
+    requires com.google.gson;
 
     opens com.example.dictionary to javafx.fxml;
     exports com.example.dictionary;
@@ -11,4 +13,5 @@ module com.example.dictionary {
     opens com.example.dictionary.controller to javafx.fxml;
     exports com.example.dictionary.scene;
     opens com.example.dictionary.scene to javafx.fxml;
+    exports com.example.dictionary.http to com.google.gson;
 }

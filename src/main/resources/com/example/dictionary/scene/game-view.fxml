@@ -27,16 +27,17 @@
                      <Cursor fx:constant="HAND" />
                   </cursor>
                </Button>
+               <Button fx:id="translateNav" focusTraversable="false" layoutX="62.0" layoutY="10.0" mnemonicParsing="false" text="Translate">
+                  <cursor>
+                     <Cursor fx:constant="HAND" />
+                  </cursor>
+               </Button>
             </children>
          </HBox>
-      </VBox>
-      <VBox layoutX="-1.0" layoutY="52.0" prefHeight="346.0" prefWidth="600.0">
-         <children>
-            <Label prefHeight="43.0" prefWidth="608.0" text="This is my game" />
-            <Button fx:id="game1Nav" focusTraversable="false" mnemonicParsing="false" text="Game 1" />
-            <Button fx:id="game2Nav" focusTraversable="false" layoutX="10.0" layoutY="36.0" mnemonicParsing="false" text="Game 2" />
-            <Button fx:id="game3Nav" focusTraversable="false" layoutX="10.0" layoutY="61.0" mnemonicParsing="false" text="Game 3" />
-         </children>
-      </VBox>
+         <Label prefHeight="43.0" prefWidth="608.0" text="This is my game" />
+         <Button fx:id="game1Nav" focusTraversable="false" mnemonicParsing="false" text="Game 1" />
+         <Button fx:id="game2Nav" focusTraversable="false" layoutX="10.0" layoutY="36.0" mnemonicParsing="false" text="Game 2" />
+         <Button fx:id="game3Nav" focusTraversable="false" layoutX="10.0" layoutY="61.0" mnemonicParsing="false" text="Game 3" />
+      </VBox>      
    </children>
 </AnchorPane>

@@ -28,18 +28,13 @@ public class Game1Controller {
             this.gameView.getEngine().load(file.toURI().toURL().toString());
             startBtn.setOnAction(event -> {
 
-                // need to optimize
                 ArrayList<String> list = new ArrayList<>(DataList.getInstance().getData().keySet());
                 Collections.shuffle(list);
                 int r = new Random().nextInt(4);
-                String question = DataList.getInstance().getData().get(list.get(r)).getDef();
-                int start = question.indexOf("<i>");
-                int end = question.indexOf("</i>");
-                question = question.substring(0, start) + question.substring(end + 4);
 
                 this.gameView.getEngine().executeScript(
                         String.format("game.start(\"%s\",[\"%s\",\"%s\",\"%s\",\"%s\"],%d)",
-                                question,
+                                DataList.getInstance().getData().get(list.get(r)).getDef(),
                                 list.get(0),
                                 list.get(1),
                                 list.get(2),

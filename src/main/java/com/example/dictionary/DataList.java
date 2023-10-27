@@ -11,40 +11,36 @@ public final class DataList {
     }
 
     private DataList() {
-
+        this.readData();
     }
 
-    private static final String DATA_FILE_PATH = "data/E_V.txt";
-    private static final String MY_LIST_FILE_PATH = "data/my_list.txt";
-    private static final String SPLITTING_CHARACTERS = "<html>";
+    private static final String DATA_FILE_PATH = "data/kk.txt";
+    private static final String SPLITTING_CHARACTERS = "<::>";
+
     private final Map<String, Word> data = new HashMap<>();
-    private final Trie wordsTrie = new Trie();
+    private final Trie1 trie = new Trie1();
 
     public Map<String, Word> getData() {
         return this.data;
     }
 
-    public Trie getWordsTrie() {
-        return this.wordsTrie;
+    public Trie1 getTrie() {
+        return this.trie;
     }
 
-    private final Trie myList = new Trie();
-
-    public Trie getMyList() {
-        return this.myList;
-    }
-
-    public void addWordToList(String word) {
+    public void addWord(Word word) {
         if (word != null) {
-            this.myList.insert(word.trim());
-            this.writeListData();
+            this.data.put(word.getWord(), word);
+            this.trie.insert(word.getWord());
+            this.writeData();
         }
     }
 
-    public void removeWordFromList(String word) {
+    public void removeWord(String word) {
         if (word != null) {
-            this.myList.remove(word.trim());
-            this.writeListData();
+            this.data.remove(word);
+            this.trie.remove(word);
+            this.writeData();
         }
     }
 
@@ -56,21 +52,17 @@ public final class DataList {
             FileReader fr = new FileReader(DATA_FILE_PATH);
             BufferedReader br = new BufferedReader(fr);
             String line;
+            StringBuilder builder = new StringBuilder();
             while ((line = br.readLine()) != null) {
-                String[] parts = line.split(SPLITTING_CHARACTERS);
-                String word = parts[0];
-                String definition = SPLITTING_CHARACTERS + parts[1];
-                Word wordObj = new Word(word, definition);
-                this.data.put(word, wordObj);
+                builder.append(line);
+                builder.append("\n");
             }
-            this.wordsTrie.insertAll(new ArrayList<>(data.keySet()));
-            br.close();
-            fr.close();
-
-            fr = new FileReader(MY_LIST_FILE_PATH);
-            br = new BufferedReader(fr);
-            while ((line = br.readLine()) != null) {
-                this.myList.insert(line.trim());
+            String[] list = builder.toString().split(SPLITTING_CHARACTERS);
+            for(int i = 0; i+1 < list.length; i+=2) {
+                String word = list[i];
+                String definition = list[i+1];
+                this.data.put(word.trim(), new Word(word, definition));
+                this.trie.insert(word.trim());
             }
             br.close();
             fr.close();
@@ -82,13 +74,13 @@ public final class DataList {
     /**
      * Write myList data to a file, which located in MY_LIST_FILE_PATH.
      */
-    public void writeListData() {
+    public void writeData() {
         try {
-            FileWriter fw = new FileWriter(MY_LIST_FILE_PATH);
+            FileWriter fw = new FileWriter(DATA_FILE_PATH);
             BufferedWriter bw = new BufferedWriter(fw);
-            ArrayList<String> allWords = myList.allWordsStartWith("");
-            for (String word : allWords) {
-                bw.write(word);
+            Set<String> words = this.data.keySet();
+            for (String word : words) {
+                bw.write(word + SPLITTING_CHARACTERS + this.data.get(word).getDef() + SPLITTING_CHARACTERS);
                 bw.newLine();
             }
             bw.close();

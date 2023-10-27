@@ -13,5 +13,4 @@ module com.example.dictionary {
     opens com.example.dictionary.controller to javafx.fxml;
     exports com.example.dictionary.scene;
     opens com.example.dictionary.scene to javafx.fxml;
-    exports com.example.dictionary.http to com.google.gson;
 }

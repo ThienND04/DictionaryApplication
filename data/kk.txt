@@ -1,0 +1,4 @@
+xin chào<::>Hello<::>
+how are you<::>Bạn khỏe không<::>
+hello world<::>Chào thế giới<::>
+hello<::>Xin chào<::>

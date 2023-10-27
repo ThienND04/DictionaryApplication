@@ -9,7 +9,7 @@ public final class GameScene extends AScene {
     private Button game1Nav;
 
     public GameScene(Dictionary dictionary) throws Exception {
-        super(dictionary, "game-view.fxml");
+        super(dictionary, SceneType.GAME);
     }
 
     @Override

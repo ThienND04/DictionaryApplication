@@ -1,26 +1,25 @@
 package com.example.dictionary.controller;
 
-import com.example.dictionary.http.Response;
+import com.example.dictionary.DataList;
+import com.example.dictionary.Word;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import java.net.URI;
+import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import com.google.gson.Gson;
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 
-
-public class TranslateController {
-
-    private static final String apiKey = "5ae7ef4d80msh360c2d2fc860412p1699e1jsnf5929929bced";
-
-    @FXML
-    ChoiceBox<String> source;
+public class TranslateController {       
     @FXML
     ChoiceBox<String> target;
+    @FXML
+    ChoiceBox<String> source;
     @FXML
     Button translateBtn;
     @FXML
@@ -30,40 +29,58 @@ public class TranslateController {
     @FXML
     TextArea translatedWord;
 
+    private static HashMap<String, String> languages = new HashMap<String, String>();
+
+    static {
+        languages.put("English", "en");
+        languages.put("Vietnamese", "vi");
+        languages.put("French", "fr");
+        languages.put("Japanese", "ja");
+    }
+
     @FXML
-    public void initialize() {
-        target.getItems().addAll("en", "vi");
-        source.getItems().addAll("en", "vi");
+    public void initialize() {                
+        target.getItems().addAll(languages.keySet()); 
+        source.getItems().addAll(languages.keySet());       
 
         translateBtn.setOnAction(event -> {
-            if (source.getValue() != null && target.getValue() != null && wordToTranslate.getText().equals("")) {
-                HttpRequest request = HttpRequest.newBuilder()
-                        .uri(URI.create("https://google-translate1.p.rapidapi.com/language/translate/v2"))
-                        .header("content-type", "application/x-www-form-urlencoded")
-                        .header("Accept-Encoding", "application/gzip")
-                        .header("X-RapidAPI-Key", apiKey)
-                        .header("X-RapidAPI-Host", "google-translate1.p.rapidapi.com")
-                        .method("POST", HttpRequest.BodyPublishers.ofString(
-                                String.format("q=%s&target=%s&source=%s", wordToTranslate.getText(), target.getValue(), source.getValue())
-                        ))
-                        .build();
-                HttpResponse<String> response = null;
-                try {
-                    response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                Gson gson = new Gson();
-                Response rp = gson.fromJson(response.body(), Response.class);
-                translatedWord.setText(rp.data.translations.get(0).translatedText);
+            if (source.getValue() != null && target.getValue() != null && !wordToTranslate.getText().equals("")) {                
+                String translatedWord = this.translate();
+                this.translatedWord.setText(translatedWord);                
             }
         });
 
         addBtn.setOnAction(event -> {
             if(!wordToTranslate.getText().equals("") && !translatedWord.getText().equals("")) {
-
+                DataList.getInstance().addWord(new Word(wordToTranslate.getText(), translatedWord.getText()));
+                HomeController.getInstance().loadWordList();
+                wordToTranslate.setText("");
+                translatedWord.setText("");
             }
         });
+    }    
+
+    private String translate() {
+        HttpRequest request = HttpRequest.newBuilder()
+            .uri(URI.create(getURL()))                        
+            .header("Accept-Encoding", "application/gzip")                    
+            .build();
+        HttpResponse<String> response = null;
+        try {
+            response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return response.body().split("\"")[1];
+    }
+
+    private String getURL() {
+        StringBuilder url = new StringBuilder("https://translate.googleapis.com/translate_a/single?client=gtx&dt=t");
+        url.append("&q=");
+        url.append(URLEncoder.encode(this.wordToTranslate.getText(), StandardCharsets.UTF_8));     
+        url.append("&sl=" + languages.get(this.source.getValue()));             
+        url.append("&tl=" + languages.get(this.target.getValue()));    
+        return url.toString();   
     }
 }
 

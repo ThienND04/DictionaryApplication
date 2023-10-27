@@ -13,8 +13,7 @@ public class Dictionary extends Application {
     @FXML
     private Stage window;
     @Override
-    public void start(Stage primaryStage) throws Exception {
-        DataList.getInstance().readData();
+    public void start(Stage primaryStage) throws Exception {        
         this.initScenes();
         this.window = primaryStage;
         this.setSceneType(0);
@@ -24,8 +23,7 @@ public class Dictionary extends Application {
 
     private void initScenes() throws Exception {
         this.scenes.add(new HomeScene(this));
-        this.scenes.add(new GameScene(this));
-        this.scenes.add(new MyListScene(this));
+        this.scenes.add(new GameScene(this));        
         this.scenes.add(new Game1Scene(this));
         this.scenes.add(new TranslateScene(this));
     }

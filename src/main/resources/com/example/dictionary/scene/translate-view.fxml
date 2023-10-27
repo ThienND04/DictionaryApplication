@@ -4,6 +4,7 @@
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -24,20 +25,15 @@
                         <cursor>
                             <Cursor fx:constant="HAND" />
                         </cursor>
-                    </Button>
-                    <Button fx:id="myListNav" focusTraversable="false" layoutX="62.0" layoutY="10.0" mnemonicParsing="false" text="MY LIST">
-                        <cursor>
-                            <Cursor fx:constant="HAND" />
-                        </cursor>
-                    </Button>
-                    <Button fx:id="translateNav" focusTraversable="false" layoutX="62.0" layoutY="10.0" mnemonicParsing="false" style="-fx-background-color: gray;" text="Translate" textFill="white">
+                    </Button>                    
+                    <Button fx:id="translateNav" focusTraversable="false" layoutX="62.0" layoutY="10.0" mnemonicParsing="false" style="-fx-background-color: gray;" text="TRANSLATE" textFill="white">
                         <cursor>
                             <Cursor fx:constant="HAND" />
                         </cursor>
                     </Button>
                 </children>
             </HBox>
-         <TextField fx:id="wordToTranslate">
+         <TextField fx:id="wordToTranslate" prefHeight="58.0" prefWidth="600.0">
             <VBox.margin>
                <Insets top="20.0" />
             </VBox.margin>
@@ -46,8 +42,10 @@
             <children>
                <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                   <children>
+                     <Label text="Từ" />                     
                      <ChoiceBox fx:id="source" prefWidth="150.0" />
-                     <ChoiceBox fx:id="target" prefWidth="150.0" />
+                     <Label text="Dịch sang:" />                     
+                     <ChoiceBox fx:id="target" prefWidth="150.0" />                  
                   </children>
                </VBox>
                <Button fx:id="translateBtn" mnemonicParsing="false" text="Dịch">
@@ -60,7 +58,7 @@
                <Insets bottom="20.0" top="20.0" />
             </VBox.margin>
          </HBox>
-         <TextArea fx:id="translatedWord" prefHeight="75.0" prefWidth="600.0" />
+         <TextArea fx:id="translatedWord" prefHeight="75.0" prefWidth="600.0" VBox.vgrow="ALWAYS" />
          <Button fx:id="addBtn" mnemonicParsing="false" text="Add this word">
             <VBox.margin>
                <Insets top="20.0" />

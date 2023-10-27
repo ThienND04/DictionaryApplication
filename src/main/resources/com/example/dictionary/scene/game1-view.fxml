@@ -21,13 +21,8 @@
                         <cursor>
                             <Cursor fx:constant="HAND" />
                         </cursor>
-                    </Button>
-                    <Button fx:id="myListNav" focusTraversable="false" layoutX="62.0" layoutY="10.0" mnemonicParsing="false" text="MY LIST">
-                        <cursor>
-                            <Cursor fx:constant="HAND" />
-                        </cursor>
-                    </Button>
-                    <Button fx:id="translateNav" focusTraversable="false" layoutX="62.0" layoutY="10.0" mnemonicParsing="false" text="Translate">
+                    </Button>                    
+                    <Button fx:id="translateNav" focusTraversable="false" layoutX="62.0" layoutY="10.0" mnemonicParsing="false" text="TRANSLATE">
                         <cursor>
                             <Cursor fx:constant="HAND" />
                         </cursor>

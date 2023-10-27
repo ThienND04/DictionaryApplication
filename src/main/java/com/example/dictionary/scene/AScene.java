@@ -11,9 +11,7 @@ public abstract class AScene {
     @FXML
     private Button homeNav;
     @FXML
-    private Button gameNav;
-    @FXML
-    private Button myListNav;
+    private Button gameNav;    
     @FXML
     private Button translateNav;
 
@@ -29,21 +27,19 @@ public abstract class AScene {
         return dictionary;
     }
 
-    public AScene(Dictionary dictionary, String path) throws Exception {
+    public AScene(Dictionary dictionary, int sceneType) throws Exception {
         this.dictionary = dictionary;
         FXMLLoader fxmlLoader = new FXMLLoader();
-        AnchorPane root = fxmlLoader.load(getClass().getResourceAsStream(path));
+        AnchorPane root = fxmlLoader.load(getClass().getResourceAsStream(SceneType.paths[sceneType]));
         this.scene = new Scene(root);
         this.init();
     }
 
     protected void init() {
         this.gameNav = (Button) this.scene.lookup("#gameNav");
-        this.homeNav = (Button) this.scene.lookup("#homeNav");
-        this.myListNav = (Button) this.scene.lookup("#myListNav");
+        this.homeNav = (Button) this.scene.lookup("#homeNav");        
         this.translateNav = (Button) this.scene.lookup("#translateNav");
-        this.gameNav.setOnAction(event -> dictionary.setSceneType(SceneType.GAME));
-        this.myListNav.setOnAction(event -> dictionary.setSceneType(SceneType.MY_LIST));
+        this.gameNav.setOnAction(event -> dictionary.setSceneType(SceneType.GAME));        
         this.homeNav.setOnAction(event -> dictionary.setSceneType(SceneType.HOME));
         this.translateNav.setOnAction(event -> dictionary.setSceneType(SceneType.TRANSLATE));
     }

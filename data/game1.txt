@@ -1,0 +1,3 @@
+<html> <p> Dog </p> </html> | 1 | Chó | Mèo | Lợn
+<html> <p> Pig </p> </html> | 3 | Chó | Chim | Lợn
+<html> <p> Bird </p> </html> | 2 | Chó | Chim | Lợn

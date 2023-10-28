@@ -28,6 +28,7 @@ public class Dictionary extends Application {
         scenes.add(new GameScene(this));
         scenes.add(new MyListScene(this));
         scenes.add(new Game1Scene(this));
+        scenes.add(new GameOverScene(this));
     }
     private ArrayList<AScene> scenes;
     public void setSceneType(int sceneType) {

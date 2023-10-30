@@ -11,7 +11,7 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="869.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.dictionary.controller.Game1Controller">
     <children>
-        <VBox maxHeight="1000.0" maxWidth="1000.0" style="-fx-background-color: gray;">
+        <VBox maxHeight="1000.0" maxWidth="1000.0" style="-fx-background-color: gray;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <HBox fillHeight="false">
                 <children>
                     <Button fx:id="homeNav" focusTraversable="false" mnemonicParsing="false" text="HOME">
@@ -40,7 +40,7 @@
       <ButtonBar layoutX="302.0" layoutY="344.0" prefHeight="40.0" prefWidth="306.0">
          <buttons>
             <Button fx:id="prevBtn" mnemonicParsing="false" onAction="#prevBtnClicked" text="Previous" />
-            <Button fx:id="nextPrev" mnemonicParsing="false" onAction="#nextBtnClicked" text="Next" />
+            <Button fx:id="nextBtn" mnemonicParsing="false" onAction="#nextBtnClicked" text="Next" />
             <Button fx:id="submitBtn" minWidth="57.0" mnemonicParsing="false" onAction="#submitBtnClicked" prefHeight="24.0" text="Submit" />
          </buttons>
       </ButtonBar>

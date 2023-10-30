@@ -1,7 +1,9 @@
 package com.example.dictionary.controller;
 
 import com.example.dictionary.DataList;
+import com.example.dictionary.Dictionary;
 import com.example.dictionary.Word;
+import com.example.dictionary.scene.SceneType;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
@@ -30,6 +32,8 @@ public class MyListController {
     @FXML
     Button rmBtn;
     @FXML
+    Button editBtn;
+    @FXML
     TextField wordToFind;
 
     @FXML
@@ -39,16 +43,23 @@ public class MyListController {
         this.loadWordList();
     }
 
+    @FXML
+    public void handleEditBtn() {
+        Dictionary.getInstance().setSceneType(SceneType.TEXT_EDITOR);
+    }
+
     private void initComponents() {
         this.listView.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> {
                     if (newValue != null) {
                         this.rmBtn.setVisible(true);
-                        Word selectedWord = DataList.getInstance().getData().get(newValue.trim());
+                        this.editBtn.setVisible(true);
+                        Word selectedWord = DataList.getInstance().getMyListData().get(newValue.trim());
                         String definition = selectedWord.getDef();
                         definitionView.getEngine().loadContent(definition, "text/html");
                     } else {
                         this.rmBtn.setVisible(false);
+                        this.editBtn.setVisible(false);
                         definitionView.getEngine().loadContent("", "text/html");
                     }
                 }

@@ -7,6 +7,7 @@ public final class SceneType {
 
     public static int GAME_1 = 3;
     public static int GAME_OVER = 4;
+    public static int TEXT_EDITOR = 5;
 
     private SceneType() {
 

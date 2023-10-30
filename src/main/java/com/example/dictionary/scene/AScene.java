@@ -11,10 +11,17 @@ public abstract class AScene {
         return this.scene;
     }
     public Dictionary dictionary;
+
     public AScene(Dictionary dictionary, String path) throws Exception {
         this.dictionary = dictionary;
         FXMLLoader fxmlLoader = new FXMLLoader();
         AnchorPane root = fxmlLoader.load(getClass().getResourceAsStream(path));
         this.scene = new Scene(root);
     }
+
+    /**
+     * Update scene state
+     * (Some data can be changed).
+     */
+    public abstract void update();
 }

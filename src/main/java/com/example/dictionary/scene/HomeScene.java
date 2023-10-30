@@ -21,4 +21,9 @@ public final class HomeScene extends AScene{
         gameNav.setOnAction(event -> this.dictionary.setSceneType(SceneType.GAME));
         myListNav.setOnAction(event -> this.dictionary.setSceneType(SceneType.MY_LIST));
     }
+
+    @Override
+    public void update() {
+
+    }
 }

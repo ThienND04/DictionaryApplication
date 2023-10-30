@@ -74,7 +74,7 @@ public class Game1Controller {
     }
     @FXML
     public void submitBtnClicked() {
-        GameOverScene.getInstance().update(Game1.getInstance());
+        GameOverScene.getInstance().setCurGame(Game1.getInstance());
         Game1Scene.getInstance().dictionary.setSceneType(SceneType.GAME_OVER);
     }
 

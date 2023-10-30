@@ -12,6 +12,7 @@ public class Game1 extends AGame {
     public static Game1 getInstance() {return instance;}
     private static final String DATA_FILE_PATH = "data/game1.txt";
     private static final String SPLITTING_CHARACTERS = " \\| ";
+    private static final int SCORE_PER_QUESTION = 10;
     private final List<Question> questions = new ArrayList<>();
     private int currentQuestion;
 
@@ -52,8 +53,13 @@ public class Game1 extends AGame {
         }
     }
 
-    public void increaseScore() {
-        score += 10;
+    @Override
+    public void updateScore() {
+        for(Question question: questions) {
+            if(question.isTrue()) {
+                this.score += SCORE_PER_QUESTION;
+            }
+        }
     }
 
     public void readData() {

@@ -23,7 +23,7 @@ public final class Game1Scene extends AScene {
     @FXML
     private Button ans3;
 
-    public Game1Scene(Dictionary dictionary) throws Exception{
+    public Game1Scene(Dictionary dictionary) throws Exception {
         super(dictionary, "game1-view.fxml");
         this.gameNav = (Button) this.scene.lookup("#gameNav");
         this.homeNav = (Button) this.scene.lookup("#homeNav");
@@ -32,5 +32,10 @@ public final class Game1Scene extends AScene {
         myListNav.setOnAction(event -> dictionary.setSceneType(SceneType.MY_LIST));
         homeNav.setOnAction(event -> dictionary.setSceneType(SceneType.HOME));
         instance = this;
+    }
+
+    @Override
+    public void update() {
+
     }
 }

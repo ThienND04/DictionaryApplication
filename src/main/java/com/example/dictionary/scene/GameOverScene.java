@@ -38,7 +38,21 @@ public class GameOverScene extends AScene {
         instance = this;
     }
 
-    public void update(AGame game) {
-        this.scoreView.getEngine().loadContent(String.format("<html> <p style='color : red'>Score: %d<p> </html>", game.getScore()));
+    AGame curGame;
+
+    public AGame getCurGame() {
+        return curGame;
+    }
+
+    public void setCurGame(AGame curGame) {
+        this.curGame = curGame;
+    }
+
+    public void update() {
+        // set score to red color format and put to webview.
+        this.scoreView.getEngine().loadContent(
+                String.format(
+                        "<html> <p style='color : red'>Score: %d<p> </html>",
+                        curGame.getScore()));
     }
 }

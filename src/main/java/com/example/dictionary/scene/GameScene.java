@@ -24,4 +24,9 @@ public final class GameScene extends AScene {
         homeNav.setOnAction(event -> dictionary.setSceneType(SceneType.HOME));
         game1Nav.setOnAction(event -> dictionary.setSceneType(SceneType.GAME_1));
     }
+
+    @Override
+    public void update() {
+
+    }
 }

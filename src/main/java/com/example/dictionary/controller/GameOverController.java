@@ -1,6 +1,7 @@
 package com.example.dictionary.controller;
 
 import com.example.dictionary.Dictionary;
+import com.example.dictionary.game.Game1;
 import com.example.dictionary.scene.GameOverScene;
 import com.example.dictionary.scene.SceneType;
 import javafx.fxml.FXML;
@@ -39,6 +40,7 @@ public class GameOverController {
 
     @FXML
     public void playAgainBtnClicked() {
+        Game1.getInstance().playAgain();
         GameOverScene.getInstance().dictionary.setSceneType(SceneType.GAME_1);
     }
 }

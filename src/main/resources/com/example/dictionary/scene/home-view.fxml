@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.web.WebView?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.dictionary.controller.HomeController">
+<AnchorPane prefHeight="400.0" prefWidth="869.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.dictionary.controller.HomeController">
     <children>
         <VBox alignment="CENTER" layoutX="-2.0" layoutY="-2.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
@@ -47,7 +47,7 @@
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                     </VBox.margin>
                 </HBox>
-            <Button fx:id="addBtn" contentDisplay="BOTTOM" mnemonicParsing="false" prefHeight="26.0" visible="false" prefWidth="200.0" text="Add this word to my list">
+            <Button fx:id="addBtn" contentDisplay="BOTTOM" mnemonicParsing="false" prefHeight="26.0" prefWidth="200.0" text="Add this word to my list" visible="false">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>

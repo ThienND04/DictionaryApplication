@@ -14,6 +14,7 @@ public class Dictionary extends Application {
     private Stage window;
     @Override
     public void start(Stage primaryStage) throws Exception {
+        instance = this;
         this.window = primaryStage;
         DataList.getInstance().readData();
         initScenes();
@@ -29,10 +30,16 @@ public class Dictionary extends Application {
         scenes.add(new MyListScene(this));
         scenes.add(new Game1Scene(this));
         scenes.add(new GameOverScene(this));
+        scenes.add(new DefinitionEditorScene(this));
     }
     private ArrayList<AScene> scenes;
     public void setSceneType(int sceneType) {
+        scenes.get(sceneType).update();
         this.window.setScene(scenes.get(sceneType).getScene());
+    }
+    public static Dictionary instance;
+    public static Dictionary getInstance() {
+        return instance;
     }
 }
 

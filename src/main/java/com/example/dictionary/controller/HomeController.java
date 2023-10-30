@@ -54,7 +54,7 @@ public class HomeController {
                 }
         );
         this.addBtn.setOnAction(event -> {
-            DataList.getInstance().addWordToList((String) listView.getSelectionModel().getSelectedItem());
+            DataList.getInstance().addWordToList(DataList.getInstance().getData().get(listView.getSelectionModel().getSelectedItem()));
             MyListController.getInstance().loadWordList();
         });
         this.wordToFind.textProperty().addListener(new ChangeListener<String>() {

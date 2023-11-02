@@ -5,7 +5,7 @@ public class Word {
     private String def;
 
     public Word(String word, String def) {
-        this.word = word;
+        this.word = word.trim();
         this.def = def;
     }
 

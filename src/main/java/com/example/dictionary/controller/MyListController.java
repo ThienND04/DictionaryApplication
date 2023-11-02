@@ -38,9 +38,9 @@ public class MyListController {
 
     @FXML
     public void initialize() {
-        instance = this;
         this.initComponents();
         this.loadWordList();
+        instance = this;
     }
 
     @FXML
@@ -66,7 +66,7 @@ public class MyListController {
         );
         this.rmBtn.setOnAction(event -> {
             String word = listView.getSelectionModel().getSelectedItem();
-            DataList.getInstance().removeWordFromList(word);
+            DataList.getInstance().removeWord(word);
             loadWordList();
         });
         this.wordToFind.textProperty().addListener(new ChangeListener<String>() {
@@ -79,6 +79,6 @@ public class MyListController {
 
     public void loadWordList() {
         this.listView.getItems().clear();
-        this.listView.getItems().addAll(DataList.getInstance().getMyList().allWordsStartWith(wordToFind.getText()));
+        this.listView.getItems().addAll(DataList.getInstance().getMyListTrie().getAllWordsStartWith(wordToFind.getText()));
     }
 }

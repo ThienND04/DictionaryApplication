@@ -10,31 +10,11 @@ public class GameOverScene extends AScene {
     public static GameOverScene instance;
     public static GameOverScene getInstance() {return instance; }
     @FXML
-    private Button homeNav;
-    @FXML
-    private Button gameNav;
-    @FXML
-    private Button myListNav;
-    @FXML
     WebView scoreView;
-    @FXML
-    private Button cancelBtn;
-    @FXML
-    private Button playAgainBtn;
 
     public GameOverScene(Dictionary dictionary) throws Exception {
-        super(dictionary, "gameover-view.fxml");
-
-        this.gameNav = (Button) this.scene.lookup("#gameNav");
-        this.homeNav = (Button) this.scene.lookup("#homeNav");
-        this.myListNav = (Button) this.scene.lookup("#myListNav");
-        this.scoreView = (WebView) this.scene.lookup("#scoreView");
-        this.cancelBtn = (Button) this.scene.lookup("#cancelBtn");
-        this.playAgainBtn = (Button) this.scene.lookup("#playAgainBtn");
-
-        gameNav.setOnAction(event -> this.dictionary.setSceneType(SceneType.GAME));
-        myListNav.setOnAction(event -> this.dictionary.setSceneType(SceneType.MY_LIST));
-
+        super(dictionary, SceneType.GAME_OVER);
+        this.scoreView = (WebView) getScene().lookup("#scoreView");
         instance = this;
     }
 

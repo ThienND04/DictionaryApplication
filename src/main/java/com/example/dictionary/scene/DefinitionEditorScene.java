@@ -16,8 +16,8 @@ public class DefinitionEditorScene extends AScene {
     HTMLEditor definitionEditor;
 
     public DefinitionEditorScene(Dictionary dictionary) throws Exception {
-        super(dictionary, "definition-editor.fxml");
-        this.definitionEditor = (HTMLEditor) this.scene.lookup("#definitionEditor");
+        super(dictionary, SceneType.TEXT_EDITOR);
+        this.definitionEditor = (HTMLEditor) getScene().lookup("#definitionEditor");
         instance = this;
     }
 

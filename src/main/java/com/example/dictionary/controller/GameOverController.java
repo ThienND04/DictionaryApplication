@@ -35,12 +35,12 @@ public class GameOverController {
 
     @FXML
     public void cancelBtnClicked() {
-        GameOverScene.getInstance().dictionary.setSceneType(SceneType.GAME);
+        GameOverScene.getInstance().getDictionary().setSceneType(SceneType.GAME);
     }
 
     @FXML
     public void playAgainBtnClicked() {
         Game1.getInstance().playAgain();
-        GameOverScene.getInstance().dictionary.setSceneType(SceneType.GAME_1);
+        GameOverScene.getInstance().getDictionary().setSceneType(SceneType.GAME_1);
     }
 }

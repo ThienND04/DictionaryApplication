@@ -6,52 +6,29 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public final class DataList {
-    private static final DataList instance = new DataList();
-
-    public static DataList getInstance() {
-        return instance;
-    }
-
     private DataList() {
-
+        readData();
     }
-
     private static final String DATA_FILE_PATH = "data/E_V.txt";
     private static final String MY_LIST_FILE_PATH = "data/my_list.txt";
     private static final Pattern WORD_PATTERN = Pattern.compile("(.*)(<html.*</html>)");
     private final Map<String, Word> data = new HashMap<>();
+    private final Trie trie = new Trie();
     private final Map<String, Word> myListData = new HashMap<>();
-    private final Trie wordsTrie = new Trie();
 
-    public Map<String, Word> getData() {
-        return this.data;
-    }
+    private final Trie myListTrie = new Trie();
 
-    public Trie getWordsTrie() {
-        return wordsTrie;
-    }
-
-    private final Trie myList = new Trie();
-
-    public Trie getMyList() {
-        return this.myList;
-    }
-
-    public Map<String, Word> getMyListData() {
-        return myListData;
-    }
-
-    public void addWordToList(Word word) {
+    public void addWord(Word word) {
         if (word != null) {
-            this.myList.insert(word.getWord());
             this.myListData.put(word.getWord(), word);
-            writeListData();
+            this.myListTrie.insert(word.getWord());
+            this.writeListData();
         }
     }
 
-    public void removeWordFromList(String word) {
+    public void removeWord(String word) {
         if (word != null) {
-            this.myList.remove(word.trim());
+            this.myListTrie.remove(word.trim());
             this.myListData.remove(word);
             writeListData();
         }
@@ -73,7 +50,8 @@ public final class DataList {
                 Word wordObj = new Word(word, definition);
                 data.put(word, wordObj);
             }
-            wordsTrie.insertAll(new ArrayList<>(data.keySet()));
+
+            trie.insertAll(new ArrayList<>(data.keySet()));
             br.close();
             fr.close();
 
@@ -86,10 +64,11 @@ public final class DataList {
                 String definition = matcher.group(2);
                 Word wordObj = new Word(word, definition);
                 myListData.put(word, wordObj);
-                this.myList.insert(word);
+                myListTrie.insert(word);
             }
             br.close();
             fr.close();
+            System.out.println("Loaded data.");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -102,14 +81,38 @@ public final class DataList {
         try {
             FileWriter fw = new FileWriter(MY_LIST_FILE_PATH);
             BufferedWriter bw = new BufferedWriter(fw);
+
             for (Word word: myListData.values()) {
                 bw.write(word.getWord() + word.getDef());
                 bw.newLine();
             }
+
             bw.close();
             fw.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public Map<String, Word> getData() {
+        return data;
+    }
+
+    public Trie getTrie() {
+        return trie;
+    }
+
+    public Map<String, Word> getMyListData() {
+        return myListData;
+    }
+
+    public Trie getMyListTrie() {
+        return myListTrie;
+    }
+
+    private static final DataList instance = new DataList();
+
+    public static DataList getInstance() {
+        return instance;
     }
 }

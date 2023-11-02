@@ -10,27 +10,15 @@ import javafx.scene.web.WebView;
 
 public final class MyListScene extends AScene {
     @FXML
-    private Button homeNav;
-    @FXML
-    private Button gameNav;
-    @FXML
-    private Button myListNav;
-    @FXML
     ListView<String> listView;
     @FXML
     WebView definitionView;
 
     public MyListScene(Dictionary dictionary) throws Exception{
-        super(dictionary, "my-list-view.fxml");
-
-        this.gameNav = (Button) this.scene.lookup("#gameNav");
-        this.homeNav = (Button) this.scene.lookup("#homeNav");
-        this.myListNav = (Button) this.scene.lookup("#myListNav");
-        this.listView = (ListView<String>) this.scene.lookup("#listView");
-        this.definitionView = (WebView) this.scene.lookup("#definitionView");
-        gameNav.setOnAction(event -> dictionary.setSceneType(SceneType.GAME));
-        homeNav.setOnAction(event -> dictionary.setSceneType(SceneType.HOME));
-
+        // Bug
+        super(dictionary, SceneType.MY_LIST);
+        this.listView = (ListView<String>) getScene().lookup("#listView");
+        this.definitionView = (WebView) getScene().lookup("#definitionView");
         instance = this;
     }
 

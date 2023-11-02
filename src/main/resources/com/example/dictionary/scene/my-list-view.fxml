@@ -21,16 +21,17 @@
                                 <Cursor fx:constant="HAND" />
                             </cursor>
                         </Button>
-                        <Button fx:id="gameNav" focusTraversable="false" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" text="GAME">
-                            <cursor>
-                                <Cursor fx:constant="HAND" />
-                            </cursor>
-                        </Button>
                         <Button fx:id="myListNav" focusTraversable="false" layoutX="62.0" layoutY="10.0" mnemonicParsing="false" style="-fx-background-color: gray;" text="MY LIST" textFill="WHITE">
                             <cursor>
                                 <Cursor fx:constant="HAND" />
                             </cursor>
                         </Button>
+                        <Button fx:id="gameNav" focusTraversable="false" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" text="GAME">
+                            <cursor>
+                                <Cursor fx:constant="HAND" />
+                            </cursor>
+                        </Button>
+                  <Button fx:id="translateNav" mnemonicParsing="false" text="TRANSLATE" />
                     </children>
                 </HBox>
                 <TextField fx:id="wordToFind">
@@ -49,7 +50,7 @@
                 </HBox>
             <HBox alignment="CENTER_RIGHT" prefHeight="49.0" prefWidth="837.0">
                <children>
-                      <Button fx:id="rmBtn" contentDisplay="BOTTOM" mnemonicParsing="false" prefHeight="26.0" prefWidth="200.0" text="Remove this word" visible="false">
+                      <Button fx:id="rmBtn" contentDisplay="BOTTOM" mnemonicParsing="false" prefHeight="26.0" prefWidth="200.0" text="Remove" visible="false">
                           <cursor>
                               <Cursor fx:constant="HAND" />
                           </cursor>

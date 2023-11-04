@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.dictionary.controller.Game3Controller">
+   <children>
+      <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <HBox fillHeight="false">
+            <children>
+               <Button fx:id="homeNav" focusTraversable="false" mnemonicParsing="false" text="HOME">
+                  <cursor>
+                     <Cursor fx:constant="HAND" />
+                  </cursor>
+               </Button>
+               <Button fx:id="gameNav" focusTraversable="false" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" text="GAME">
+                  <cursor>
+                     <Cursor fx:constant="HAND" />
+                  </cursor>
+               </Button>               
+               <Button fx:id="translateNav" focusTraversable="false" layoutX="62.0" layoutY="10.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="TRANSLATE">
+                  <cursor>
+                     <Cursor fx:constant="HAND" />
+                  </cursor>
+               </Button>
+            </children>
+         </HBox>
+         <HBox prefHeight="100.0" prefWidth="200.0">
+            <children>
+               <Label fx:id="meaning" prefHeight="64.0" prefWidth="206.0" />
+               <Label fx:id="inform" prefHeight="64.0" prefWidth="206.0" />
+            </children>
+         </HBox>
+         <HBox fx:id="guessWord" prefHeight="60.0" prefWidth="600.0">
+            <VBox.margin>
+               <Insets top="30.0" />
+            </VBox.margin>
+         </HBox>
+         <HBox fx:id="input" layoutX="10.0" layoutY="66.0" prefHeight="60.0" prefWidth="600.0">
+            <VBox.margin>
+               <Insets top="30.0" />
+            </VBox.margin>
+         </HBox>
+         <Button focusTraversable="false" fx:id="newGame" mnemonicParsing="false" text="new game" />
+      </VBox>      
+   </children>
+</AnchorPane>

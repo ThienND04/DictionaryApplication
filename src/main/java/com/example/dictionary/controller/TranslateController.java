@@ -1,25 +1,24 @@
 package com.example.dictionary.controller;
 
 import com.example.dictionary.DataList;
+import com.example.dictionary.Dictionary;
 import com.example.dictionary.Word;
+import com.example.dictionary.utils.TextToSpeech;
+import com.example.dictionary.utils.Translate;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import java.net.URI;
-import java.net.URLEncoder;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.web.WebView;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
-public class TranslateController {       
-    @FXML
-    ChoiceBox<String> target;
-    @FXML
-    ChoiceBox<String> source;
+public class TranslateController {
+
     @FXML
     Button translateBtn;
     @FXML
@@ -28,59 +27,49 @@ public class TranslateController {
     TextField wordToTranslate;
     @FXML
     TextArea translatedWord;
+    @FXML
+    WebView detail;
+    @FXML
+    Button speakBtn;
 
-    private static HashMap<String, String> languages = new HashMap<String, String>();
-
-    static {
-        languages.put("English", "en");
-        languages.put("Vietnamese", "vi");
-        languages.put("French", "fr");
-        languages.put("Japanese", "ja");
-    }
 
     @FXML
-    public void initialize() {                
-        target.getItems().addAll(languages.keySet()); 
-        source.getItems().addAll(languages.keySet());       
+    public void initialize() {
 
         translateBtn.setOnAction(event -> {
-            if (source.getValue() != null && target.getValue() != null && !wordToTranslate.getText().equals("")) {                
-                String translatedWord = this.translate();
-                this.translatedWord.setText(translatedWord);                
+            String word = wordToTranslate.getText();
+            if(!word.equals("")) {
+                Task<Void> task = new Task<>() {
+                    @Override
+                    protected Void call() {
+                        String translated = Translate.translate(word, "en", "vi");
+                        String detailContent = Translate.getDetail(word);
+                        Platform.runLater(() -> {
+                            translatedWord.setText(translated);
+                            detail.getEngine().loadContent(detailContent);
+                            Dictionary.loadingDialog.hide();
+                        });
+                        return null;
+                    }
+                };
+                Dictionary.loadingDialog.show();
+                new Thread(task).start();
             }
         });
 
+        speakBtn.setOnAction(event -> TextToSpeech.textToSpeech(wordToTranslate.getText()));
+
         addBtn.setOnAction(event -> {
             if(!wordToTranslate.getText().equals("") && !translatedWord.getText().equals("")) {
+                Alert a = new Alert(Alert.AlertType.INFORMATION, "Đã thêm thành công");
+                a.show();
                 DataList.getInstance().addWord(new Word(wordToTranslate.getText(), translatedWord.getText()));
                 HomeController.getInstance().loadWordList();
                 wordToTranslate.setText("");
                 translatedWord.setText("");
+                detail.getEngine().loadContent("");
             }
         });
-    }    
-
-    private String translate() {
-        HttpRequest request = HttpRequest.newBuilder()
-            .uri(URI.create(getURL()))                        
-            .header("Accept-Encoding", "application/gzip")                    
-            .build();
-        HttpResponse<String> response = null;
-        try {
-            response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return response.body().split("\"")[1];
-    }
-
-    private String getURL() {
-        StringBuilder url = new StringBuilder("https://translate.googleapis.com/translate_a/single?client=gtx&dt=t");
-        url.append("&q=");
-        url.append(URLEncoder.encode(this.wordToTranslate.getText(), StandardCharsets.UTF_8));     
-        url.append("&sl=" + languages.get(this.source.getValue()));             
-        url.append("&tl=" + languages.get(this.target.getValue()));    
-        return url.toString();   
     }
 }
 

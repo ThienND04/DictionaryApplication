@@ -18,13 +18,13 @@ public final class DataList {
     private static final String SPLITTING_CHARACTERS = "<::>";
 
     private final Map<String, Word> data = new HashMap<>();
-    private final Trie1 trie = new Trie1();
+    private final Trie trie = new Trie();
 
     public Map<String, Word> getData() {
         return this.data;
     }
 
-    public Trie1 getTrie() {
+    public Trie getTrie() {
         return this.trie;
     }
 

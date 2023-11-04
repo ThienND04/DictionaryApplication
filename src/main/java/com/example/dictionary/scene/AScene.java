@@ -21,17 +21,15 @@ public abstract class AScene {
         return this.scene;
     }
 
-    private final Dictionary dictionary;
-
-    public Dictionary getDictionary() {
-        return dictionary;
-    }
+    protected final Dictionary dictionary;
 
     public AScene(Dictionary dictionary, int sceneType) throws Exception {
         this.dictionary = dictionary;
         FXMLLoader fxmlLoader = new FXMLLoader();
-        AnchorPane root = fxmlLoader.load(getClass().getResourceAsStream(SceneType.paths[sceneType]));
+        AnchorPane root = fxmlLoader.load(getClass().getResourceAsStream(SceneType.fxmlPaths[sceneType]));
         this.scene = new Scene(root);
+        String css = getClass().getResource(SceneType.cssPaths[sceneType]).toExternalForm();
+        scene.getStylesheets().add(css);
         this.init();
     }
 

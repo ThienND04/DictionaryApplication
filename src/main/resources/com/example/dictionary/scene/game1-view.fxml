@@ -9,7 +9,7 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.dictionary.controller.Game1Controller">
     <children>
-        <VBox maxHeight="1000.0" maxWidth="1000.0" style="-fx-background-color: gray;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <VBox maxHeight="1000.0" maxWidth="1000.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <HBox fillHeight="false">
                 <children>
                     <Button fx:id="homeNav" focusTraversable="false" mnemonicParsing="false" text="HOME">
@@ -30,7 +30,7 @@
                 </children>
             </HBox>
             <WebView fx:id="gameView" maxHeight="100000.0" maxWidth="100000.0" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
-            <Button mnemonicParsing="false" text="Next question" fx:id="startBtn"/>
+            <Button fx:id="startBtn" focusTraversable="false" mnemonicParsing="false" text="Next question" />
         </VBox>
     </children>
 </AnchorPane>

@@ -6,7 +6,7 @@ public class Word {
 
     public Word(String word, String def) {
         this.word = word.trim();
-        this.def = def;
+        this.def = def.trim();
     }
 
     public String getWord() {

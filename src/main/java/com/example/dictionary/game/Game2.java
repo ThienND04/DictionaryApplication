@@ -1,6 +1,6 @@
 package com.example.dictionary.game;
 
-import com.example.dictionary.DataList;
+import com.example.dictionary.Data;
 import com.example.dictionary.Word;
 
 import java.util.ArrayList;
@@ -10,18 +10,19 @@ import java.util.Map;
 
 public class Game2 {
     private final Map<String, Word> map;
-    private ArrayList<String> list;
+    private final ArrayList<String> list;
 
     public Game2() {
-        map = DataList.getInstance().getData();
-        list = new ArrayList<String>(this.map.keySet());
+        map = Data.getInstance().getData();
+        list = new ArrayList<>(this.map.keySet());
     }
-    public ArrayList<String> generate() {
+
+    public ArrayList<String> generate(int n) {
         Collections.shuffle(list);
         ArrayList<String> res = new ArrayList<String>();
-        for (int i = 0; i < 6; i++) {
-            res.add(list.get(i));
-            res.add(map.get(list.get(i)).getDef());
+        for (int i = 0; i < n; i++) {
+            res.add(list.get(i % list.size()));
+            res.add(map.get(list.get(i % list.size())).getDef());
         }
         Collections.shuffle(res);
         return res;

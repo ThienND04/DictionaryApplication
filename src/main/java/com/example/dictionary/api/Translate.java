@@ -1,4 +1,4 @@
-package com.example.dictionary.utils;
+package com.example.dictionary.api;
 
 import java.net.URI;
 import java.net.URLEncoder;
@@ -55,15 +55,15 @@ public class Translate {
             if(response.statusCode() == 404) {
                 break;
             }
-            res.append("<li><h1>" + words[i] + "</h1><ul>");
+            res.append("<li><h1 style=\"color : red\">" + words[i] + "</h1><ul>");
 
             JSONArray jsonArray = new JSONArray(response.body());
 
-            res.append("<li><p>Phát âm : </p>");
+            res.append("<li><h2 style=\"color : green\">Phát âm : </h2>");
             processPhonetics(res, jsonArray.getJSONObject(0).getJSONArray("phonetics"));
             res.append("</li>");
 
-            res.append("<li><p>Nghĩa : </p>");
+            res.append("<li><h2 style=\"color : green\">Nghĩa : </h2>");
             processMeanings(res, jsonArray.getJSONObject(0).getJSONArray("meanings"));
             res.append("</li>");
 
@@ -103,32 +103,32 @@ public class Translate {
         res.append("<ul>");
 
         for(int i = 0; i < meanings.length(); i++) {
-            res.append("<li><ul>");
+            res.append("<li>");
 
             temp = meanings.getJSONObject(i);
-            res.append("<li>Loại : " + map.get(temp.getString("partOfSpeech")) + "</li>");
+            res.append("<h3 style=\"color : blue\">Loại : " + map.get(temp.getString("partOfSpeech")) + "</h3><ul>");
 
 
             JSONArray jsonArray = temp.getJSONArray("definitions");
             JSONObject temp1;
 
-            res.append("<li><p>Các định nghĩa : </p><ul>");
+            res.append("<li><h4 style=\"color : orange\">Các định nghĩa : </h4><ul style=\"list-style : circle\">");
             for(int j = 0; j < jsonArray.length(); j++) {
-                res.append("<li><ul>");
+                res.append("<li>");
                 temp1 = jsonArray.getJSONObject(j);
                 if(temp1.keySet().contains("definition")) {
-                    res.append("<li>Nghĩa : " + temp1.getString("definition") + "</li>");
+                    res.append("<p>Nghĩa : " + temp1.getString("definition") + "</p>");
                 }
                 if(temp1.keySet().contains("example")) {
-                    res.append("<li>Ví dụ : " + temp1.getString("example") + "</li>");
+                    res.append("<p>Ví dụ : " + temp1.getString("example") + "</p>");
                 }
-                res.append("</ul></li>");
+                res.append("</li>");
             }
             res.append("</ul></li>");
 
 
             jsonArray = temp.getJSONArray("synonyms");
-            res.append("<li><p>Từ đồng nghĩa : </p><ul>");
+            res.append("<li><h4 style=\"color : orange\">Từ đồng nghĩa : </h4><ul style=\"list-style : circle\">");
             for(int j = 0; j < jsonArray.length(); j++) {
                 res.append("<li>" + jsonArray.getString(j) + "</li>");
             }
@@ -136,7 +136,7 @@ public class Translate {
 
 
             jsonArray = temp.getJSONArray("antonyms");
-            res.append("<li><p>Từ trái nghĩa : </p><ul>");
+            res.append("<li><h4 style=\"color : orange\">Từ trái nghĩa : </h4><ul style=\"list-style : circle\">");
             for(int j = 0; j < jsonArray.length(); j++) {
                 res.append("<li>" +jsonArray.getString(j) + "</li>");
             }

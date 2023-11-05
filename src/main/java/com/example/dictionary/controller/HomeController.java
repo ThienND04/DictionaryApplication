@@ -1,7 +1,11 @@
 package com.example.dictionary.controller;
 
-import com.example.dictionary.DataList;
+import com.example.dictionary.Application;
+import com.example.dictionary.Data;
 import com.example.dictionary.Word;
+import com.example.dictionary.scene.SceneConstants;
+import com.example.dictionary.stage.PrimaryWindow;
+import com.example.dictionary.stage.WindowEnum;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
@@ -9,9 +13,7 @@ import java.util.Optional;
 
 public class HomeController {
     @FXML
-    Button gameNav;
-    @FXML
-    Button homeNav;
+    Button showDictionaryBtn;
     @FXML
     ListView<String> listView;
     @FXML
@@ -24,6 +26,8 @@ public class HomeController {
     Button saveBtn;
     @FXML
     TextField wordToFind;
+    @FXML
+    Button searchBtn;
 
     private static HomeController instance;
 
@@ -33,12 +37,17 @@ public class HomeController {
 
     @FXML
     public void initialize() {
+        instance = this;
         initComponents();
         loadWordList();
-        instance = this;
     }
 
     private void initComponents() {
+
+        showDictionaryBtn.setOnAction(event -> {
+            Application.getInstance().showWindow(WindowEnum.DICTIONARY);
+        });
+
         listView.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> {
                     saveBtn.setVisible(false);
@@ -46,10 +55,16 @@ public class HomeController {
                     if (newValue != null) {
                         deleteBtn.setVisible(true);
                         editBtn.setVisible(true);
-                        definitionView.setText(DataList.getInstance().getData().get(newValue).getDef());
+                        definitionView.setText(Data.getInstance().getData().get(newValue).getDef());
+                        searchBtn.setVisible(true);
+                        searchBtn.setOnAction(event -> {
+                            PrimaryWindow.getInstance().setSceneType(SceneConstants.TRANSLATE);
+                            TranslateController.getInstance().find(newValue);
+                        });
                     } else {
                         deleteBtn.setVisible(false);
                         editBtn.setVisible(false);
+                        searchBtn.setVisible(false);
                         definitionView.setText("");
                     }
                 }
@@ -59,7 +74,7 @@ public class HomeController {
             Alert a = new Alert(Alert.AlertType.CONFIRMATION, "Bạn có muốn xóa từ này không?");
             Optional<ButtonType> result = a.showAndWait();
             if(result.isPresent() && result.get() == ButtonType.OK) {
-                DataList.getInstance().removeWord((String) listView.getSelectionModel().getSelectedItem());
+                Data.getInstance().removeWord((String) listView.getSelectionModel().getSelectedItem());
                 loadWordList();
             }
         });
@@ -80,7 +95,7 @@ public class HomeController {
                 saveBtn.setVisible(false);
                 editBtn.setVisible(true);
                 deleteBtn.setVisible(true);
-                DataList.getInstance().addWord(new Word(listView.getSelectionModel().getSelectedItem(), definitionView.getText()));
+                Data.getInstance().addWord(new Word(listView.getSelectionModel().getSelectedItem(), definitionView.getText()));
             } else {
                 Alert a = new Alert(Alert.AlertType.WARNING, "Không để trống định nghĩa");
                 a.show();
@@ -92,6 +107,6 @@ public class HomeController {
 
     public void loadWordList() {
         listView.getItems().clear();
-        listView.getItems().addAll(DataList.getInstance().getTrie().getAllWordsStartWith(wordToFind.getText()));
+        listView.getItems().addAll(Data.getInstance().getTrie().getAllWordsStartWith(wordToFind.getText()));
     }
 }

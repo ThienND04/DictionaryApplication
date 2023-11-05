@@ -1,4 +1,4 @@
-package com.example.dictionary.utils;
+package com.example.dictionary.api;
 import com.sun.speech.freetts.Voice;
 import com.sun.speech.freetts.VoiceManager;
 public class TextToSpeech {

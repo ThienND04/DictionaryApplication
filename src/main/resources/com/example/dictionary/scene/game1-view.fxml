@@ -10,25 +10,6 @@
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.dictionary.controller.Game1Controller">
     <children>
         <VBox maxHeight="1000.0" maxWidth="1000.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-            <HBox fillHeight="false">
-                <children>
-                    <Button fx:id="homeNav" focusTraversable="false" mnemonicParsing="false" text="HOME">
-                        <cursor>
-                            <Cursor fx:constant="HAND" />
-                        </cursor>
-                    </Button>
-                    <Button fx:id="gameNav" focusTraversable="false" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" text="GAME">
-                        <cursor>
-                            <Cursor fx:constant="HAND" />
-                        </cursor>
-                    </Button>                    
-                    <Button fx:id="translateNav" focusTraversable="false" layoutX="62.0" layoutY="10.0" mnemonicParsing="false" text="TRANSLATE">
-                        <cursor>
-                            <Cursor fx:constant="HAND" />
-                        </cursor>
-                    </Button>
-                </children>
-            </HBox>
             <WebView fx:id="gameView" maxHeight="100000.0" maxWidth="100000.0" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
             <Button fx:id="startBtn" focusTraversable="false" mnemonicParsing="false" text="Next question" />
         </VBox>

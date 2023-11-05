@@ -1,6 +1,6 @@
 package com.example.dictionary.controller;
 
-import com.example.dictionary.DataList;
+import com.example.dictionary.Data;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.web.WebView;
@@ -28,13 +28,13 @@ public class Game1Controller {
 
             startBtn.setOnAction(event -> {
 
-                ArrayList<String> list = new ArrayList<>(DataList.getInstance().getData().keySet());
+                ArrayList<String> list = new ArrayList<>(Data.getInstance().getData().keySet());
                 Collections.shuffle(list);
                 int r = new Random().nextInt(4);
 
                 this.gameView.getEngine().executeScript(
                         String.format("game.start(\"%s\",[\"%s\",\"%s\",\"%s\",\"%s\"],%d)",
-                                DataList.getInstance().getData().get(list.get(r)).getDef(),
+                                Data.getInstance().getData().get(list.get(r)).getDef(),
                                 list.get(0),
                                 list.get(1),
                                 list.get(2),

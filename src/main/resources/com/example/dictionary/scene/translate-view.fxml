@@ -39,7 +39,7 @@
                      <HBox>
                         <children>
                            <TextField fx:id="wordToTranslate" HBox.hgrow="ALWAYS" />
-                           <Button fx:id="translateBtn" mnemonicParsing="false" text="Translate" />
+                           <Button fx:id="translateBtn" focusTraversable="false" mnemonicParsing="false" text="Translate" />
                         </children>
                         <VBox.margin>
                            <Insets bottom="20.0" />
@@ -49,14 +49,14 @@
                         <children>
                            <HBox alignment="TOP_CENTER">
                               <children>
-                                 <Button fx:id="speakBtn" mnemonicParsing="false" text="Speak" />
-                                 <Button fx:id="addBtn" mnemonicParsing="false" text="Add this word" />
+                                 <Button fx:id="speakBtn" focusTraversable="false" mnemonicParsing="false" text="Speak" />
+                                 <Button fx:id="addBtn" focusTraversable="false" mnemonicParsing="false" text="Add this word" />
                               </children>
                               <VBox.margin>
                                  <Insets bottom="20.0" />
                               </VBox.margin>
                            </HBox>
-                           <TextArea fx:id="translatedWord" prefHeight="66.0" prefWidth="239.0" />
+                           <TextArea fx:id="translatedWord" prefHeight="89.0" prefWidth="248.0" />
                         </children>
                      </VBox>
                   </children>

@@ -1,2 +1,5 @@
 @import "./common.css";
 
+WebView {
+    -fx-border-radius : 10;
+}

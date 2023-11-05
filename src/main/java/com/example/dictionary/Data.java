@@ -3,22 +3,25 @@ package com.example.dictionary;
 import java.io.*;
 import java.util.*;
 
-public final class DataList {
-    private static final DataList instance = new DataList();
+public final class Data {
+    private static final Data instance = new Data();
 
-    public static DataList getInstance() {
+    public static Data getInstance() {
         return instance;
     }
 
-    private DataList() {
+    private Data() {
         this.readData();
+        this.readSubData();
     }
 
     private static final String DATA_FILE_PATH = "data/kk.txt";
     private static final String SPLITTING_CHARACTERS = "<::>";
 
     private final Map<String, Word> data = new HashMap<>();
+    private final Map<String, Word> subData = new HashMap<>();
     private final Trie trie = new Trie();
+    private final Trie subTrie = new Trie();
 
     public Map<String, Word> getData() {
         return this.data;
@@ -26,6 +29,13 @@ public final class DataList {
 
     public Trie getTrie() {
         return this.trie;
+    }
+    public Map<String, Word> getSubData() {
+        return this.subData;
+    }
+
+    public Trie getSubTrie() {
+        return this.subTrie;
     }
 
     public void addWord(Word word) {
@@ -47,7 +57,7 @@ public final class DataList {
     /**
      * Read data with format in a file, which located in DATA_FILE_PATH.
      */
-    public void readData() {
+    private void readData() {
         try {
             FileReader fr = new FileReader(DATA_FILE_PATH);
             BufferedReader br = new BufferedReader(fr);
@@ -70,6 +80,29 @@ public final class DataList {
             e.printStackTrace();
         }
     }
+
+    private void readSubData() {
+        try {
+            FileReader fr = new FileReader("data/E_V.txt");
+            BufferedReader br = new BufferedReader(fr);
+            String line;
+            StringBuilder builder = new StringBuilder();
+            while ((line = br.readLine()) != null) {
+                builder.append(line);
+            }
+            String[] list = builder.toString().split("</html>");
+            for(int i = 0; i < list.length; i++) {
+                String[] temp = list[i].split("<html>");
+                this.subData.put(temp[0].trim(), new Word(temp[0], temp[1]));
+                this.subTrie.insert(temp[0].trim());
+            }
+            br.close();
+            fr.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     /**
      * Write myList data to a file, which located in MY_LIST_FILE_PATH.

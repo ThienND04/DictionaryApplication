@@ -44,9 +44,7 @@ public class HomeController {
 
     private void initComponents() {
 
-        showDictionaryBtn.setOnAction(event -> {
-            Application.getInstance().showWindow(WindowEnum.DICTIONARY);
-        });
+        showDictionaryBtn.setOnAction(event -> Application.getInstance().showWindow(WindowEnum.DICTIONARY));
 
         listView.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> {
@@ -74,7 +72,7 @@ public class HomeController {
             Alert a = new Alert(Alert.AlertType.CONFIRMATION, "Bạn có muốn xóa từ này không?");
             Optional<ButtonType> result = a.showAndWait();
             if(result.isPresent() && result.get() == ButtonType.OK) {
-                Data.getInstance().removeWord((String) listView.getSelectionModel().getSelectedItem());
+                Data.getInstance().removeWord(listView.getSelectionModel().getSelectedItem());
                 loadWordList();
             }
         });

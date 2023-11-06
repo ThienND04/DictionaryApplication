@@ -36,14 +36,10 @@ public class Game3Controller {
     @FXML
     void initialize() {
         time = new AtomicLong(0);
-        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.1), event -> {
-            time.incrementAndGet();
-        }));
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.1), event -> time.incrementAndGet()));
         timeline.setCycleCount(Animation.INDEFINITE);
 
-        newGame.setOnAction(event -> {
-            newGame();
-        });
+        newGame.setOnAction(event -> newGame());
 
         nextBtn.setOnAction(event -> nextQuestion());
     }

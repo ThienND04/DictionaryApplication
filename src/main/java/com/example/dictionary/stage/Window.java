@@ -11,4 +11,7 @@ public abstract class Window {
     public void hide() {
         window.hide();
     }
+    public Stage getWindow() {
+        return window;
+    }
 }

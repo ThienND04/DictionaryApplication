@@ -1,15 +1,19 @@
 where are you now<::>Giờ bạn đang ở đâu<::>
 gun<::>súng<::>
+expert<::>chuyên gia<::>
 bicycle<::>xe đạp<::>
+homework<::>bài tập về nhà<::>
 super idol<::>siêu thần tượng<::>
 hello world<::>Chào thế giới<::>
 captain american<::>đội trưởng mỹ<::>
 let me love you<::>hãy để tôi yêu bạn<::>
 computer<::>máy tính<::>
+malfunction<::>sự cố<::>
 so far away<::>quá đỗi xa vời<::>
 car<::>xe hơi<::>
 hello my friend<::>xin chào bạn của tôi<::>
 im fine<::>Tôi ổn<::>
+Faulty<::>bị lỗi<::>
 how are you<::>Bạn khỏe không<::>
 hello<::>Xin chào<::>
 bullet<::>đạn<::>

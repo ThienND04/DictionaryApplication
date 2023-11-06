@@ -12,6 +12,7 @@ public class Application extends javafx.application.Application {
 
     private final HashMap<WindowEnum, Window> windows = new HashMap<>();
     private static Application instance;
+
     public static Application getInstance() {
         return instance;
     }
@@ -19,9 +20,11 @@ public class Application extends javafx.application.Application {
     public void showWindow(WindowEnum type) {
         windows.get(type).show();
     }
+
     public void hideWindow(WindowEnum type) {
         windows.get(type).hide();
     }
+
     @Override
     public void start(Stage stage) {
         instance = this;

@@ -7,6 +7,7 @@ module com.example.dictionary {
     requires java.net.http;
     requires freetts;
     requires org.json;
+    requires jdk.jsobject;
 
     opens com.example.dictionary to javafx.fxml;
     exports com.example.dictionary;

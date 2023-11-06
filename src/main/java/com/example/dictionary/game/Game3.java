@@ -13,7 +13,7 @@ public class Game3 {
 
     public Game3() {
         map = Data.getInstance().getData();
-        list = new ArrayList<String>(this.map.keySet());
+        list = new ArrayList<>(this.map.keySet());
     }
 
     public ArrayList<String> generate() {

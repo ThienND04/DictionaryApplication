@@ -25,9 +25,7 @@ public class Game2Controller {
     private final int n = 10;
 
     private final AtomicLong time = new AtomicLong(0);
-    private final Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.1), event -> {
-        timeLabel.setText(String.valueOf((double) time.incrementAndGet() / 10));
-    }));
+    private final Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.1), event -> timeLabel.setText(String.valueOf((double) time.incrementAndGet() / 10))));
     private int solvedQuestion = 0;
 
     @FXML

@@ -27,6 +27,7 @@ public class PrimaryWindow extends Window{
     }
     public void setSceneType(int sceneType) {
         window.setScene(map.get(sceneType).getScene());
+        window.setMaximized(false);
     }
 }
 

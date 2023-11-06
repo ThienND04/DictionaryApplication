@@ -17,9 +17,14 @@ public class SuperScene {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        scene = new javafx.scene.Scene(root);
-        String css = getClass().getResource(SceneConstants.cssPaths[sceneType]).toExternalForm();
-        scene.getStylesheets().add(css);
+
+        try {
+            scene = new javafx.scene.Scene(root);
+            String css = getClass().getResource(SceneConstants.cssPaths[sceneType]).toExternalForm();
+            scene.getStylesheets().add(css);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     public SuperScene() {
 

@@ -8,13 +8,14 @@ import com.example.dictionary.api.Translate;
 import com.example.dictionary.stage.WindowEnum;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
+import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.web.WebView;
-
+import netscape.javascript.JSObject;
 
 public class TranslateController {
-
+    private static Connector connector = new Connector();
     @FXML
     Button translateBtn;
     @FXML
@@ -42,19 +43,35 @@ public class TranslateController {
     @FXML
     public void initialize() {
         instance = this;
+
         translateBtn.setOnAction(event -> {
             String word = wordToTranslate.getText();
+
             if(!word.equals("")) {
                 Task<Void> task = new Task<>() {
                     @Override
                     protected Void call() {
-                        String translated = Translate.translate(word, "en", "vi");
-                        String detailContent = Translate.getDetail(word);
-                        Platform.runLater(() -> {
-                            translatedWord.setText(translated);
-                            detail.getEngine().loadContent(detailContent);
-                            Application.getInstance().hideWindow(WindowEnum.WAITING);
-                        });
+                        try {
+                            String translated = Translate.translate(word, "en", "vi");
+                            String detailContent = Translate.getDetail(word);
+                            Platform.runLater(() -> {
+                                translatedWord.setText(translated);
+                                detail.getEngine().loadContent(detailContent);
+
+                                detail.getEngine().getLoadWorker().stateProperty().addListener((a, b, c) -> {
+                                    if(c == Worker.State.SUCCEEDED) {
+                                        JSObject window = (JSObject) detail.getEngine().executeScript("window");
+                                        window.setMember("javaConnector", connector);
+                                    }
+                                });
+
+                            });
+                        } catch (Exception e) {
+                            Platform.runLater(() -> new Alert(Alert.AlertType.WARNING, "Lỗi mạng").show());
+                        }
+                        finally {
+                            Platform.runLater(() -> Application.getInstance().hideWindow(WindowEnum.WAITING));
+                        }
                         return null;
                     }
                 };

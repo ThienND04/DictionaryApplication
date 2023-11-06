@@ -23,7 +23,6 @@ public class Game1Controller {
     private void initComponents() {
         try {
             File file = new File("src\\main\\resources\\com\\example\\dictionary\\controller\\index.html");
-            this.gameView.getEngine().setJavaScriptEnabled(true);
             this.gameView.getEngine().load(file.toURI().toURL().toString());
 
             startBtn.setOnAction(event -> {

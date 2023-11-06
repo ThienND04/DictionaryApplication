@@ -1,25 +1,21 @@
 package com.example.dictionary.controller;
 
-import com.example.dictionary.DataList;
+import com.example.dictionary.Data;
+import com.example.dictionary.Application;
 import com.example.dictionary.Word;
+import com.example.dictionary.api.TextToSpeech;
+import com.example.dictionary.api.Translate;
+import com.example.dictionary.stage.WindowEnum;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
+import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import java.net.URI;
-import java.net.URLEncoder;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
+import javafx.scene.control.*;
+import javafx.scene.web.WebView;
+import netscape.javascript.JSObject;
 
-public class TranslateController {       
-    @FXML
-    ChoiceBox<String> target;
-    @FXML
-    ChoiceBox<String> source;
+public class TranslateController {
+    private static Connector connector = new Connector();
     @FXML
     Button translateBtn;
     @FXML
@@ -28,61 +24,80 @@ public class TranslateController {
     TextField wordToTranslate;
     @FXML
     TextArea translatedWord;
+    @FXML
+    WebView detail;
+    @FXML
+    Button speakBtn;
 
-    private static HashMap<String, String> languages = new HashMap<String, String>();
-
-    static {
-        languages.put("English", "en");
-        languages.put("Vietnamese", "vi");
-        languages.put("French", "fr");
-        languages.put("Japanese", "ja");
+    public void find(String word) {
+        wordToTranslate.setText(word);
+        translateBtn.fire();
     }
 
+    public static TranslateController getInstance() {
+        return instance;
+    }
+
+    private static TranslateController instance;
+
     @FXML
-    public void initialize() {                
-        target.getItems().addAll(languages.keySet()); 
-        source.getItems().addAll(languages.keySet());       
+    public void initialize() {
+        instance = this;
 
         translateBtn.setOnAction(event -> {
-            if (source.getValue() != null && target.getValue() != null && !wordToTranslate.getText().equals("")) {                
-                String translatedWord = this.translate();
-                this.translatedWord.setText(translatedWord);                
+            String word = wordToTranslate.getText();
+
+            if(!word.equals("")) {
+                Task<Void> task = new Task<>() {
+                    @Override
+                    protected Void call() {
+                        try {
+                            String translated = Translate.translate(word, "en", "vi");
+                            String detailContent = Translate.getDetail(word);
+                            Platform.runLater(() -> {
+                                translatedWord.setText(translated);
+                                detail.getEngine().loadContent(detailContent);
+
+                                detail.getEngine().getLoadWorker().stateProperty().addListener((a, b, c) -> {
+                                    if(c == Worker.State.SUCCEEDED) {
+                                        JSObject window = (JSObject) detail.getEngine().executeScript("window");
+                                        window.setMember("javaConnector", connector);
+                                    }
+                                });
+
+                            });
+                        } catch (Exception e) {
+                            Platform.runLater(() -> new Alert(Alert.AlertType.WARNING, "Lỗi mạng").show());
+                        }
+                        finally {
+                            Platform.runLater(() -> Application.getInstance().hideWindow(WindowEnum.WAITING));
+                        }
+                        return null;
+                    }
+                };
+                Application.getInstance().showWindow(WindowEnum.WAITING);
+                new Thread(task).start();
+            } else
+                new Alert(Alert.AlertType.WARNING, "Không được để trống").show();
+        });
+
+        speakBtn.setOnAction(event -> {
+            if(!wordToTranslate.getText().equals(""))
+                TextToSpeech.textToSpeech(wordToTranslate.getText());
+            else {
+                new Alert(Alert.AlertType.WARNING, "Không được để trống").show();
             }
         });
 
         addBtn.setOnAction(event -> {
             if(!wordToTranslate.getText().equals("") && !translatedWord.getText().equals("")) {
-                String word = wordToTranslate.getText();
-                String wordDef = String.format("<html> <p> %s </p> </html>", translatedWord.getText());
-                DataList.getInstance().addWord(new Word(word, wordDef));
-                MyListController.getInstance().loadWordList();
-                wordToTranslate.setText("");
-                translatedWord.setText("");
-            }
+                Alert a = new Alert(Alert.AlertType.INFORMATION, "Đã thêm thành công");
+                a.show();
+                Data.getInstance().addWord(new Word(wordToTranslate.getText(), translatedWord.getText()));
+                HomeController.getInstance().loadWordList();
+            } else
+                new Alert(Alert.AlertType.WARNING, "Không được để trống").show();
         });
-    }    
-
-    private String translate() {
-        HttpRequest request = HttpRequest.newBuilder()
-            .uri(URI.create(getURL()))                        
-            .header("Accept-Encoding", "application/gzip")                    
-            .build();
-        HttpResponse<String> response = null;
-        try {
-            response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return response.body().split("\"")[1];
-    }
-
-    private String getURL() {
-        StringBuilder url = new StringBuilder("https://translate.googleapis.com/translate_a/single?client=gtx&dt=t");
-        url.append("&q=");
-        url.append(URLEncoder.encode(this.wordToTranslate.getText(), StandardCharsets.UTF_8));     
-        url.append("&sl=" + languages.get(this.source.getValue()));             
-        url.append("&tl=" + languages.get(this.target.getValue()));    
-        return url.toString();   
     }
 }
 

@@ -1,16 +1,34 @@
 package com.example.dictionary.controller;
 
-import com.example.dictionary.DataList;
+import com.example.dictionary.Application;
+import com.example.dictionary.Data;
 import com.example.dictionary.Word;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import com.example.dictionary.scene.SceneConstants;
+import com.example.dictionary.stage.PrimaryWindow;
+import com.example.dictionary.stage.WindowEnum;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
-import javafx.scene.web.WebView;
+import javafx.scene.control.*;
+
+import java.util.Optional;
 
 public class HomeController {
+    @FXML
+    Button showDictionaryBtn;
+    @FXML
+    ListView<String> listView;
+    @FXML
+    TextArea definitionView;
+    @FXML
+    Button deleteBtn;
+    @FXML
+    Button editBtn;
+    @FXML
+    Button saveBtn;
+    @FXML
+    TextField wordToFind;
+    @FXML
+    Button searchBtn;
+
     private static HomeController instance;
 
     public static HomeController getInstance() {
@@ -18,55 +36,75 @@ public class HomeController {
     }
 
     @FXML
-    Button gameNav;
-    @FXML
-    Button homeNav;
-    @FXML
-    Button myListNav;
-    @FXML
-    ListView<String> listView;
-    @FXML
-    WebView definitionView;
-    @FXML
-    Button addBtn;
-    @FXML
-    TextField wordToFind;
-
-    @FXML
     public void initialize() {
         instance = this;
-        this.initComponents();
-        this.loadWordList();
+        initComponents();
+        loadWordList();
     }
 
     private void initComponents() {
-        this.listView.getSelectionModel().selectedItemProperty().addListener(
+
+        showDictionaryBtn.setOnAction(event -> Application.getInstance().showWindow(WindowEnum.DICTIONARY));
+
+        listView.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> {
+                    saveBtn.setVisible(false);
+                    definitionView.setEditable(false);
                     if (newValue != null) {
-                        this.addBtn.setVisible(true);
-                        Word selectedWord = DataList.getInstance().getData().get(newValue.trim());
-                        String definition = selectedWord.getDef();
-                        definitionView.getEngine().loadContent(definition, "text/html");
+                        deleteBtn.setVisible(true);
+                        editBtn.setVisible(true);
+                        definitionView.setText(Data.getInstance().getData().get(newValue).getDef());
+                        searchBtn.setVisible(true);
+                        searchBtn.setOnAction(event -> {
+                            PrimaryWindow.getInstance().setSceneType(SceneConstants.TRANSLATE);
+                            TranslateController.getInstance().find(newValue);
+                        });
                     } else {
-                        this.addBtn.setVisible(false);
-                        definitionView.getEngine().loadContent("", "text/html");
+                        deleteBtn.setVisible(false);
+                        editBtn.setVisible(false);
+                        searchBtn.setVisible(false);
+                        definitionView.setText("");
                     }
                 }
         );
-        this.addBtn.setOnAction(event -> {
-            DataList.getInstance().addWord(DataList.getInstance().getData().get(listView.getSelectionModel().getSelectedItem()));
-            MyListController.getInstance().loadWordList();
-        });
-        this.wordToFind.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+
+        deleteBtn.setOnAction(event -> {
+            Alert a = new Alert(Alert.AlertType.CONFIRMATION, "Bạn có muốn xóa từ này không?");
+            Optional<ButtonType> result = a.showAndWait();
+            if(result.isPresent() && result.get() == ButtonType.OK) {
+                Data.getInstance().removeWord(listView.getSelectionModel().getSelectedItem());
                 loadWordList();
             }
         });
+
+        editBtn.setOnAction(event -> {
+            definitionView.setEditable(true);
+            definitionView.requestFocus();
+            saveBtn.setVisible(true);
+            editBtn.setVisible(false);
+            deleteBtn.setVisible(false);
+        });
+
+        saveBtn.setOnAction(event -> {
+            if (!definitionView.getText().trim().equals("")) {
+                Alert a = new Alert(Alert.AlertType.INFORMATION, "Đã lưu thành công");
+                a.show();
+                definitionView.setEditable(false);
+                saveBtn.setVisible(false);
+                editBtn.setVisible(true);
+                deleteBtn.setVisible(true);
+                Data.getInstance().addWord(new Word(listView.getSelectionModel().getSelectedItem(), definitionView.getText()));
+            } else {
+                Alert a = new Alert(Alert.AlertType.WARNING, "Không để trống định nghĩa");
+                a.show();
+            }
+        });
+
+        wordToFind.textProperty().addListener((observable, oldValue, newValue) -> loadWordList());
     }
 
-    private void loadWordList() {
-        this.listView.getItems().clear();
-        this.listView.getItems().addAll(DataList.getInstance().getTrie().getAllWordsStartWith(wordToFind.getText()));
+    public void loadWordList() {
+        listView.getItems().clear();
+        listView.getItems().addAll(Data.getInstance().getTrie().getAllWordsStartWith(wordToFind.getText()));
     }
 }

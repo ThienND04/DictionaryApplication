@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="400.0" prefWidth="869.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.dictionary.controller.GameController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.dictionary.controller.GameController">
    <children>
       <VBox>
          <HBox fillHeight="false">
@@ -17,12 +17,11 @@
                      <Cursor fx:constant="HAND" />
                   </cursor>
                </Button>
-               <Button fx:id="myListNav" mnemonicParsing="false" text="MY_LIST" />
                <Button fx:id="gameNav" focusTraversable="false" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" style="-fx-background-color: gray;" text="GAME" textFill="WHITE">
                   <cursor>
                      <Cursor fx:constant="HAND" />
                   </cursor>
-               </Button>               
+               </Button>
                <Button fx:id="translateNav" focusTraversable="false" layoutX="62.0" layoutY="10.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="TRANSLATE" HBox.hgrow="ALWAYS">
                   <cursor>
                      <Cursor fx:constant="HAND" />
@@ -36,6 +35,6 @@
             </VBox.margin></Button>
          <Button fx:id="game2Nav" focusTraversable="false" layoutX="10.0" layoutY="36.0" mnemonicParsing="false" text="Game 2" />
          <Button fx:id="game3Nav" focusTraversable="false" layoutX="10.0" layoutY="61.0" mnemonicParsing="false" text="Game 3" />
-      </VBox>      
+      </VBox>
    </children>
 </AnchorPane>

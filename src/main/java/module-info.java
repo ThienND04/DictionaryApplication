@@ -5,7 +5,9 @@ module com.example.dictionary {
     requires com.dlsc.formsfx;
     requires javafx.web;
     requires java.net.http;
-    requires com.google.gson;
+    requires freetts;
+    requires org.json;
+    requires jdk.jsobject;
 
     opens com.example.dictionary to javafx.fxml;
     exports com.example.dictionary;

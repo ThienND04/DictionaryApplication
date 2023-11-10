@@ -2,3 +2,12 @@ Button:hover {
     -fx-background-color : gray;
     -fx-text-fill : white;
 }
+
+WebView {
+    -fx-border-radius : 10;
+    -fx-border-width : 2px;
+    -fx-border-color : black;
+}
+ListView {
+
+}

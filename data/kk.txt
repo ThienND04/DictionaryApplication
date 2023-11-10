@@ -1,5 +1,5 @@
 where are you now<::>Giờ bạn đang ở đâu<::>
-gun<::>súng<::>
+gun<::><html dir="ltr"><head></head><body contenteditable="false"><span style="font-weight: bold; font-style: italic;">súng</span></body></html><::>
 expert<::>chuyên gia<::>
 hometown<::>quê hương<::>
 bicycle<::>xe đạp<::>
@@ -9,13 +9,15 @@ super idol<::>siêu thần tượng<::>
 hello world<::>Chào thế giới<::>
 captain american<::>đội trưởng mỹ<::>
 let me love you<::>hãy để tôi yêu bạn<::>
+heart<::><html dir="ltr"><head></head><body contenteditable="false"><p><span style="font-family: &quot;&quot;;">trái tim</span></p></body></html><::>
 computer<::>máy tính<::>
 malfunction<::>sự cố<::>
-so far away<::>quá đỗi xa vời<::>
+so far away<::><html dir="ltr"><head></head><body><h1>quá đỗi xa vời<span style="font-weight: bold;">&nbsp;</span></h1></body></html><::>
 car<::>xe hơi<::>
 hello my friend<::>xin chào bạn của tôi<::>
 im fine<::>Tôi ổn<::>
-Faulty<::>bị lỗi<::>
+Faulty<::><html dir="ltr"><head></head><body><span style="text-decoration: underline;">bị lỗi&nbsp;</span></body></html><::>
 how are you<::>Bạn khỏe không<::>
 hello<::>Xin chào<::>
-bullet<::>đạn<::>
+helpful<::><html>hữu ích</html><::>
+bullet<::><html dir="ltr"><head></head><body contenteditable="false"><h5>đạn</h5></body></html><::>

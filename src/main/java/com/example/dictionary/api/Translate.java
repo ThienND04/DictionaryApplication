@@ -33,25 +33,45 @@ public class Translate {
     }
 
     public static ArrayList<String> getSuggestions(String word, int type) {
+        word = word.replace(" ", "%20");
         ArrayList<String> res = new ArrayList<>();
-        String dict = type == 0 ? "en_vn" : "vn_en";
+        if(type == 0) {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create("https://www.oed.com/autocomplete/dictionary/?q=" + word))
+                    .header("Accept-Encoding", "application/gzip")
+                    .build();
+            HttpResponse<String> response;
+            try {
+                response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+                Pattern pattern = Pattern.compile("\"name\":\"(.*?)\"");
+                Matcher matcher = pattern.matcher(response.body());
+                while (matcher.find()) {
+                    res.add(matcher.group(1));
+                }
+            } catch (Exception ignored) {
+
+            } finally {
+                return res;
+            }
+        }
+
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://tratu.soha.vn/extensions/curl_suggest.php?dict=" + dict + "&search=" + word))
+                .uri(URI.create("https://vi.wiktionary.org/w/api.php?action=opensearch&format=json&formatversion=2&namespace=0&limit=10&search=" + word))
                 .header("Accept-Encoding", "application/gzip")
                 .build();
         HttpResponse<String> response;
         try {
             response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
-            Pattern pattern = Pattern.compile("<rs id=\"(.*?)\" type=\"(.*?)\" mean=\"(.*?)\">(.*?)</rs>");
-            Matcher matcher = pattern.matcher(response.body());
-            while(matcher.find()) {
-                res.add(matcher.group(4));
-            }
+            String[] arr = response.body().split("\\[|\\]")[2].split(",");
+            for(int i = 0; i < arr.length; i++)
+                res.add(arr[i].substring(1, arr[i].length()-1));
         } catch (Exception ignored) {
 
         } finally {
             return res;
         }
+
+
 
     }
 

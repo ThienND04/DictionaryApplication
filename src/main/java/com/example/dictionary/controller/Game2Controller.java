@@ -7,8 +7,8 @@ import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.web.WebView;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
@@ -32,43 +32,45 @@ public class Game2Controller {
     void initialize() {
         newGame.setOnAction(event -> newGame());
         timeline.setCycleCount(Animation.INDEFINITE);
+    }
 
-        for (int i = 0; i < 2 * n; i++) {
-            Button temp = (Button) ((AnchorPane) grid.getChildren().get(i)).getChildren().get(0);
-            temp.setOnAction(event -> {
-                if (!temp.getText().equals("")) {
-                    if (clickedButton != null) {
-                        if (game.checkAnswer(clickedButton.getText(), temp.getText())) {
-                            clickedButton.setVisible(false);
+    private WebView clickedWord;
+    private String clickedText;
+    private ArrayList<String> list = new ArrayList<>();
+
+    private void newGame() {
+        list = game.generate(n);
+        for (int i = 0; i < grid.getChildren().size(); i++) {
+            WebView temp = (WebView) grid.getChildren().get(i);
+            if (i < 2 * n) {
+                temp.getEngine().loadContent(list.get(i));
+                temp.setVisible(true);
+                int finalI = i;
+
+                temp.setOnMouseClicked(event -> {
+                    if (clickedWord != null) {
+                        if (game.checkAnswer(clickedText, list.get(finalI))) {
+                            clickedWord.setVisible(false);
                             temp.setVisible(false);
                             this.solvedQuestion++;
                             if (this.solvedQuestion == n)
                                 finishGame();
                         }
-                        clickedButton.setStyle(null);
-                        clickedButton = null;
+                        clickedWord.getEngine().executeScript("document.body.style.backgroundColor = 'white'");
+                        temp.getEngine().executeScript("document.body.style.backgroundColor = 'white'");
+                        clickedWord = null;
                     } else {
-                        temp.setStyle("-fx-background-color:gray");
-                        clickedButton = temp;
+                        temp.getEngine().executeScript("document.body.style.backgroundColor = 'red'");
+                        clickedWord = temp;
+                        clickedText = list.get(finalI);
                     }
-                }
-            });
-        }
-    }
-
-    private Button clickedButton = null;
-
-    private void newGame() {
-        ArrayList<String> list = game.generate(n);
-        for (int i = 0; i < grid.getChildren().size(); i++) {
-            Button temp = (Button) ((AnchorPane) grid.getChildren().get(i)).getChildren().get(0);
-            if (i < 2 * n) {
-                temp.setText(list.get(i));
-                temp.setVisible(true);
-            } else
+                });
+            } else {
                 temp.setVisible(false);
+            }
         }
-        clickedButton = null;
+
+        clickedWord = null;
         solvedQuestion = 0;
         time.set(0);
         newGame.setVisible(false);

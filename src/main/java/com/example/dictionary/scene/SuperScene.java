@@ -20,9 +20,16 @@ public class SuperScene {
 
         try {
             scene = new javafx.scene.Scene(root);
-            String css = getClass().getResource(SceneConstants.cssPaths.get(type)).toExternalForm();
+            String src = SceneConstants.cssPaths.get(type);
+            String css;
+            if(src != null) {
+                css = getClass().getResource(src).toExternalForm();
+            } else {
+                css = getClass().getResource("common.css").toExternalForm();
+            }
             scene.getStylesheets().add(css);
         } catch (Exception e) {
+
         }
     }
     public SuperScene() {

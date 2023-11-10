@@ -15,14 +15,7 @@ public final class SceneConstants {
         fxmlPaths.put(SceneEnum.GAME_3, "game3-view.fxml");
         fxmlPaths.put(SceneEnum.TRANSLATE, "translate-view.fxml");
         fxmlPaths.put(SceneEnum.DICTIONARY, "dictionary-view.fxml");
-
-        cssPaths.put(SceneEnum.HOME, "home-view.css");
-        cssPaths.put(SceneEnum.GAME, "game-view.css");
-        cssPaths.put(SceneEnum.GAME_1, "game1-view.css");
-        cssPaths.put(SceneEnum.GAME_2, "game2-view.css");
-        cssPaths.put(SceneEnum.GAME_3, "game3-view.css");
-        cssPaths.put(SceneEnum.TRANSLATE, "translate-view.css");
-        cssPaths.put(SceneEnum.DICTIONARY, "dictionary-view.css");
+        fxmlPaths.put(SceneEnum.EDITOR, "editor-view.fxml");
     }
     private SceneConstants() {
 

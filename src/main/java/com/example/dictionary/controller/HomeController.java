@@ -3,14 +3,15 @@ package com.example.dictionary.controller;
 import com.example.dictionary.Application;
 import com.example.dictionary.Data;
 import com.example.dictionary.Word;
-import com.example.dictionary.scene.SceneConstants;
 import com.example.dictionary.scene.SceneEnum;
 import com.example.dictionary.stage.PrimaryWindow;
 import com.example.dictionary.stage.WindowEnum;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.web.WebView;
 
 import java.util.Optional;
+
 
 public class HomeController {
     @FXML
@@ -18,13 +19,11 @@ public class HomeController {
     @FXML
     ListView<String> listView;
     @FXML
-    TextArea definitionView;
+    WebView definitionView;
     @FXML
     Button deleteBtn;
     @FXML
     Button editBtn;
-    @FXML
-    Button saveBtn;
     @FXML
     TextField wordToFind;
     @FXML
@@ -45,26 +44,22 @@ public class HomeController {
 
     private void initComponents() {
 
-        showDictionaryBtn.setOnAction(event -> Application.getInstance().showWindow(WindowEnum.DICTIONARY));
-
         listView.getSelectionModel().selectedItemProperty().addListener(
-                (observable, oldValue, newValue) -> {
-                    saveBtn.setVisible(false);
-                    definitionView.setEditable(false);
-                    if (newValue != null) {
+                (a, b, c) -> {
+                    if (c != null) {
                         deleteBtn.setVisible(true);
                         editBtn.setVisible(true);
-                        definitionView.setText(Data.getInstance().getData().get(newValue).getDef());
                         searchBtn.setVisible(true);
+                        definitionView.getEngine().loadContent(Data.getInstance().getData().get(c).getDef());
                         searchBtn.setOnAction(event -> {
                             PrimaryWindow.getInstance().setSceneType(SceneEnum.TRANSLATE);
-                            TranslateController.getInstance().find(newValue);
+                            TranslateController.getInstance().find(c);
                         });
                     } else {
                         deleteBtn.setVisible(false);
                         editBtn.setVisible(false);
                         searchBtn.setVisible(false);
-                        definitionView.setText("");
+                        definitionView.getEngine().loadContent("");
                     }
                 }
         );
@@ -72,36 +67,31 @@ public class HomeController {
         deleteBtn.setOnAction(event -> {
             Alert a = new Alert(Alert.AlertType.CONFIRMATION, "Bạn có muốn xóa từ này không?");
             Optional<ButtonType> result = a.showAndWait();
-            if(result.isPresent() && result.get() == ButtonType.OK) {
+            if (result.isPresent() && result.get() == ButtonType.OK) {
                 Data.getInstance().removeWord(listView.getSelectionModel().getSelectedItem());
                 loadWordList();
             }
         });
 
         editBtn.setOnAction(event -> {
-            definitionView.setEditable(true);
-            definitionView.requestFocus();
-            saveBtn.setVisible(true);
             editBtn.setVisible(false);
             deleteBtn.setVisible(false);
+            EditorController.getInstance().loadData(listView.getSelectionModel().getSelectedItem(),
+                    Data.getInstance().getData().get(listView.getSelectionModel().getSelectedItem()).getDef(), 0);
+            Application.getInstance().showWindow(WindowEnum.EDITOR);
         });
 
-        saveBtn.setOnAction(event -> {
-            if (!definitionView.getText().trim().equals("")) {
-                Alert a = new Alert(Alert.AlertType.INFORMATION, "Đã lưu thành công");
-                a.show();
-                definitionView.setEditable(false);
-                saveBtn.setVisible(false);
-                editBtn.setVisible(true);
-                deleteBtn.setVisible(true);
-                Data.getInstance().addWord(new Word(listView.getSelectionModel().getSelectedItem(), definitionView.getText()));
-            } else {
-                Alert a = new Alert(Alert.AlertType.WARNING, "Không để trống định nghĩa");
-                a.show();
-            }
-        });
+        wordToFind.textProperty().addListener((a, b, c) -> loadWordList());
 
-        wordToFind.textProperty().addListener((observable, oldValue, newValue) -> loadWordList());
+        showDictionaryBtn.setOnAction(event -> Application.getInstance().showWindow(WindowEnum.DICTIONARY));
+
+    }
+
+    public void handleEdited(String newWord, String newDefinition, String oldWord) {
+        Data.getInstance().removeWord(oldWord);
+        Data.getInstance().addWord(new Word(newWord, newDefinition));
+        loadWordList();
+        listView.getSelectionModel().select(newWord);
     }
 
     public void loadWordList() {

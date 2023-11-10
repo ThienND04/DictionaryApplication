@@ -4,13 +4,13 @@ import com.example.dictionary.game.Game1;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
-import javafx.scene.control.Label;
+import javafx.scene.web.WebView;
 
 public class Game1Controller {
     private final Game1 game1 = new Game1();
 
     @FXML
-    Label quesLabel;
+    WebView quesLabel;
     @FXML
     ButtonBar ansSelections;
     @FXML
@@ -54,7 +54,7 @@ public class Game1Controller {
     void update() {
         skipBtn.setDisable(game1.isLastQuestion());
         checkBtn.setDisable(false);
-        quesLabel.setText(game1.getQuestion());
+        quesLabel.getEngine().loadContent(game1.getQuestion());
         for(int i = 0; i < ansSelections.getButtons().size(); i ++) {
             Button btn = (Button) ansSelections.getButtons().get(i);
             if(i == game1.getSelectedAns()) btn.setStyle("-fx-background-color: lightblue");

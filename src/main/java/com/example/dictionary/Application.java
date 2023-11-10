@@ -34,8 +34,12 @@ public class Application extends javafx.application.Application {
         windows.put(WindowEnum.WAITING, new WaitingWindow(stage));
         windows.put(WindowEnum.DICTIONARY, new DictionaryWindow(stage));
         windows.put(WindowEnum.PRIMARY, new PrimaryWindow(stage));
+        windows.put(WindowEnum.EDITOR, new EditorWindow(stage));
         stage.show();
-        stage.setOnCloseRequest(windowEvent -> System.exit(0));
+        stage.setOnCloseRequest(windowEvent -> {
+            Data.getInstance().writeData();
+            System.exit(0);
+        });
     }
 }
 

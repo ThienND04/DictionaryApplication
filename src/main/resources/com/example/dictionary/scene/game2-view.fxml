@@ -9,8 +9,9 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.web.WebView?>
 
-<AnchorPane prefHeight="465.0" prefWidth="494.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.dictionary.controller.Game2Controller">
+<AnchorPane prefHeight="584.0" prefWidth="632.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.dictionary.controller.Game2Controller">
    <children>
       <VBox AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
          <HBox alignment="CENTER_LEFT" VBox.vgrow="ALWAYS">
@@ -65,106 +66,26 @@
                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                  </rowConstraints>
                   <children>
-                     <AnchorPane layoutX="134.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0">
-                        <children>
-                           <Button fx:id="bt13" focusTraversable="false" mnemonicParsing="false" text="Button" visible="false" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                        </children>
-                     </AnchorPane>
-                     <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
-                        <children>
-                           <Button fx:id="bt1" focusTraversable="false" mnemonicParsing="false" text="Button" visible="false" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                        </children>
-                     </AnchorPane>
-                     <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2">
-                        <children>
-                           <Button fx:id="bt2" focusTraversable="false" mnemonicParsing="false" text="Button" visible="false" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                        </children>
-                     </AnchorPane>
-                     <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3">
-                        <children>
-                           <Button fx:id="bt3" focusTraversable="false" mnemonicParsing="false" text="Button" visible="false" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                        </children>
-                     </AnchorPane>
-                     <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4">
-                        <children>
-                           <Button fx:id="bt4" focusTraversable="false" mnemonicParsing="false" text="Button" visible="false" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                        </children>
-                     </AnchorPane>
-                     <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
-                        <children>
-                           <Button fx:id="bt14" focusTraversable="false" mnemonicParsing="false" text="Button" visible="false" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                        </children>
-                     </AnchorPane>
-                     <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                        <children>
-                           <Button fx:id="bt5" focusTraversable="false" mnemonicParsing="false" text="Button" visible="false" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                        </children>
-                     </AnchorPane>
-                     <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
-                        <children>
-                           <Button fx:id="bt6" focusTraversable="false" mnemonicParsing="false" text="Button" visible="false" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                        </children>
-                     </AnchorPane>
-                     <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
-                        <children>
-                           <Button fx:id="bt7" focusTraversable="false" mnemonicParsing="false" text="Button" visible="false" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                        </children>
-                     </AnchorPane>
-                     <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="1">
-                        <children>
-                           <Button fx:id="bt8" focusTraversable="false" mnemonicParsing="false" text="Button" visible="false" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                        </children>
-                     </AnchorPane>
-                     <AnchorPane layoutX="134.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2">
-                        <children>
-                           <Button fx:id="bt15" focusTraversable="false" mnemonicParsing="false" text="Button" visible="false" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                        </children>
-                     </AnchorPane>
-                     <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                        <children>
-                           <Button fx:id="bt9" focusTraversable="false" mnemonicParsing="false" text="Button" visible="false" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                        </children>
-                     </AnchorPane>
-                     <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
-                        <children>
-                           <Button fx:id="bt10" focusTraversable="false" mnemonicParsing="false" text="Button" visible="false" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                        </children>
-                     </AnchorPane>
-                     <AnchorPane layoutX="165.0" layoutY="191.0" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="2">
-                        <children>
-                           <Button fx:id="bt11" focusTraversable="false" mnemonicParsing="false" text="Button" visible="false" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                        </children>
-                     </AnchorPane>
-                     <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="2">
-                        <children>
-                           <Button fx:id="bt12" focusTraversable="false" mnemonicParsing="false" text="Button" visible="false" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                        </children>
-                     </AnchorPane>
-                     <AnchorPane layoutX="10.0" layoutY="144.0" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="3">
-                        <children>
-                           <Button fx:id="bt16" focusTraversable="false" mnemonicParsing="false" text="Button" visible="false" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                        </children>
-                     </AnchorPane>
-                     <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                        <children>
-                           <Button fx:id="bt17" focusTraversable="false" mnemonicParsing="false" text="Button" visible="false" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                        </children>
-                     </AnchorPane>
-                     <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
-                        <children>
-                           <Button fx:id="bt18" focusTraversable="false" mnemonicParsing="false" text="Button" visible="false" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                        </children>
-                     </AnchorPane>
-                     <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="3">
-                        <children>
-                           <Button fx:id="bt19" focusTraversable="false" mnemonicParsing="false" text="Button" visible="false" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                        </children>
-                     </AnchorPane>
-                     <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="3">
-                        <children>
-                           <Button fx:id="bt20" focusTraversable="false" mnemonicParsing="false" text="Button" visible="false" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                        </children>
-                     </AnchorPane>
+                     <WebView />
+                     <WebView GridPane.columnIndex="1" />
+                     <WebView GridPane.columnIndex="2" />
+                     <WebView GridPane.columnIndex="3" />
+                     <WebView GridPane.columnIndex="4" />
+                     <WebView GridPane.rowIndex="1" />
+                     <WebView GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                     <WebView GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                     <WebView GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                     <WebView layoutX="10.0" layoutY="10.0" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+                     <WebView GridPane.rowIndex="2" />
+                     <WebView GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                     <WebView GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                     <WebView GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                     <WebView GridPane.columnIndex="4" GridPane.rowIndex="2" />
+                     <WebView GridPane.rowIndex="3" />
+                     <WebView GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                     <WebView GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                     <WebView GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                     <WebView GridPane.columnIndex="4" GridPane.rowIndex="3" />
                   </children>
                </GridPane>
             </children>

@@ -1,17 +1,29 @@
 package com.example.dictionary.scene;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public final class SceneConstants {
-    public static final int HOME = 0;
-    public static final int GAME = 1;    
-    public static final int GAME_1 = 2;
-    public static final int TRANSLATE = 3;
-    public static final int GAME_2 = 4;
-    public static final int GAME_3 = 5;
-    public static final int DICTIONARY = 6;
-    public static final String[] fxmlPaths = {"home-view.fxml", "game-view.fxml", "game1-view.fxml",
-            "translate-view.fxml", "game2-view.fxml", "game3-view.fxml", "dictionary.fxml"};
-    public static final String[] cssPaths = {"home-view.css", "game-view.css", "game1-view.css", "translate-view.css",
-            "game2-view.css", "game3-view.css", "dictionary.css"};
+    public static Map<SceneEnum, String> fxmlPaths = new HashMap<>();
+    public static Map<SceneEnum, String> cssPaths = new HashMap<>();
+
+    static {
+        fxmlPaths.put(SceneEnum.HOME, "home-view.fxml");
+        fxmlPaths.put(SceneEnum.GAME, "game-view.fxml");
+        fxmlPaths.put(SceneEnum.GAME_1, "game1-view.fxml");
+        fxmlPaths.put(SceneEnum.GAME_2, "game2-view.fxml");
+        fxmlPaths.put(SceneEnum.GAME_3, "game3-view.fxml");
+        fxmlPaths.put(SceneEnum.TRANSLATE, "translate-view.fxml");
+        fxmlPaths.put(SceneEnum.DICTIONARY, "dictionary-view.fxml");
+
+        cssPaths.put(SceneEnum.HOME, "home-view.css");
+        cssPaths.put(SceneEnum.GAME, "game-view.css");
+        cssPaths.put(SceneEnum.GAME_1, "game1-view.css");
+        cssPaths.put(SceneEnum.GAME_2, "game2-view.css");
+        cssPaths.put(SceneEnum.GAME_3, "game3-view.css");
+        cssPaths.put(SceneEnum.TRANSLATE, "translate-view.css");
+        cssPaths.put(SceneEnum.DICTIONARY, "dictionary-view.css");
+    }
     private SceneConstants() {
 
     }

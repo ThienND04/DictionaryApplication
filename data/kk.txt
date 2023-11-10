@@ -1,8 +1,10 @@
 where are you now<::>Giờ bạn đang ở đâu<::>
 gun<::>súng<::>
 expert<::>chuyên gia<::>
+hometown<::>quê hương<::>
 bicycle<::>xe đạp<::>
 homework<::>bài tập về nhà<::>
+unspecified<::>không xác định<::>
 super idol<::>siêu thần tượng<::>
 hello world<::>Chào thế giới<::>
 captain american<::>đội trưởng mỹ<::>

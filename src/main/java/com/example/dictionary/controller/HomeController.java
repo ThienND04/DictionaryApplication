@@ -4,6 +4,7 @@ import com.example.dictionary.Application;
 import com.example.dictionary.Data;
 import com.example.dictionary.Word;
 import com.example.dictionary.scene.SceneConstants;
+import com.example.dictionary.scene.SceneEnum;
 import com.example.dictionary.stage.PrimaryWindow;
 import com.example.dictionary.stage.WindowEnum;
 import javafx.fxml.FXML;
@@ -56,7 +57,7 @@ public class HomeController {
                         definitionView.setText(Data.getInstance().getData().get(newValue).getDef());
                         searchBtn.setVisible(true);
                         searchBtn.setOnAction(event -> {
-                            PrimaryWindow.getInstance().setSceneType(SceneConstants.TRANSLATE);
+                            PrimaryWindow.getInstance().setSceneType(SceneEnum.TRANSLATE);
                             TranslateController.getInstance().find(newValue);
                         });
                     } else {

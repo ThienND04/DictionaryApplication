@@ -8,36 +8,35 @@ import com.example.dictionary.api.Translate;
 import com.example.dictionary.stage.WindowEnum;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.layout.VBox;
 import javafx.scene.web.WebView;
 import netscape.javascript.JSObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class TranslateController {
     private static final Connector connector = new Connector();
     @FXML
-    VBox suggestions;
+    private Button editBtn;
     @FXML
-    Button translateBtn;
+    private ListView<String> suggestions;
     @FXML
-    Button addBtn;
+    private Button translateBtn;
     @FXML
-    TextField wordToTranslate;
+    private Button addBtn;
     @FXML
-    TextArea translatedWord;
+    private TextField wordToTranslate;
     @FXML
-    WebView detail;
+    private WebView meaningView;
     @FXML
-    Button speakBtn;
+    private WebView detail;
     @FXML
-    ChoiceBox<String> type;
+    private Button speakBtn;
+    @FXML
+    private ChoiceBox<String> type;
 
     public void find(String word) {
         wordToTranslate.setText(word);
@@ -57,6 +56,8 @@ public class TranslateController {
         langs.add("VIỆT-ANH");
     }
 
+    private String meaning = "";
+
     @FXML
     public void initialize() {
         instance = this;
@@ -72,12 +73,8 @@ public class TranslateController {
                         protected Void call() {
                             ArrayList<String> res = Translate.getSuggestions(c.trim(), langs.indexOf(type.getValue()));
                             Platform.runLater(() -> {
-                                suggestions.getChildren().clear();
-                                for (String t : res) {
-                                    Button btn = new Button(t);
-                                    btn.setOnAction(e -> find(t));
-                                    suggestions.getChildren().add(btn);
-                                }
+                                suggestions.getItems().clear();
+                                suggestions.getItems().addAll(res);
                             });
                             return null;
                         }
@@ -87,8 +84,14 @@ public class TranslateController {
 
                 }
             } else {
-                suggestions.getChildren().clear();
+                suggestions.getItems().clear();
             }
+        });
+
+
+        suggestions.getSelectionModel().selectedItemProperty().addListener((a, b, c) -> {
+            if (c != null)
+                find(c);
         });
 
         translateBtn.setOnAction(event -> {
@@ -99,19 +102,21 @@ public class TranslateController {
                     @Override
                     protected Void call() {
                         try {
-                            String translated;
+                            String translatedWord;
                             String detailContent;
 
                             if (type.getValue().equals(langs.get(0))) {
-                                translated = Translate.translate(word, "en", "vi");
+                                translatedWord = Translate.translate(word, "en", "vi");
                                 detailContent = Translate.getDetail(word);
                             } else {
-                                translated = Translate.translate(word, "vi", "en");
-                                detailContent = Translate.getDetail(translated);
+                                translatedWord = Translate.translate(word, "vi", "en");
+                                detailContent = Translate.getDetail(translatedWord);
                             }
 
+                            meaning = translatedWord;
+
                             Platform.runLater(() -> {
-                                translatedWord.setText(translated);
+                                meaningView.getEngine().loadContent(translatedWord);
                                 detail.getEngine().loadContent(detailContent);
 
                                 detail.getEngine().getLoadWorker().stateProperty().addListener((a, b, c) -> {
@@ -146,15 +151,32 @@ public class TranslateController {
         });
 
         addBtn.setOnAction(event -> {
-            if (!wordToTranslate.getText().equals("") && !translatedWord.getText().equals("")) {
+            if (!wordToTranslate.getText().equals("") && !meaning.equals("")) {
                 Alert a = new Alert(Alert.AlertType.INFORMATION, "Đã thêm thành công");
                 a.show();
-                Data.getInstance().addWord(new Word(wordToTranslate.getText(), translatedWord.getText()));
+                Data.getInstance().addWord(new Word(wordToTranslate.getText(), "<html>" + meaning + "</html>"));
                 HomeController.getInstance().loadWordList();
             } else
                 new Alert(Alert.AlertType.WARNING, "Không được để trống").show();
         });
+
+        editBtn.setOnAction(event -> {
+            if (!wordToTranslate.getText().trim().equals("") && !meaning.trim().equals("")) {
+                EditorController.getInstance().loadData(wordToTranslate.getText(), meaning, 1);
+                Application.getInstance().showWindow(WindowEnum.EDITOR);
+            } else {
+                new Alert(Alert.AlertType.WARNING, "Không được để trống").show();
+            }
+
+        });
     }
+
+    public void handleEdited(String newWord, String newDefinition) {
+        wordToTranslate.setText(newWord);
+        meaningView.getEngine().loadContent(newDefinition);
+        meaning = newDefinition;
+    }
+
 }
 
 

@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.HBox;
+import javafx.scene.web.WebView;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ public class Game3Controller {
     @FXML
     public Label inform;
     @FXML
-    private Label meaning;
+    private WebView meaning;
     @FXML
     private HBox guessWord;
     @FXML
@@ -61,7 +62,7 @@ public class Game3Controller {
 
     private void nextQuestion() {
         ArrayList<String> data = game.generate();
-        meaning.setText(data.get(1));
+        meaning.getEngine().loadContent(data.get(1));
         inform.setText("");
         guessWord.getChildren().clear();
         input.getChildren().clear();

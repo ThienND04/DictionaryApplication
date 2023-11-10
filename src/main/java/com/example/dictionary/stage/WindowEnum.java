@@ -1,5 +1,5 @@
 package com.example.dictionary.stage;
 
 public enum WindowEnum {
-    GAME_2, GAME_3, GAME_1, WAITING, PRIMARY, DICTIONARY
+    GAME_2, GAME_3, GAME_1, WAITING, PRIMARY, DICTIONARY, EDITOR
 }

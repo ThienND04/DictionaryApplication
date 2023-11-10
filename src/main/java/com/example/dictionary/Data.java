@@ -42,15 +42,13 @@ public final class Data {
         if (word != null) {
             this.data.put(word.getWord(), word);
             this.trie.insert(word.getWord());
-            this.writeData();
         }
     }
 
     public void removeWord(String word) {
         if (word != null) {
-            this.data.remove(word);
-            this.trie.remove(word);
-            this.writeData();
+            this.data.remove(word.trim());
+            this.trie.remove(word.trim());
         }
     }
 

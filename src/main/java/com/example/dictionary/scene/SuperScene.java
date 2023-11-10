@@ -9,21 +9,20 @@ public class SuperScene {
     public javafx.scene.Scene getScene() {
         return scene;
     }
-    public SuperScene(int sceneType) {
+    public SuperScene(SceneEnum type) {
         FXMLLoader fxmlLoader = new FXMLLoader();
         Parent root;
         try {
-            root = fxmlLoader.load(getClass().getResourceAsStream(SceneConstants.fxmlPaths[sceneType]));
+            root = fxmlLoader.load(getClass().getResourceAsStream(SceneConstants.fxmlPaths.get(type)));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
         try {
             scene = new javafx.scene.Scene(root);
-            String css = getClass().getResource(SceneConstants.cssPaths[sceneType]).toExternalForm();
+            String css = getClass().getResource(SceneConstants.cssPaths.get(type)).toExternalForm();
             scene.getStylesheets().add(css);
         } catch (Exception e) {
-            e.printStackTrace();
         }
     }
     public SuperScene() {

@@ -5,7 +5,7 @@ import javafx.stage.Stage;
 import java.util.HashMap;
 
 public class PrimaryWindow extends Window{
-    private final HashMap<Integer, PrimaryScene> map = new HashMap<>();
+    private final HashMap<SceneEnum, PrimaryScene> map = new HashMap<>();
 
     private static PrimaryWindow instance;
 
@@ -18,14 +18,14 @@ public class PrimaryWindow extends Window{
         window = stage;
         window.setTitle("Dictionary Application");
         initScenes();
-        setSceneType(SceneConstants.HOME);
+        setSceneType(SceneEnum.HOME);
     }
     private void initScenes() {
-        map.put(SceneConstants.GAME, new PrimaryScene(this, SceneConstants.GAME));
-        map.put(SceneConstants.HOME, new PrimaryScene(this, SceneConstants.HOME));
-        map.put(SceneConstants.TRANSLATE, new PrimaryScene(this, SceneConstants.TRANSLATE));
+        map.put(SceneEnum.GAME, new PrimaryScene(this, SceneEnum.GAME));
+        map.put(SceneEnum.HOME, new PrimaryScene(this, SceneEnum.HOME));
+        map.put(SceneEnum.TRANSLATE, new PrimaryScene(this, SceneEnum.TRANSLATE));
     }
-    public void setSceneType(int sceneType) {
+    public void setSceneType(SceneEnum sceneType) {
         window.setScene(map.get(sceneType).getScene());
         window.setMaximized(false);
     }

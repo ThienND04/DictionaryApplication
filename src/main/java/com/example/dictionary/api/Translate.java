@@ -6,7 +6,10 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -17,9 +20,8 @@ public class Translate {
                 .uri(URI.create(getURL(word, sl, tl)))
                 .header("Accept-Encoding", "application/gzip")
                 .build();
-        HttpResponse<String> response = null;
+        HttpResponse<String> response;
         response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
-        assert response != null;
         return response.body().split("\"")[1];
     }
 
@@ -29,6 +31,31 @@ public class Translate {
                 "&sl=" + sl +
                 "&tl=" + tl;
     }
+
+    public static ArrayList<String> getSuggestions(String word, int type) {
+        ArrayList<String> res = new ArrayList<>();
+        String dict = type == 0 ? "en_vn" : "vn_en";
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("http://tratu.soha.vn/extensions/curl_suggest.php?dict=" + dict + "&search=" + word))
+                .header("Accept-Encoding", "application/gzip")
+                .build();
+        HttpResponse<String> response;
+        try {
+            response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+            Pattern pattern = Pattern.compile("<rs id=\"(.*?)\" type=\"(.*?)\" mean=\"(.*?)\">(.*?)</rs>");
+            Matcher matcher = pattern.matcher(response.body());
+            while(matcher.find()) {
+                res.add(matcher.group(4));
+            }
+        } catch (Exception ignored) {
+
+        } finally {
+            return res;
+        }
+
+    }
+
+
     public static String getDetail(String sentence) throws Exception {
         StringBuilder res = new StringBuilder("<html><head><style>body {padding : 120px 0px}.container {padding: 10px;border: 2px red solid;display: none;position: absolute;background-color: wheat;border-radius: 10px;}.btn {border-radius: 10px;padding: 5px;}</style></head><body><ul>");
         String[] words = sentence.split("\\W+");
@@ -38,7 +65,7 @@ public class Translate {
                     .uri(URI.create("https://api.dictionaryapi.dev/api/v2/entries/en/" + word))
                     .header("Accept-Encoding", "application/gzip")
                     .build();
-            HttpResponse<String> response = null;
+            HttpResponse<String> response;
 
             response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
             if (response == null || response.statusCode() == 404) {
@@ -67,9 +94,9 @@ public class Translate {
     private static void processPhonetics(StringBuilder res, JSONArray phonetics) {
         JSONObject temp;
         res.append("<ul>");
-        for(int i = 0; i < phonetics.length(); i++) {
+        for (int i = 0; i < phonetics.length(); i++) {
             temp = phonetics.getJSONObject(i);
-            if(temp.keySet().contains("text")) {
+            if (temp.keySet().contains("text")) {
                 res.append("<li>").append(temp.getString("text")).append("</li>");
             }
         }
@@ -77,6 +104,7 @@ public class Translate {
     }
 
     private static final HashMap<String, String> map = new HashMap<>();
+
     static {
         map.put("noun", "danh từ");
         map.put("verb", "động từ");
@@ -88,11 +116,12 @@ public class Translate {
         map.put("preposition", "giới từ");
         map.put("conjunction", "liên từ");
     }
+
     private static void processMeanings(StringBuilder res, JSONArray meanings) {
         JSONObject temp;
         res.append("<ul>");
 
-        for(int i = 0; i < meanings.length(); i++) {
+        for (int i = 0; i < meanings.length(); i++) {
             res.append("<li>");
 
             temp = meanings.getJSONObject(i);
@@ -103,13 +132,13 @@ public class Translate {
             JSONObject temp1;
 
             res.append("<li><h4 style=\"color : orange\">Các định nghĩa : </h4><ul style=\"list-style : circle\">");
-            for(int j = 0; j < jsonArray.length(); j++) {
+            for (int j = 0; j < jsonArray.length(); j++) {
                 res.append("<li>");
                 temp1 = jsonArray.getJSONObject(j);
-                if(temp1.keySet().contains("definition")) {
+                if (temp1.keySet().contains("definition")) {
                     res.append("<p>Nghĩa : ").append(temp1.getString("definition")).append("</p>");
                 }
-                if(temp1.keySet().contains("example")) {
+                if (temp1.keySet().contains("example")) {
                     res.append("<p>Ví dụ : ").append(temp1.getString("example")).append("</p>");
                 }
                 res.append("</li>");
@@ -119,7 +148,7 @@ public class Translate {
 
             jsonArray = temp.getJSONArray("synonyms");
             res.append("<li><h4 style=\"color : orange\">Từ đồng nghĩa : </h4><ul style=\"list-style : circle\">");
-            for(int j = 0; j < jsonArray.length(); j++) {
+            for (int j = 0; j < jsonArray.length(); j++) {
                 res.append("<li>").append(jsonArray.getString(j)).append("</li>");
             }
             res.append("</ul></li>");
@@ -127,7 +156,7 @@ public class Translate {
 
             jsonArray = temp.getJSONArray("antonyms");
             res.append("<li><h4 style=\"color : orange\">Từ trái nghĩa : </h4><ul style=\"list-style : circle\">");
-            for(int j = 0; j < jsonArray.length(); j++) {
+            for (int j = 0; j < jsonArray.length(); j++) {
                 res.append("<li>").append(jsonArray.getString(j)).append("</li>");
             }
             res.append("</ul></li>");

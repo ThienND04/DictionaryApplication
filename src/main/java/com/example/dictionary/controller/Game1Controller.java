@@ -1,48 +1,82 @@
 package com.example.dictionary.controller;
 
-import com.example.dictionary.Data;
+import com.example.dictionary.game.Game1;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.web.WebView;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Random;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.Label;
 
 public class Game1Controller {
+    private final Game1 game1 = new Game1();
+
     @FXML
-    WebView gameView;
+    Label quesLabel;
     @FXML
-    Button startBtn;
+    ButtonBar ansSelections;
+    @FXML
+    Button skipBtn;
+    @FXML
+    Button checkBtn;
+    @FXML
+    Button playAgainBtn;
 
     @FXML
     public void initialize() {
         this.initComponents();
+        update();
+    }
+
+    @FXML
+    public void handlePlayAgain() {
+        game1.playAgain();
+        update();
     }
 
     private void initComponents() {
-        try {
-            File file = new File("src\\main\\resources\\com\\example\\dictionary\\controller\\index.html");
-            this.gameView.getEngine().load(file.toURI().toURL().toString());
+        skipBtn.setOnAction(actionEvent -> {
+            game1.toNextQuestion();
+            update();
+        });
+        checkBtn.setText("Kiểm tra");
+        checkBtn.setOnAction(actionEvent -> checkAns());
 
-            startBtn.setOnAction(event -> {
-
-                ArrayList<String> list = new ArrayList<>(Data.getInstance().getData().keySet());
-                Collections.shuffle(list);
-                int r = new Random().nextInt(4);
-
-                this.gameView.getEngine().executeScript(
-                        String.format("game.start(\"%s\",[\"%s\",\"%s\",\"%s\",\"%s\"],%d)",
-                                Data.getInstance().getData().get(list.get(r)).getDef(),
-                                list.get(0),
-                                list.get(1),
-                                list.get(2),
-                                list.get(3),
-                                r
-                        ));
+        for(int i = 0; i < ansSelections.getButtons().size(); i ++) {
+            final int curBtnIndex = i;
+            Button btn = (Button) ansSelections.getButtons().get(i);
+            btn.setDisable(false);
+            btn.setOnAction(actionEvent -> {
+                game1.selectAns(curBtnIndex);
+                update();
             });
-        } catch (Exception e) {
-            e.printStackTrace();
         }
+    }
+
+    void update() {
+        skipBtn.setDisable(game1.isLastQuestion());
+        checkBtn.setDisable(false);
+        quesLabel.setText(game1.getQuestion());
+        for(int i = 0; i < ansSelections.getButtons().size(); i ++) {
+            Button btn = (Button) ansSelections.getButtons().get(i);
+            if(i == game1.getSelectedAns()) btn.setStyle("-fx-background-color: lightblue");
+            else btn.setStyle("-fx-background-color: gray");
+            btn.setText(game1.getSelections().get(i));
+        }
+    }
+
+    void checkAns() {
+        for(int i = 0; i < ansSelections.getButtons().size(); i ++) {
+            Button btn = (Button) ansSelections.getButtons().get(i);
+            btn.setOnAction(actionEvent -> {});
+            if(i == game1.getSelectedAns()) btn.setStyle("-fx-background-color: red");
+            if(i == game1.getAnswerIndex()) btn.setStyle("-fx-background-color: lawngreen");
+            btn.setText(game1.getSelections().get(i));
+        }
+        checkBtn.setText("Next question");
+        checkBtn.setDisable(game1.isLastQuestion());
+        checkBtn.setOnAction(actionEvent -> {
+            game1.toNextQuestion();
+            initComponents();
+            update();
+        });
     }
 }

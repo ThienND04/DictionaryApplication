@@ -47,7 +47,6 @@ public class Game1Controller {
         for(int i = 0; i < ansSelections.getButtons().size(); i ++) {
             final int curBtnIndex = i;
             WebView btn = (WebView) ansSelections.getButtons().get(i);
-            System.out.println(btn.getPrefHeight());
 
             btn.getEngine().getLoadWorker().stateProperty().addListener((observable, oldState, newState) -> {
                 if (newState == Worker.State.SUCCEEDED) {
@@ -95,16 +94,23 @@ public class Game1Controller {
     }
 
     void loadContentWithStyle(WebView webView, String content) {
-        System.out.println(content);
-        System.out.println(webView.getPrefHeight());
         String containerStyle = String.format(".container {\n" +
                 "    display: grid;\n" +
                 "    align-items: center;\n" +
                 "    text-align: center;\n" +
                 "    height: %dpx;\n" +
+                "}" +
+                ".noselect {\n" +
+                "  -webkit-touch-callout: none; /* iOS Safari */\n" +
+                "    -webkit-user-select: none; /* Safari */\n" +
+                "     -khtml-user-select: none; /* Konqueror HTML */\n" +
+                "       -moz-user-select: none; /* Old versions of Firefox */\n" +
+                "        -ms-user-select: none; /* Internet Explorer/Edge */\n" +
+                "            user-select: none; /* Non-prefixed version, currently\n" +
+                "                                  supported by Chrome, Edge, Opera and Firefox */\n" +
                 "}", (int) Math.round(webView.getPrefHeight()) - 20);
         webView.getEngine().loadContent(String.format("<style> %s </style> " +
-                "<div class = 'container'> %s </div>", containerStyle, content));
+                "<div class = 'container noselect'> %s </div>", containerStyle, content));
     }
 
     WebView getSelectedAns() {

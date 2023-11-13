@@ -1,6 +1,7 @@
 package com.example.dictionary.controller;
 
 import com.example.dictionary.game.Game3;
+import com.example.dictionary.scene.SuperScene;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -31,9 +32,13 @@ public class Game3Controller {
     @FXML
     private Button newGame;
     @FXML
+    private Button pauseBtn;
+    @FXML
     ProgressBar bar;
     @FXML
     Button nextBtn;
+    private boolean isPaused = false;
+
     @FXML
     void initialize() {
         time = new AtomicLong(0);
@@ -41,19 +46,28 @@ public class Game3Controller {
         timeline.setCycleCount(Animation.INDEFINITE);
 
         newGame.setOnAction(event -> newGame());
-
         nextBtn.setOnAction(event -> nextQuestion());
+        pauseBtn.setOnAction(actionEvent -> {
+            isPaused = ! isPaused;
+            pauseBtn.setText(isPaused ? "Tiếp tục" : "Dừng");
+            guessWord.getChildren().stream().forEach(btn -> btn.setDisable(! isPaused));
+            input.getChildren().stream().forEach(btn -> btn.setDisable(! isPaused));
+            nextBtn.setVisible(! isPaused);
+        });
     }
     private AtomicLong time;
     private final Game3 game = new Game3();
-    private int solvedQuestion = 0;
     private final int n = 5;
 
     private void newGame() {
-        solvedQuestion = 0;
+        game.newGame();
         newGame.setVisible(false);
         nextQuestion();
         bar.setProgress(0);
+        isPaused = false;
+        pauseBtn.setVisible(true);
+        pauseBtn.setText("Dừng");
+        nextBtn.setVisible(true);
     }
 
     private void finish() {
@@ -61,12 +75,12 @@ public class Game3Controller {
     }
 
     private void nextQuestion() {
-        ArrayList<String> data = game.generate();
-        meaning.getEngine().loadContent(data.get(1));
+        game.nextQuestion();
+        loadContentWithStyle(meaning, game.getMeaning());
         inform.setText("");
         guessWord.getChildren().clear();
         input.getChildren().clear();
-        List<String> list = Arrays.asList(data.get(0).split(""));
+        List<String> list = Arrays.asList(game.getGuessWord().split(""));
         Collections.shuffle(list);
 
         for (String s : list) {
@@ -82,28 +96,31 @@ public class Game3Controller {
                 });
                 guessWord.getChildren().add(temp);
 
-                if (guessWord.getChildren().size() == data.get(0).length()) {
-                    boolean flag = true;
-                    for (int j = 0; j < data.get(0).length(); j++) {
-                        Button button = (Button) guessWord.getChildren().get(j);
-                        if (data.get(0).charAt(j) != button.getText().charAt(0)) {
-                            inform.setText("Wrong");
-                            flag = false;
-                            break;
-                        }
-                    }
-                    if (flag) {
-                        solvedQuestion++;
-                        bar.setProgress(solvedQuestion * 1.0 / n);
-                        if (solvedQuestion == n)
+                if (guessWord.getChildren().size() == game.getGuessWord().length()) {
+                    StringBuilder playerGuess = new StringBuilder();
+                    guessWord.getChildren().stream().map(button -> ((Button)button).getText()).
+                            reduce(playerGuess, (StringBuilder::append), StringBuilder::append);
+                    if (game.isGuessedWord(playerGuess.toString())) {
+                        game.increaseSolvedQuestion();
+                        bar.setProgress(game.getProgress());
+                        if (game.isFinished())
                             finish();
                         else {
                             nextQuestion();
                         }
+                    } else {
+                        inform.setText("Wrong");
                     }
                 }
             });
             input.getChildren().add(btn);
         }
+    }
+
+    private void loadContentWithStyle(WebView webView, String content) {
+        String css = SuperScene.class.getResource("common.css").toExternalForm();
+        webView.getEngine().setUserStyleSheetLocation(css);
+        webView.getEngine().loadContent(String.format(
+                "<div class = 'container noselect'> %s </div>", content));
     }
 }

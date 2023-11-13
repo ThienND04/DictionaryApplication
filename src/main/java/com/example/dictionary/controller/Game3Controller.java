@@ -1,11 +1,11 @@
 package com.example.dictionary.controller;
 
 import com.example.dictionary.game.Game3;
+import com.example.dictionary.scene.SuperScene;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
@@ -21,12 +21,6 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class Game3Controller {
 
-    public static Game3Controller getInstance() {
-        return instance;
-    }
-
-    private static Game3Controller instance;
-
     @FXML
     public Label inform;
     @FXML
@@ -36,78 +30,57 @@ public class Game3Controller {
     @FXML
     private HBox input;
     @FXML
-    private Button newGameBtn;
+    private Button newGame;
     @FXML
-    private Button stopGameBtn;
+    private Button pauseBtn;
     @FXML
     ProgressBar bar;
     @FXML
     Button nextBtn;
+    private boolean isPaused = false;
 
     @FXML
     void initialize() {
-        instance = this;
+        time = new AtomicLong(0);
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.1), event -> time.incrementAndGet()));
         timeline.setCycleCount(Animation.INDEFINITE);
 
-        newGameBtn.setOnAction(event -> {
-            if (game.isReady()) {
-                newGame();
-            } else {
-                new Alert(Alert.AlertType.INFORMATION, "Không đủ số lượng từ");
-            }
-        });
-
-        stopGameBtn.setOnAction(event -> finishGame());
-
+        newGame.setOnAction(event -> newGame());
         nextBtn.setOnAction(event -> nextQuestion());
+        pauseBtn.setOnAction(actionEvent -> {
+            isPaused = ! isPaused;
+            pauseBtn.setText(isPaused ? "Tiếp tục" : "Dừng");
+            guessWord.getChildren().stream().forEach(btn -> btn.setDisable(isPaused));
+            input.getChildren().stream().forEach(btn -> btn.setDisable(isPaused));
+            nextBtn.setVisible(! isPaused);
+        });
     }
-
-    private final AtomicLong time = new AtomicLong(0);
-
-    private final Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.1), event -> time.incrementAndGet()));
-
-
+    private AtomicLong time;
     private final Game3 game = new Game3();
-    private int solvedQuestion = 0;
-    public static final int NUMBER_OF_QUESTIONS = 5;
-
-    private ArrayList<String> data;
+    private final int n = 5;
 
     private void newGame() {
-        newGameBtn.setVisible(false);
-        nextBtn.setVisible(false);
-        data = game.generate();
-        stopGameBtn.setVisible(true);
-
-        if (data.size() == 0) {
-            new Alert(Alert.AlertType.WARNING, "Không đủ số từ").show();
-            return;
-        }
+        game.newGame();
+        newGame.setVisible(false);
         nextQuestion();
+        bar.setProgress(0);
+        isPaused = false;
+        pauseBtn.setVisible(true);
+        pauseBtn.setText("Dừng");
+        nextBtn.setVisible(true);
     }
 
-    private void finishGame() {
-
-        meaning.getEngine().loadContent("");
-        inform.setText("");
-        guessWord.getChildren().clear();
-        input.getChildren().clear();
-
-        bar.setProgress(0);
-        solvedQuestion = 0;
-        newGameBtn.setVisible(true);
-        nextBtn.setVisible(false);
-        stopGameBtn.setVisible(false);
-        time.set(0);
+    private void finish() {
+        newGame.setVisible(true);
     }
 
     private void nextQuestion() {
-        meaning.getEngine().loadContent(data.get(2 * solvedQuestion + 1));
+        game.nextQuestion();
+        loadContentWithStyle(meaning, game.getMeaning());
         inform.setText("");
         guessWord.getChildren().clear();
         input.getChildren().clear();
-
-        List<String> list = Arrays.asList(data.get(2 * solvedQuestion).split(""));
+        List<String> list = Arrays.asList(game.getGuessWord().split(""));
         Collections.shuffle(list);
 
         for (String s : list) {
@@ -123,24 +96,20 @@ public class Game3Controller {
                 });
                 guessWord.getChildren().add(temp);
 
-                if (guessWord.getChildren().size() == data.get(0).length()) {
-                    boolean flag = true;
-                    for (int j = 0; j < data.get(0).length(); j++) {
-                        Button button = (Button) guessWord.getChildren().get(j);
-                        if (data.get(0).charAt(j) != button.getText().charAt(0)) {
-                            inform.setText("Wrong");
-                            flag = false;
-                            break;
-                        }
-                    }
-                    if (flag) {
-                        solvedQuestion++;
-                        bar.setProgress(solvedQuestion * 1.0 / NUMBER_OF_QUESTIONS);
-                        if (solvedQuestion == NUMBER_OF_QUESTIONS)
-                            finishGame();
+                if (guessWord.getChildren().size() == game.getGuessWord().length()) {
+                    StringBuilder playerGuess = new StringBuilder();
+                    guessWord.getChildren().stream().map(button -> ((Button)button).getText()).
+                            reduce(playerGuess, (StringBuilder::append), StringBuilder::append);
+                    if (game.isGuessedWord(playerGuess.toString())) {
+                        game.increaseSolvedQuestion();
+                        bar.setProgress(game.getProgress());
+                        if (game.isFinished())
+                            finish();
                         else {
                             nextQuestion();
                         }
+                    } else {
+                        inform.setText("Wrong");
                     }
                 }
             });
@@ -148,4 +117,10 @@ public class Game3Controller {
         }
     }
 
+    private void loadContentWithStyle(WebView webView, String content) {
+        String css = SuperScene.class.getResource("common.css").toExternalForm();
+        webView.getEngine().setUserStyleSheetLocation(css);
+        webView.getEngine().loadContent(String.format(
+                "<div class = 'container noselect'> %s </div>", content));
+    }
 }

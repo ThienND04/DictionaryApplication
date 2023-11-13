@@ -22,7 +22,7 @@ public class Game1 extends AGame{
         map = Data.getInstance().getData();
         listWord = new ArrayList<>(this.map.keySet());
         listDef = this.map.values().stream().map(Word::getDef).distinct().
-                collect(Collectors.toCollection(ArrayList::new)); // lay definition không trùng nhau.
+                collect(Collectors.toCollection(ArrayList::new));
         init();
     }
 
@@ -34,6 +34,7 @@ public class Game1 extends AGame{
             return;
         }
         Collections.shuffle(listWord);
+        Collections.shuffle(listDef);
         questions.clear();
         answers.clear();
         questionsSelections.clear();
@@ -44,17 +45,29 @@ public class Game1 extends AGame{
             String question;
             String answer;
 
-            question = listWord.get(i % listWord.size());
-            answer = map.get(question).getDef();
-            Collections.shuffle(listDef);
-            selections.addAll(listDef.subList(0, 3));
-            if(! selections.contains(answer)) {
-                selections.set(2, answer);
+            if((int) (Math.random() * 1000) % 2 == 0) {
+                // cho từ, chọn nghĩa đúng
+                question = listWord.get(i % listWord.size());
+                answer = map.get(question).getDef();
+                selections.addAll(listDef.subList(0, 3));
+                if (!selections.contains(answer)) {
+                    selections.set(2, answer);
+                }
+            } else {
+                // cho nghĩa, chọn từ đúng
+                question = listDef.get(i % listDef.size());
+                answer = map.keySet().stream().filter(w -> map.get(w).getDef().equals(question)).toList().getFirst();
+                selections.add(answer);
+                final String finalAns = answer;
+                selections.addAll(
+                        listWord.stream().filter(
+                                w -> !map.get(w).getDef().equals(finalAns)
+                        ).toList().subList(0, 2));
             }
 
             Collections.shuffle(selections);
             questions.add(question);
-            answers.add(map.get(question).getDef());
+            answers.add(answer);
             questionsSelections.add(selections);
             selectedAnswers.add(-1);
         }

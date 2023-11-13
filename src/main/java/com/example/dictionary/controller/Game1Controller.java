@@ -1,12 +1,12 @@
 package com.example.dictionary.controller;
 
+import com.example.dictionary.Application;
 import com.example.dictionary.game.Game1;
+import com.example.dictionary.scene.SuperScene;
 import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
-import javafx.scene.layout.HBox;
 import javafx.scene.web.WebView;
 
 public class Game1Controller {
@@ -55,19 +55,18 @@ public class Game1Controller {
             btn.getEngine().getLoadWorker().stateProperty().addListener((observable, oldState, newState) -> {
                 if (newState == Worker.State.SUCCEEDED) {
                     setWebViewStyle(btn, "backgroundColor = 'gray'");
-                    setWebViewStyle(btn, "textAlign = 'center'");
                 }
             });
 
             btn.setOnMouseClicked(actionEvent -> {
                 if(game1.getSelectedAns() >= 0) setWebViewStyle(getSelectedAns(), "backgroundColor = 'gray'");
                 game1.selectAns(curBtnIndex);
-                setWebViewStyle(getSelectedAns(), "backgroundColor = 'red'");
+                setWebViewStyle(getSelectedAns(), "backgroundColor = 'lightblue'");
             });
         }
     }
 
-    void updateQuestion() {
+    private void updateQuestion() {
         skipBtn.setDisable(game1.isLastQuestion());
         checkBtn.setDisable(false);
         loadContentWithStyle(quesLabel, game1.getQuestion());
@@ -77,7 +76,7 @@ public class Game1Controller {
         }
     }
 
-    void checkAns() {
+    private void checkAns() {
         for(int i = 0; i < ansSelections.getButtons().size(); i ++) {
             WebView btn = (WebView) ansSelections.getButtons().get(i);
             btn.setOnMouseClicked(actionEvent -> {});
@@ -97,31 +96,19 @@ public class Game1Controller {
         game1 = new Game1();
         updateQuestion();
     }
-    public void setWebViewStyle(WebView webView, String style) {
+
+    private void setWebViewStyle(WebView webView, String style) {
         webView.getEngine().executeScript(String.format("document.body.style.%s", style));
     }
 
-    void loadContentWithStyle(WebView webView, String content) {
-        String containerStyle = String.format(".container {\n" +
-                "    display: grid;\n" +
-                "    align-items: center;\n" +
-                "    text-align: center;\n" +
-                "    height: %dpx;\n" +
-                "}" +
-                ".noselect {\n" +
-                "  -webkit-touch-callout: none; /* iOS Safari */\n" +
-                "    -webkit-user-select: none; /* Safari */\n" +
-                "     -khtml-user-select: none; /* Konqueror HTML */\n" +
-                "       -moz-user-select: none; /* Old versions of Firefox */\n" +
-                "        -ms-user-select: none; /* Internet Explorer/Edge */\n" +
-                "            user-select: none; /* Non-prefixed version, currently\n" +
-                "                                  supported by Chrome, Edge, Opera and Firefox */\n" +
-                "}", (int) Math.round(webView.getPrefHeight()) - 20);
-        webView.getEngine().loadContent(String.format("<style> %s </style> " +
-                "<div class = 'container noselect'> %s </div>", containerStyle, content));
+    private void loadContentWithStyle(WebView webView, String content) {
+        String css = SuperScene.class.getResource("common.css").toExternalForm();
+        webView.getEngine().setUserStyleSheetLocation(css);
+        webView.getEngine().loadContent(String.format(
+                "<div class = 'container noselect'> %s </div>", content));
     }
 
-    WebView getSelectedAns() {
+    private WebView getSelectedAns() {
         return (WebView) ansSelections.getButtons().get(game1.getSelectedAns());
     }
 }

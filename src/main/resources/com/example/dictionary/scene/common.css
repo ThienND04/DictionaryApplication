@@ -77,3 +77,20 @@ ProgressBar > .track, .scroll-bar .track {
     -fx-background-color : -fx-blue-2;
     -fx-font-weight : bold;
 }
+
+.container {
+    display: grid;
+    align-items: center;
+    text-align: center;
+    height: 100%;
+}
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently\n" +
+                                  supported by Chrome, Edge, Opera and Firefox */
+}

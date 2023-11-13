@@ -10,7 +10,12 @@ import javafx.scene.layout.HBox;
 import javafx.scene.web.WebView;
 
 public class Game1Controller {
-    private final Game1 game1 = new Game1();
+    private Game1 game1;
+
+    public static Game1Controller getInstance() {
+        return instance;
+    }
+    private static Game1Controller instance;
 
     @FXML
     WebView quesLabel;
@@ -25,8 +30,8 @@ public class Game1Controller {
 
     @FXML
     public void initialize() {
+        instance = this;
         this.initComponents();
-        updateQuestion();
     }
 
     @FXML
@@ -38,8 +43,7 @@ public class Game1Controller {
     private void initComponents() {
         skipBtn.setOnAction(actionEvent -> {
             game1.toNextQuestion();
-            initComponents();
-            updateQuestion();
+            initComponents();            
         });
         checkBtn.setText("Kiểm tra");
         checkBtn.setOnAction(actionEvent -> checkAns());
@@ -89,7 +93,11 @@ public class Game1Controller {
         });
     }
 
-    void setWebViewStyle(WebView webView, String style) {
+    public void loadData() {
+        game1 = new Game1();
+        updateQuestion();
+    }
+    public void setWebViewStyle(WebView webView, String style) {
         webView.getEngine().executeScript(String.format("document.body.style.%s", style));
     }
 

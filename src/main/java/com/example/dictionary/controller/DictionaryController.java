@@ -1,6 +1,6 @@
 package com.example.dictionary.controller;
 
-import com.example.dictionary.Data;
+import com.example.dictionary.user.Data;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
@@ -8,11 +8,11 @@ import javafx.scene.web.WebView;
 
 public class DictionaryController {
     @FXML
-    TextField wordToFind;
+    private TextField wordToFind;
     @FXML
-    ListView listView;
+    private ListView<String> listView;
     @FXML
-    WebView definitionView;
+    private WebView definitionView;
 
     @FXML
     public void initialize() {
@@ -30,7 +30,7 @@ public class DictionaryController {
         wordToFind.textProperty().addListener((observable, oldValue, newValue) -> loadWordList());
     }
 
-    public void loadWordList() {
+    private void loadWordList() {
         listView.getItems().clear();
         listView.getItems().addAll(Data.getInstance().getSubTrie().getAllWordsStartWith(wordToFind.getText()));
     }

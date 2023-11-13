@@ -1,6 +1,6 @@
 package com.example.dictionary.game;
 
-import com.example.dictionary.Data;
+import com.example.dictionary.user.Data;
 import com.example.dictionary.Word;
 
 import java.util.*;
@@ -28,8 +28,9 @@ public class Game1 extends AGame{
 
     public void init() {
         currentQuestionIndex = 0;
+
         if(listWord.size() < 3 || listDef.size() < 3) {
-            System.out.println("So tu qua it. Khong the khoi tao tro choi!");
+            setReady(false);
             return;
         }
         Collections.shuffle(listWord);
@@ -99,10 +100,5 @@ public class Game1 extends AGame{
     }
     public boolean isLastQuestion() {
         return currentQuestionIndex == NUM_QUESTION - 1;
-    }
-
-    @Override
-    public void updateScore() {
-
     }
 }

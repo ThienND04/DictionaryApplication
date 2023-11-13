@@ -16,6 +16,9 @@ public final class SceneConstants {
         fxmlPaths.put(SceneEnum.TRANSLATE, "translate-view.fxml");
         fxmlPaths.put(SceneEnum.DICTIONARY, "dictionary-view.fxml");
         fxmlPaths.put(SceneEnum.EDITOR, "editor-view.fxml");
+        fxmlPaths.put(SceneEnum.USER, "user-view.fxml");
+        fxmlPaths.put(SceneEnum.LOGIN, "login-view.fxml");
+        fxmlPaths.put(SceneEnum.SIGNUP, "signup-view.fxml");
     }
     private SceneConstants() {
 

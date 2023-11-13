@@ -1,36 +1,23 @@
 package com.example.dictionary.game;
 
-import com.example.dictionary.Data;
+import com.example.dictionary.user.Data;
 import com.example.dictionary.Word;
+import com.example.dictionary.controller.Game2Controller;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Map;
 
-
-public class Game2 {
-    private final Map<String, Word> map;
-    private final ArrayList<String> list;
-
+public class Game2 extends AGame{
     public Game2() {
-        map = Data.getInstance().getData();
-        list = new ArrayList<>(this.map.keySet());
+
     }
 
-    public ArrayList<String> generate(int n) {
-        Collections.shuffle(list);
-        ArrayList<String> res = new ArrayList<>();
-        for (int i = 0; i < n; i++) {
-            res.add(list.get(i % list.size()));
-            res.add(map.get(list.get(i % list.size())).getDef());
-        }
-        Collections.shuffle(res);
-        return res;
+    public ArrayList<String> generate() {
+        return Data.getInstance().getRandomWords(Game2Controller.NUMBER_OF_QUESTIONS, 1);
     }
-
-    private final double maxScore = 0;
 
     public boolean checkAnswer(String str1, String str2) {
+        Map<String, Word> map = Data.getInstance().getData();
         return (map.containsKey(str1) && map.get(str1).getDef().equals(str2)) ||
                 (map.containsKey(str2) && map.get(str2).getDef().equals(str1));
     }

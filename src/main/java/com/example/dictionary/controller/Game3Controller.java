@@ -5,6 +5,7 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
@@ -20,6 +21,12 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class Game3Controller {
 
+    public static Game3Controller getInstance() {
+        return instance;
+    }
+
+    private static Game3Controller instance;
+
     @FXML
     public Label inform;
     @FXML
@@ -29,44 +36,78 @@ public class Game3Controller {
     @FXML
     private HBox input;
     @FXML
-    private Button newGame;
+    private Button newGameBtn;
+    @FXML
+    private Button stopGameBtn;
     @FXML
     ProgressBar bar;
     @FXML
     Button nextBtn;
+
     @FXML
     void initialize() {
-        time = new AtomicLong(0);
-        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.1), event -> time.incrementAndGet()));
+        instance = this;
         timeline.setCycleCount(Animation.INDEFINITE);
 
-        newGame.setOnAction(event -> newGame());
+        newGameBtn.setOnAction(event -> {
+            if (game.isReady()) {
+                newGame();
+            } else {
+                new Alert(Alert.AlertType.INFORMATION, "Không đủ số lượng từ");
+            }
+        });
+
+        stopGameBtn.setOnAction(event -> finishGame());
 
         nextBtn.setOnAction(event -> nextQuestion());
     }
-    private AtomicLong time;
+
+    private final AtomicLong time = new AtomicLong(0);
+
+    private final Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.1), event -> time.incrementAndGet()));
+
+
     private final Game3 game = new Game3();
     private int solvedQuestion = 0;
-    private final int n = 5;
+    public static final int NUMBER_OF_QUESTIONS = 5;
+
+    private ArrayList<String> data;
 
     private void newGame() {
-        solvedQuestion = 0;
-        newGame.setVisible(false);
+        newGameBtn.setVisible(false);
+        nextBtn.setVisible(false);
+        data = game.generate();
+        stopGameBtn.setVisible(true);
+
+        if (data.size() == 0) {
+            new Alert(Alert.AlertType.WARNING, "Không đủ số từ").show();
+            return;
+        }
         nextQuestion();
-        bar.setProgress(0);
     }
 
-    private void finish() {
-        newGame.setVisible(true);
-    }
+    private void finishGame() {
 
-    private void nextQuestion() {
-        ArrayList<String> data = game.generate();
-        meaning.getEngine().loadContent(data.get(1));
+        meaning.getEngine().loadContent("");
         inform.setText("");
         guessWord.getChildren().clear();
         input.getChildren().clear();
-        List<String> list = Arrays.asList(data.get(0).split(""));
+
+        bar.setProgress(0);
+        solvedQuestion = 0;
+        newGameBtn.setVisible(true);
+        nextBtn.setVisible(false);
+        stopGameBtn.setVisible(false);
+        time.set(0);
+    }
+
+    private void nextQuestion() {
+        meaning.getEngine().loadContent(data.get(2 * solvedQuestion + 1));
+        inform.setText("");
+        guessWord.getChildren().clear();
+        input.getChildren().clear();
+
+        List<String> list = Arrays.asList(data.get(2 * solvedQuestion).split(""));
         Collections.shuffle(list);
 
         for (String s : list) {
@@ -94,9 +135,9 @@ public class Game3Controller {
                     }
                     if (flag) {
                         solvedQuestion++;
-                        bar.setProgress(solvedQuestion * 1.0 / n);
-                        if (solvedQuestion == n)
-                            finish();
+                        bar.setProgress(solvedQuestion * 1.0 / NUMBER_OF_QUESTIONS);
+                        if (solvedQuestion == NUMBER_OF_QUESTIONS)
+                            finishGame();
                         else {
                             nextQuestion();
                         }
@@ -106,4 +147,5 @@ public class Game3Controller {
             input.getChildren().add(btn);
         }
     }
+
 }

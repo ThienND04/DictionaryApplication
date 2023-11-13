@@ -42,8 +42,8 @@
                </VBox>
                <VBox alignment="CENTER" prefHeight="31.0" prefWidth="134.0">
                   <children>
-                     <Button fx:id="newGame" focusTraversable="false" mnemonicParsing="false" text="Bắt đầu" />
-                     <Button fx:id="newGame1" alignment="TOP_RIGHT" focusTraversable="false" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" text="Dừng" />
+                     <Button fx:id="newGameBtn" focusTraversable="false" mnemonicParsing="false" text="Bắt đầu" />
+                     <Button fx:id="stopGameBtn" visible="false"  alignment="TOP_RIGHT" focusTraversable="false" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" text="Dừng" />
                   </children>
                </VBox>
             </children>

@@ -1,3 +1,0 @@
-1-byte character string<html dir="ltr"><head></head><body contenteditable="true"><i>1-byte character string</i><br><ul><li><font color="#cc0000"><b> (Tech) chuỗi ký tự 1 bai aaa</b></font></li></ul></body></html>
-This is my cat<html> <p> Đây là mèo của tôi </p> </html>
--mer<html><i>-mer</i><br/><ul><li><font color='#cc0000'><b> hậu tố tạo danh từ có nghĩa là polyme (trùng phân) hoặc isome (đồng phân)</b></font></li></ul></html>

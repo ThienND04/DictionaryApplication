@@ -1,12 +1,13 @@
 package com.example.dictionary.game;
 
 public abstract class AGame {
-    protected int score;
+    private boolean isReady = true;
 
-    public abstract void updateScore();
+    public boolean isReady() {
+        return isReady;
+    }
 
-    public int getScore() {
-        updateScore();
-        return this.score;
+    public void setReady(boolean ready) {
+        isReady = ready;
     }
 }

@@ -7,7 +7,12 @@ import javafx.scene.control.ButtonBar;
 import javafx.scene.web.WebView;
 
 public class Game1Controller {
-    private final Game1 game1 = new Game1();
+    private Game1 game1;
+
+    public static Game1Controller getInstance() {
+        return instance;
+    }
+    private static Game1Controller instance;
 
     @FXML
     WebView quesLabel;
@@ -22,8 +27,8 @@ public class Game1Controller {
 
     @FXML
     public void initialize() {
+        instance = this;
         this.initComponents();
-        update();
     }
 
     @FXML
@@ -78,5 +83,12 @@ public class Game1Controller {
             initComponents();
             update();
         });
+    }
+
+    public void loadData() {
+        game1 = new Game1();
+        if(game1.isReady()) {
+            update();
+        }
     }
 }

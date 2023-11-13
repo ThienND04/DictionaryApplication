@@ -1,0 +1,6 @@
+@import './common.css';
+
+#guessWord Button, #input Button {
+    -fx-padding : 10px;
+    -fx-font-size : 20px;
+}

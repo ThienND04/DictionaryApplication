@@ -1,17 +1,18 @@
 package com.example.dictionary.controller;
 
-import com.example.dictionary.Data;
+import com.example.dictionary.user.Data;
 import com.example.dictionary.Application;
 import com.example.dictionary.Word;
 import com.example.dictionary.api.TextToSpeech;
 import com.example.dictionary.api.Translate;
 import com.example.dictionary.stage.WindowEnum;
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
 import javafx.concurrent.Task;
 import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.web.WebView;
 import netscape.javascript.JSObject;
 
@@ -37,6 +38,8 @@ public class TranslateController {
     private Button speakBtn;
     @FXML
     private ChoiceBox<String> type;
+    @FXML
+    private ImageView speakImg;
 
     public void find(String word) {
         wordToTranslate.setText(word);
@@ -61,8 +64,9 @@ public class TranslateController {
     @FXML
     public void initialize() {
         instance = this;
+        speakImg.setImage(new Image(getClass().getResourceAsStream("speaker.png")));
 
-        type.setItems(FXCollections.observableArrayList(langs));
+        type.getItems().addAll(langs);
         type.setValue(langs.get(0));
 
         wordToTranslate.textProperty().addListener((a, b, c) -> {
@@ -118,14 +122,12 @@ public class TranslateController {
                             Platform.runLater(() -> {
                                 meaningView.getEngine().loadContent(translatedWord);
                                 detail.getEngine().loadContent(detailContent);
-
                                 detail.getEngine().getLoadWorker().stateProperty().addListener((a, b, c) -> {
                                     if (c == Worker.State.SUCCEEDED) {
                                         JSObject window = (JSObject) detail.getEngine().executeScript("window");
                                         window.setMember("javaConnector", connector);
                                     }
                                 });
-
                             });
 
                         } catch (Exception e) {
@@ -167,7 +169,6 @@ public class TranslateController {
             } else {
                 new Alert(Alert.AlertType.WARNING, "Không được để trống").show();
             }
-
         });
     }
 

@@ -8,7 +8,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.web.HTMLEditor?>
 
-
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.dictionary.controller.EditorController">
    <children>
       <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
@@ -21,7 +20,7 @@
             </HTMLEditor>
             <HBox alignment="TOP_CENTER">
                <children>
-                  <Button fx:id="saveBtn" mnemonicParsing="false" prefHeight="26.0" prefWidth="88.0" text="Save And Exit" />
+                  <Button fx:id="saveBtn" mnemonicParsing="false" prefHeight="26.0" prefWidth="168.0" text="Save And Exit" />
                </children>
             </HBox>
          </children>

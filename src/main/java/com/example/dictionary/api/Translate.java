@@ -77,7 +77,7 @@ public class Translate {
 
 
     public static String getDetail(String sentence) throws Exception {
-        StringBuilder res = new StringBuilder("<html><head><style>body {padding : 120px 0px}.container {padding: 10px;border: 2px red solid;display: none;position: absolute;background-color: wheat;border-radius: 10px;}.btn {border-radius: 10px;padding: 5px;}</style></head><body><ul>");
+        StringBuilder res = new StringBuilder("<html><head><style>::selection{background-color:#8EE4AF; color:#FFFBF5}body {padding : 120px 20px}.container {padding: 10px;background-color : #FFFBF5;border: 2px #05386B solid;display: none;position: absolute;background-color: #5CDB95; color : #EDF5E1;border-radius: 10px;} button {border-radius: 10px;padding: 5px; background-color : #05386B; color : #EDF5E1}</style></head><body><ul>");
         String[] words = sentence.split("\\W+");
 
         for (String word : words) {
@@ -91,15 +91,15 @@ public class Translate {
             if (response == null || response.statusCode() == 404) {
                 continue;
             }
-            res.append("<li><h1 style=\"color : red\">").append(word).append("</h1><ul>");
+            res.append("<li><h1 style=\"color : #05386B\">").append(word).append("</h1><ul>");
 
             JSONArray jsonArray = new JSONArray(response.body());
 
-            res.append("<li><h2 style=\"color : green\">Phát âm : </h2>");
+            res.append("<li><h2 style=\"color : #5CDB95\">Phát âm : </h2>");
             processPhonetics(res, jsonArray.getJSONObject(0).getJSONArray("phonetics"));
             res.append("</li>");
 
-            res.append("<li><h2 style=\"color : green\">Nghĩa : </h2>");
+            res.append("<li><h2 style=\"color : #5CDB95\">Nghĩa : </h2>");
             processMeanings(res, jsonArray.getJSONObject(0).getJSONArray("meanings"));
             res.append("</li>");
 
@@ -107,7 +107,7 @@ public class Translate {
         }
 
         res.append("</ul>");
-        res.append("<div class=\"container\"><button class=\"btn\"><img src=\"https://flyclipart.com/thumb2/audio-interface-speaker-symbol-png-icon-free-download-342951.png\" width=\"20px\" alt=\"\"></button>    <p class=\"txt\">sd</p><button class='btn1'>Tìm kiếm</button></div><script>var div = document.querySelector('.container');var btn = document.querySelector('.btn');var btn1 = document.querySelector('.btn1');var txt = document.querySelector('.txt');document.onmouseup = function() {var selection = window.getSelection();var text = selection.toString().trim();if(text.length) {let rect = selection.getRangeAt(0).getBoundingClientRect();div.style.display = 'block';div.style.left = rect.left + scrollX + 'px';div.style.top = rect.bottom + 20 + scrollY + 'px';btn1.onclick = function(){javaConnector.find(text);};btn.onclick = function(){javaConnector.speak(text);};txt.innerHTML = javaConnector.trans(text);} else {div.style.display = 'none'}}</script></body></html>");
+        res.append("<div class=\"container\"><button class=\"btn\"><img src=\"https://vignette.wikia.nocookie.net/tlaststand/images/2/25/Speaker_Icon.png/revision/latest?cb=20150730190045\" width=\"20px\" alt=\"\"></button>    <p class=\"txt\">sd</p><button class='btn1'>Tìm kiếm</button></div><script>var div = document.querySelector('.container');var btn = document.querySelector('.btn');var btn1 = document.querySelector('.btn1');var txt = document.querySelector('.txt');document.onmouseup = function() {var selection = window.getSelection();var text = selection.toString().trim();if(text.length) {let rect = selection.getRangeAt(0).getBoundingClientRect();div.style.display = 'block';div.style.left = rect.left + scrollX + 'px';div.style.top = rect.bottom + 20 + scrollY + 'px';btn1.onclick = function(){javaConnector.find(text);};btn.onclick = function(){javaConnector.speak(text);};txt.innerHTML = javaConnector.trans(text);} else {div.style.display = 'none'}}</script></body></html>");
         return res.toString();
     }
 
@@ -145,13 +145,13 @@ public class Translate {
             res.append("<li>");
 
             temp = meanings.getJSONObject(i);
-            res.append("<h3 style=\"color : blue\">Loại : ").append(map.get(temp.getString("partOfSpeech"))).append("</h3><ul>");
+            res.append("<h3 style=\"color : #0099cc\">Loại : ").append(map.get(temp.getString("partOfSpeech"))).append("</h3><ul>");
 
 
             JSONArray jsonArray = temp.getJSONArray("definitions");
             JSONObject temp1;
 
-            res.append("<li><h4 style=\"color : orange\">Các định nghĩa : </h4><ul style=\"list-style : circle\">");
+            res.append("<li><h4 style=\"color : #cc6600\">Các định nghĩa : </h4><ul style=\"list-style : circle\">");
             for (int j = 0; j < jsonArray.length(); j++) {
                 res.append("<li>");
                 temp1 = jsonArray.getJSONObject(j);
@@ -167,7 +167,7 @@ public class Translate {
 
 
             jsonArray = temp.getJSONArray("synonyms");
-            res.append("<li><h4 style=\"color : orange\">Từ đồng nghĩa : </h4><ul style=\"list-style : circle\">");
+            res.append("<li><h4 style=\"color : #cc6600\">Từ đồng nghĩa : </h4><ul style=\"list-style : circle\">");
             for (int j = 0; j < jsonArray.length(); j++) {
                 res.append("<li>").append(jsonArray.getString(j)).append("</li>");
             }
@@ -175,7 +175,7 @@ public class Translate {
 
 
             jsonArray = temp.getJSONArray("antonyms");
-            res.append("<li><h4 style=\"color : orange\">Từ trái nghĩa : </h4><ul style=\"list-style : circle\">");
+            res.append("<li><h4 style=\"color : #cc6600\">Từ trái nghĩa : </h4><ul style=\"list-style : circle\">");
             for (int j = 0; j < jsonArray.length(); j++) {
                 res.append("<li>").append(jsonArray.getString(j)).append("</li>");
             }

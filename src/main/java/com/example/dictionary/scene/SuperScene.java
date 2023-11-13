@@ -1,37 +1,36 @@
 package com.example.dictionary.scene;
 
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import java.io.IOException;
+import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
 
 public class SuperScene {
-    protected javafx.scene.Scene scene;
-    public javafx.scene.Scene getScene() {
+    protected Scene scene;
+
+    public Scene getScene() {
         return scene;
     }
+
     public SuperScene(SceneEnum type) {
-        FXMLLoader fxmlLoader = new FXMLLoader();
-        Parent root;
         try {
-            root = fxmlLoader.load(getClass().getResourceAsStream(SceneConstants.fxmlPaths.get(type)));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            String path = SceneConstants.fxmlPaths.get(type);
+            AnchorPane root = fxmlLoader.load(getClass().getResourceAsStream(path));
+            scene = new Scene(root);
 
-        try {
-            scene = new javafx.scene.Scene(root);
-            String src = SceneConstants.cssPaths.get(type);
-            String css;
-            if(src != null) {
-                css = getClass().getResource(src).toExternalForm();
-            } else {
+            String css = null;
+            try {
+                css = getClass().getResource(path.replace("fxml", "css")).toExternalForm();
+            } catch (Exception e) {
                 css = getClass().getResource("common.css").toExternalForm();
+            } finally {
+                scene.getStylesheets().add(css);
             }
-            scene.getStylesheets().add(css);
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
     }
+
     public SuperScene() {
 
     }

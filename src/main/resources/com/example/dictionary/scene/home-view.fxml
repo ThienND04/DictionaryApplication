@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -10,45 +11,23 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.web.WebView?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.dictionary.controller.HomeController">
+<AnchorPane prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.dictionary.controller.HomeController">
     <children>
         <VBox alignment="CENTER" layoutX="-2.0" layoutY="-2.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
-                <HBox fillHeight="false">
-                    <children>
-                        <Button fx:id="homeNav" focusTraversable="false" mnemonicParsing="false" style="-fx-background-color: gray;" text="HOME" textFill="WHITE">
-                            <cursor>
-                                <Cursor fx:constant="HAND" />
-                            </cursor>
-                        </Button>
-                        <Button fx:id="gameNav" focusTraversable="false" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" text="GAME">
-                            <cursor>
-                                <Cursor fx:constant="HAND" />
-                            </cursor>
-                        </Button>
-                        <Button fx:id="translateNav" focusTraversable="false" layoutX="62.0" layoutY="10.0" mnemonicParsing="false" text="TRANSLATE">
-                            <cursor>
-                                <Cursor fx:constant="HAND" />
-                            </cursor>
-                        </Button>
-                    </children>
-                    <VBox.margin>
-                        <Insets />
-                    </VBox.margin>
-                </HBox>
                 <HBox VBox.vgrow="ALWAYS">
                     <children>
-                        <VBox maxHeight="100000.0" maxWidth="400.0" prefHeight="354.0" prefWidth="215.0">
+                        <VBox maxHeight="100000.0" maxWidth="400.0" prefHeight="354.0" prefWidth="215.0" style="-fx-border-color: black;">
                             <children>
-                                <TextField fx:id="wordToFind" prefHeight="32.0" prefWidth="290.0" VBox.vgrow="ALWAYS">
+                                <TextField fx:id="wordToFind" prefHeight="40.0" prefWidth="214.0" VBox.vgrow="ALWAYS">
                                     <VBox.margin>
                                         <Insets />
                                     </VBox.margin>
                                 </TextField>
                                 <ListView fx:id="listView" maxHeight="10000.0" maxWidth="500.0" minHeight="0.0" minWidth="0.0" prefHeight="322.0" prefWidth="226.0" VBox.vgrow="ALWAYS" />
-                                <Button fx:id="showDictionaryBtn" focusTraversable="false" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="70.0" prefWidth="215.0" text="OPEN OFFLINE DICTIONARY">
+                                <Button fx:id="showDictionaryBtn" focusTraversable="false" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="70.0" prefWidth="215.0" text="Mở từ điển offline">
                                     <cursor>
-                                        <Cursor fx:constant="HAND" />
+                                        <Cursor fx:constant="DEFAULT" />
                                     </cursor>
                                 </Button>
                             </children>
@@ -65,26 +44,43 @@
                                                 <Insets right="20.0" />
                                             </HBox.margin>
                                             <children>
-                                                <WebView fx:id="definitionView" maxHeight="400.0" maxWidth="100000.0" minHeight="-1.0" minWidth="-1.0" prefHeight="174.0" prefWidth="226.0" />
-                                                <Button fx:id="searchBtn" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="SEARCH ONLINE" visible="false" />
+                                    <VBox style="-fx-border-color: black;" VBox.vgrow="ALWAYS">
+                                       <children>
+                                                      <WebView fx:id="definitionView" maxHeight="400.0" maxWidth="100000.0" minHeight="-1.0" minWidth="-1.0" prefHeight="174.0" prefWidth="226.0" VBox.vgrow="ALWAYS" />
+                                       </children>
+                                    </VBox>
+                                                <Button fx:id="searchBtn" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Tìm kiếm online" visible="false" />
                                             </children>
                                         </VBox>
                                         <VBox>
                                             <children>
-                                                <Button fx:id="editBtn" contentDisplay="BOTTOM" focusTraversable="false" mnemonicParsing="false" prefHeight="26.0" prefWidth="100.0" text="Edit" visible="false">
-                                                    <cursor>
-                                                        <Cursor fx:constant="HAND" />
-                                                    </cursor>
-                                                </Button>
-                                                <Button fx:id="deleteBtn" contentDisplay="BOTTOM" focusTraversable="false" mnemonicParsing="false" prefHeight="26.0" prefWidth="100.0" text="Delete" visible="false">
-                                                    <cursor>
-                                                        <Cursor fx:constant="HAND" />
-                                                    </cursor>
-                                                </Button>
+                                                <Button fx:id="addBtn" contentDisplay="BOTTOM" focusTraversable="false" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="100.0" text="Thêm từ mới" />
+                                                <Button fx:id="editBtn" contentDisplay="BOTTOM" focusTraversable="false" mnemonicParsing="false" prefHeight="26.0" prefWidth="100.0" text="Chỉnh sửa" visible="false" />
+                                                <Button fx:id="deleteBtn" contentDisplay="BOTTOM" focusTraversable="false" mnemonicParsing="false" prefHeight="26.0" prefWidth="100.0" text="Xóa" visible="false" />
                                             </children>
                                         </VBox>
                                     </children>
                                 </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                           <VBox.margin>
+                              <Insets top="20.0" />
+                           </VBox.margin>
+                           <children>
+                              <VBox prefHeight="257.0" prefWidth="202.0" HBox.hgrow="ALWAYS" />
+                              <VBox maxWidth="600.0" prefHeight="257.0" prefWidth="370.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <HBox alignment="CENTER" prefHeight="50" prefWidth="357.0">
+                                       <children>
+                                          <Label fx:id="leftBtn" alignment="CENTER" maxHeight="1.7976931348623157E308" prefHeight="48.0" prefWidth="44.0" styleClass="btn-1" text="&lt;" visible="false" wrapText="true"/>
+                                          <Label fx:id="randomWords" alignment="CENTER" layoutX="140.0" layoutY="10.0" maxHeight="1.7976931348623157E308" prefHeight="48.0" prefWidth="138.0" styleClass="btn-11" text="Label" wrapText="true" />
+                                          <Label fx:id="rightBtn" alignment="CENTER" layoutX="196.0" layoutY="10.0" maxHeight="1.7976931348623157E308" prefHeight="48.0" prefWidth="44.0" styleClass="btn-1" text="&gt;" wrapText="true" />
+                                       </children>
+                                    </HBox>
+                                    <WebView fx:id="randomDefinitions" maxHeight="300.0" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
                             </children>
                         </VBox>
                     </children>

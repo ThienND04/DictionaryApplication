@@ -17,7 +17,7 @@ class TrieNode {
         return children;
     }
 
-    private final Map<Character, TrieNode> children = new TreeMap<Character, TrieNode>();
+    private final Map<Character, TrieNode> children = new TreeMap<>();
 }
 
 public class Trie {
@@ -31,6 +31,10 @@ public class Trie {
             temp = temp.getChildren().get(word.charAt(i));
         }
         temp.setEndOfWord(true);
+    }
+
+    public void clear() {
+        root = new TrieNode();
     }
 
     public void remove(String word) {

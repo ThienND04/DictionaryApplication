@@ -143,6 +143,21 @@ public final class Data {
         }
     }
 
+    public ArrayList<Word> getRandomWords(int n) {
+        Random random = new Random();
+        ArrayList<Word> res = new ArrayList<>();
+        Set<Integer> st = new HashSet<>();
+
+        if (n > data.size()) return res;
+        while (st.size() < n) {
+            st.add(random.nextInt(data.size()));
+        }
+        for (Integer t : st) {
+            res.add(data.get(allWords.get(subData.size() + t)));
+        }
+        return res;
+    }
+
     public ArrayList<String> getRandomWords(int n, int type) {
         Random random = new Random();
         ArrayList<String> res = new ArrayList<>();

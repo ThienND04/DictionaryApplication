@@ -1,10 +1,10 @@
 package com.example.dictionary.controller;
 
-import com.example.dictionary.Application;
 import com.example.dictionary.game.Game1;
 import com.example.dictionary.scene.SuperScene;
 import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.web.WebView;
@@ -16,6 +16,7 @@ public class Game1Controller {
         return instance;
     }
     private static Game1Controller instance;
+    private final String BLUE_2 = "#05386B";
 
     @FXML
     WebView quesLabel;
@@ -26,7 +27,7 @@ public class Game1Controller {
     @FXML
     Button checkBtn;
     @FXML
-    Button playAgainBtn;
+    Button newGameBtn;
 
     @FXML
     public void initialize() {
@@ -34,19 +35,21 @@ public class Game1Controller {
         this.initComponents();
     }
 
-    @FXML
-    public void handlePlayAgain() {
-        game1.playAgain();
-        updateQuestion();
-    }
-
     private void initComponents() {
+        newGameBtn.setOnAction(actionEvent -> newGame());
         skipBtn.setOnAction(actionEvent -> {
             game1.toNextQuestion();
-            initComponents();            
+            initComponents();
+            updateQuestion();
         });
         checkBtn.setText("Kiểm tra");
         checkBtn.setOnAction(actionEvent -> checkAns());
+
+        quesLabel.getEngine().getLoadWorker().stateProperty().addListener((observable, oldState, newState) -> {
+            if (newState == Worker.State.SUCCEEDED) {
+                setContainerColor(quesLabel, BLUE_2);
+            }
+        });
 
         for(int i = 0; i < ansSelections.getButtons().size(); i ++) {
             final int curBtnIndex = i;
@@ -54,15 +57,30 @@ public class Game1Controller {
 
             btn.getEngine().getLoadWorker().stateProperty().addListener((observable, oldState, newState) -> {
                 if (newState == Worker.State.SUCCEEDED) {
-                    setWebViewStyle(btn, "backgroundColor = 'gray'");
+                    setContainerColor(btn, BLUE_2);
                 }
             });
-
             btn.setOnMouseClicked(actionEvent -> {
-                if(game1.getSelectedAns() >= 0) setWebViewStyle(getSelectedAns(), "backgroundColor = 'gray'");
+                if(game1.getSelectedAns() >= 0) setContainerColor(getSelectedAns(), BLUE_2);
                 game1.selectAns(curBtnIndex);
-                setWebViewStyle(getSelectedAns(), "backgroundColor = 'lightblue'");
+                setContainerColor(getSelectedAns(), "lightblue");
             });
+        }
+    }
+
+    private void newGame() {
+        game1.init();
+        if(! game1.isReady()) {
+            new Alert(Alert.AlertType.WARNING, "Không đủ số lượng từ").show();
+            return;
+        }
+        updateQuestion();
+        checkBtn.setVisible(true);
+        skipBtn.setVisible(true);
+        quesLabel.setVisible(true);
+        for(int i = 0; i < ansSelections.getButtons().size(); i ++) {
+            WebView btn = (WebView) ansSelections.getButtons().get(i);
+            btn.setVisible(true);
         }
     }
 
@@ -80,8 +98,8 @@ public class Game1Controller {
         for(int i = 0; i < ansSelections.getButtons().size(); i ++) {
             WebView btn = (WebView) ansSelections.getButtons().get(i);
             btn.setOnMouseClicked(actionEvent -> {});
-            if(i == game1.getSelectedAns()) setWebViewStyle(btn, "backgroundColor = 'red'");
-            if(i == game1.getAnswerIndex()) setWebViewStyle(btn, "backgroundColor = 'lawngreen'");
+            if(i == game1.getSelectedAns()) setContainerColor(btn, "red");
+            if(i == game1.getAnswerIndex()) setContainerColor(btn, "lawngreen");
         }
         checkBtn.setText("Next question");
         checkBtn.setDisable(game1.isLastQuestion());
@@ -94,11 +112,13 @@ public class Game1Controller {
 
     public void loadData() {
         game1 = new Game1();
-        updateQuestion();
     }
 
-    private void setWebViewStyle(WebView webView, String style) {
-        webView.getEngine().executeScript(String.format("document.body.style.%s", style));
+    private void setContainerColor(WebView webView, String color) {
+        webView.getEngine().executeScript(String.format(
+                "document.getElementsByClassName('container')[0].style.backgroundColor = '%s'", color));
+        webView.getEngine().executeScript(String.format(
+                "document.getElementsByClassName('container')[0].style.borderColor = '%s'", color));
     }
 
     private void loadContentWithStyle(WebView webView, String content) {

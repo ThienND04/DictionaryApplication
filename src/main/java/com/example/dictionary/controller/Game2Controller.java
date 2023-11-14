@@ -47,6 +47,11 @@ public class Game2Controller {
         newGameBtn.setOnAction(event -> newGame());
         pauseBtn.setOnAction(event -> handlePauseBtn());
         timeline.setCycleCount(Animation.INDEFINITE);
+
+        for (int i = 0; i < 2 * NUMBER_OF_QUESTIONS; i++) {
+            WebView temp = (WebView) grid.getChildren().get(i);
+            temp.setVisible(false);
+        }
     }
 
     private void newGame() {
@@ -72,13 +77,15 @@ public class Game2Controller {
                         if (this.solvedQuestion == NUMBER_OF_QUESTIONS)
                             finishGame();
                     } else {
-                        setWebViewStyle(clickedWord, "backgroundColor = 'white'");
-                        setWebViewStyle(clickedWord, "color = 'black'");
+                        setWebContainerStyle(clickedWord, "backgroundColor = '#05386B'");
+                        setWebContainerStyle(clickedWord, "borderColor = '#05386B'");
+                        setWebContainerStyle(clickedWord, "color = 'black'");
                     }
                     clickedWord = null;
                 } else {
-                    setWebViewStyle(temp, "backgroundColor = '#05386B'");
-                    setWebViewStyle(temp,"color = '#EDF5E1'");
+                    setWebContainerStyle(temp, "backgroundColor = 'lightblue'");
+                    setWebContainerStyle(temp, "borderColor = 'lightblue'");
+                    setWebContainerStyle(temp,"color = '#EDF5E1'");
                     clickedWord = temp;
                     clickedText = list.get(finalI);
                 }
@@ -117,8 +124,9 @@ public class Game2Controller {
         }
     }
 
-    private void setWebViewStyle(WebView webView, String style) {
-        webView.getEngine().executeScript(String.format("document.body.style.%s", style));
+    private void setWebContainerStyle(WebView webView, String style) {
+        webView.getEngine().executeScript(String.format(
+                "document.getElementsByClassName('container')[0].style.%s", style));
     }
 
     /**

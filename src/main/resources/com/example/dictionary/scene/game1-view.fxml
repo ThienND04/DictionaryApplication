@@ -6,7 +6,8 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.web.WebView?>
-<AnchorPane prefHeight="500.0"  prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.dictionary.controller.Game1Controller">
+
+<AnchorPane prefHeight="349.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.dictionary.controller.Game1Controller">
    <children>
       <VBox layoutX="-3.0" prefHeight="401.0" prefWidth="600.0">
          <children>
@@ -16,20 +17,24 @@
                      <children>
                         <HBox prefHeight="24.0" prefWidth="600.0">
                            <children>
-                              <Button fx:id="playAgainBtn" mnemonicParsing="false" onAction="#handlePlayAgain" text="Play Again" />
+                              <Button fx:id="newGameBtn" mnemonicParsing="false" text="New Game" />
                            </children>
                         </HBox>
                      </children></VBox>
                   <VBox prefHeight="123.0" prefWidth="600.0">
                      <children>
-                        <WebView fx:id="quesLabel" minHeight="-Infinity" prefHeight="92.0" prefWidth="600.0" />
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <WebView fx:id="quesLabel" minHeight="-Infinity" prefHeight="100.0" prefWidth="437.0" visible="false" />
+                           </children>
+                        </HBox>
                      </children>
                   </VBox>
                   <ButtonBar fx:id="ansSelections" prefHeight="174.0" prefWidth="600.0">
                      <buttons>
-                        <WebView prefHeight="174.0" prefWidth="187.0" />
-                        <WebView prefHeight="174.0" prefWidth="200.0" />
-                        <WebView prefHeight="174.0" prefWidth="200.0" />
+                        <WebView prefHeight="174.0" prefWidth="187.0" visible="false" />
+                        <WebView prefHeight="174.0" prefWidth="200.0" visible="false" />
+                        <WebView prefHeight="174.0" prefWidth="200.0" visible="false" />
                      </buttons>
                   </ButtonBar>
                </children>
@@ -38,12 +43,12 @@
                <children>
                   <HBox alignment="CENTER_LEFT" prefHeight="24.0" prefWidth="311.0">
                      <children>
-                        <Button fx:id="skipBtn" mnemonicParsing="false" text="Bỏ qua" />
+                        <Button fx:id="skipBtn" mnemonicParsing="false" text="Bỏ qua" visible="false" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER_RIGHT" prefHeight="24.0" prefWidth="322.0">
                      <children>
-                        <Button fx:id="checkBtn" mnemonicParsing="false" text="Kiểm tra" />
+                        <Button fx:id="checkBtn" mnemonicParsing="false" text="Kiểm tra" visible="false" />
                      </children>
                   </HBox>
                </children>

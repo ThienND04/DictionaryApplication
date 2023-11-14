@@ -5,12 +5,13 @@ import com.example.dictionary.Word;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import org.jsoup.Jsoup;
 
 public class Game1 extends AGame{
     public final int NUM_QUESTION = 10;
-    private final Map<String, Word> map;
-    private final ArrayList<String> listWord;
-    private final ArrayList<String> listDef;
+    private Map<String, Word> map;
+    private ArrayList<String> listWord;
+    private ArrayList<String> listDef;
     private final ArrayList<String> questions = new ArrayList<>();
     private final ArrayList<String> answers = new ArrayList<>();
     private final ArrayList<ArrayList<String>> questionsSelections = new ArrayList<>();
@@ -18,21 +19,22 @@ public class Game1 extends AGame{
 
     private int currentQuestionIndex = 0;
 
-    public Game1() {
-        map = Data.getInstance().getData();
+    public void init() {
+        map = new HashMap<>();
+        Data.getInstance().getData().values().forEach(word -> {
+            map.put(getTextFromHTML(word.getWord()),
+                    new Word(getTextFromHTML(word.getWord()), getTextFromHTML(word.getDef())));
+        });
         listWord = new ArrayList<>(this.map.keySet());
         listDef = this.map.values().stream().map(Word::getDef).distinct().
                 collect(Collectors.toCollection(ArrayList::new));
-        init();
-    }
-
-    public void init() {
         currentQuestionIndex = 0;
 
-        if(listWord.size() < 3 || listDef.size() < 3) {
-            setReady(false);
+        setReady(listWord.size() >= 3 && listDef.size() >= 3);
+        if(! isReady()) {
             return;
         }
+
         Collections.shuffle(listWord);
         Collections.shuffle(listDef);
         questions.clear();
@@ -73,6 +75,10 @@ public class Game1 extends AGame{
         }
     }
 
+    private String getTextFromHTML(String html) {
+        return Jsoup.parse(html).text();
+    }
+
     public void playAgain() {
         init();
     }
@@ -105,7 +111,9 @@ public class Game1 extends AGame{
     }
 
     public void toNextQuestion() {
-        if(currentQuestionIndex + 1 < NUM_QUESTION) currentQuestionIndex ++;
+        if(currentQuestionIndex + 1 < NUM_QUESTION) {
+            currentQuestionIndex++;
+        }
     }
 
     public void toPrevQuestion() {

@@ -79,10 +79,18 @@ ProgressBar > .track, .scroll-bar .track {
 }
 
 .container {
+    background-color: #05386B;
     display: grid;
     align-items: center;
     text-align: center;
-    height: 100%;
+    border: solid #05386B;
+    border-radius:10px;
+    width: 90%;
+    height: 90%;
+}
+
+body {
+    background-color: #5CDB95;
 }
 
 .noselect {

@@ -6,6 +6,7 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
@@ -61,6 +62,10 @@ public class Game3Controller {
 
     private void newGame() {
         game.newGame();
+        if(! game.isReady()) {
+            new Alert(Alert.AlertType.WARNING, "Không đủ số lượng từ").show();
+            return;
+        }
         newGame.setVisible(false);
         nextQuestion();
         bar.setProgress(0);

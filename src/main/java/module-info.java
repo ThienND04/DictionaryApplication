@@ -8,6 +8,7 @@ module com.example.dictionary {
     requires freetts;
     requires org.json;
     requires jdk.jsobject;
+    requires org.jsoup;
 
     opens com.example.dictionary to javafx.fxml;
     exports com.example.dictionary;

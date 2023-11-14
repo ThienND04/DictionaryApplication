@@ -8,12 +8,18 @@
 <AnchorPane prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.dictionary.controller.GameController">
    <children>
       <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <Button fx:id="game1Nav" focusTraversable="false" mnemonicParsing="false" text="Game 1">
-            <VBox.margin>
-               <Insets top="20.0" />
-            </VBox.margin></Button>
-         <Button fx:id="game2Nav" focusTraversable="false" layoutX="10.0" layoutY="36.0" mnemonicParsing="false" text="Game 2" />
-         <Button fx:id="game3Nav" focusTraversable="false" layoutX="10.0" layoutY="61.0" mnemonicParsing="false" text="Game 3" />
+         <VBox prefHeight="200.0" prefWidth="100.0" />
+         <VBox alignment="TOP_CENTER" prefHeight="358.0" prefWidth="800.0">
+            <children>
+               <Button fx:id="game1Nav" focusTraversable="false" mnemonicParsing="false" prefHeight="40.0" prefWidth="160.0" text="Game 1">
+                  <VBox.margin>
+                     <Insets top="20.0" />
+                  </VBox.margin>
+               </Button>
+               <Button fx:id="game2Nav" focusTraversable="false" mnemonicParsing="false" prefHeight="40.0" prefWidth="160.0" text="Game 2" />
+               <Button fx:id="game3Nav" focusTraversable="false" mnemonicParsing="false" prefHeight="40.0" prefWidth="160.0" text="Game 3" />
+            </children>
+         </VBox>
       </VBox>
    </children>
 </AnchorPane>

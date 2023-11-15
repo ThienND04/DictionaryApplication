@@ -28,7 +28,7 @@
                </ProgressBar>
                <HBox alignment="CENTER" focusTraversable="true" maxWidth="1.7976931348623157E308" prefHeight="126.0" prefWidth="579.0">
                   <children>
-                     <Label maxHeight="1.7976931348623157E308" prefHeight="111.0" prefWidth="162.0" text="Nghĩa:">
+                     <Label maxHeight="1.7976931348623157E308" prefHeight="111.0" prefWidth="162.0">
                         <font>
                            <Font size="20.0" />
                         </font>

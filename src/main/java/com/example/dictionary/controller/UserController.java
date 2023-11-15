@@ -24,9 +24,10 @@ public class UserController {
     }
 
     private void initUserImage() {
-        Image image = new Image(getClass().getResourceAsStream("userImg.jpg"));
-        ImagePattern imagePattern = new ImagePattern(image);
-        userImg.setFill(imagePattern);
+        System.out.println(getClass().getResourceAsStream("E_V.txt"));
+//        Image image = new Image(getClass().getResourceAsStream("userImg.jpg"));
+//        ImagePattern imagePattern = new ImagePattern(image);
+//        userImg.setFill(imagePattern);
     }
 
     private void handleLogOut() {

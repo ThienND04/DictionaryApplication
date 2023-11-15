@@ -42,7 +42,7 @@ public class Game2Controller {
     }
 
     @FXML
-    void initialize() {
+    public void initialize() {
         instance = this;
         newGameBtn.setOnAction(event -> newGame());
         pauseBtn.setOnAction(event -> handlePauseBtn());
@@ -103,12 +103,7 @@ public class Game2Controller {
         if (isPaused) timeline.pause();
         else timeline.play();
         pauseBtn.setText(isPaused ? "Tiếp tục" : "Tạm dừng");
-        for (int i = 0; i < grid.getChildren().size(); i++) {
-            WebView temp = (WebView) grid.getChildren().get(i);
-            if (i < 2 * NUMBER_OF_QUESTIONS) {
-                temp.setDisable(isPaused);
-            }
-        }
+        grid.setVisible(! isPaused);
     }
 
     private void finishGame() {
@@ -119,7 +114,7 @@ public class Game2Controller {
         newGameBtn.setVisible(true);
         pauseBtn.setVisible(false);
 
-        for (int i = 0; i < 2 * NUMBER_OF_QUESTIONS; i++) {
+          for (int i = 0; i < 2 * NUMBER_OF_QUESTIONS; i++) {
             grid.getChildren().get(i).setVisible(false);
         }
     }

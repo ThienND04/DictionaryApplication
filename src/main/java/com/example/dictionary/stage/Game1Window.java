@@ -1,5 +1,7 @@
 package com.example.dictionary.stage;
 
+import com.example.dictionary.controller.Game1Controller;
+import com.example.dictionary.game.Game1;
 import com.example.dictionary.scene.SceneEnum;
 import com.example.dictionary.scene.SuperScene;
 import javafx.stage.Stage;
@@ -10,5 +12,6 @@ public class Game1Window extends Window {
         window.setTitle("Game1");
         window.setResizable(false);
         window.setScene((new SuperScene(SceneEnum.GAME_1)).getScene());
+        window.setOnHiding(windowEvent -> window.setScene((new SuperScene(SceneEnum.GAME_1)).getScene()));
     }
 }

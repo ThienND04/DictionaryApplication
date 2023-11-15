@@ -4,13 +4,11 @@ import com.example.dictionary.game.Game1;
 import com.example.dictionary.scene.SuperScene;
 import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonBar;
+import javafx.scene.control.*;
 import javafx.scene.web.WebView;
 
 public class Game1Controller {
-    private Game1 game1;
+    private final Game1 game1 = new Game1();
 
     public static Game1Controller getInstance() {
         return instance;
@@ -28,6 +26,12 @@ public class Game1Controller {
     Button checkBtn;
     @FXML
     Button newGameBtn;
+    @FXML
+    ProgressBar progressBar;
+    @FXML
+    Label solved;
+    @FXML
+    Label fault;
 
     @FXML
     public void initialize() {
@@ -36,24 +40,28 @@ public class Game1Controller {
     }
 
     private void initComponents() {
+        newGameBtn.setVisible(true);
+        solved.setVisible(false);
+        fault.setVisible(false);
+        checkBtn.setVisible(false);
+        quesLabel.setVisible(false);
+
         newGameBtn.setOnAction(actionEvent -> newGame());
         skipBtn.setOnAction(actionEvent -> {
             game1.toNextQuestion();
-            initComponents();
             updateQuestion();
         });
         checkBtn.setText("Kiểm tra");
         checkBtn.setOnAction(actionEvent -> checkAns());
-
         quesLabel.getEngine().getLoadWorker().stateProperty().addListener((observable, oldState, newState) -> {
             if (newState == Worker.State.SUCCEEDED) {
                 setContainerColor(quesLabel, BLUE_2);
             }
         });
-
         for(int i = 0; i < ansSelections.getButtons().size(); i ++) {
             final int curBtnIndex = i;
             WebView btn = (WebView) ansSelections.getButtons().get(i);
+            btn.setVisible(false);
 
             btn.getEngine().getLoadWorker().stateProperty().addListener((observable, oldState, newState) -> {
                 if (newState == Worker.State.SUCCEEDED) {
@@ -70,11 +78,14 @@ public class Game1Controller {
 
     private void newGame() {
         game1.init();
+        progressBar.setProgress(0);
         if(! game1.isReady()) {
             new Alert(Alert.AlertType.WARNING, "Không đủ số lượng từ").show();
             return;
         }
+        newGameBtn.setVisible(false);
         updateQuestion();
+        updateStatus();
         checkBtn.setVisible(true);
         skipBtn.setVisible(true);
         quesLabel.setVisible(true);
@@ -84,34 +95,51 @@ public class Game1Controller {
         }
     }
 
+    private void finish() {
+        initComponents();
+    }
+
     private void updateQuestion() {
-        skipBtn.setDisable(game1.isLastQuestion());
+        skipBtn.setVisible(game1.questionRemain() > 1);
         checkBtn.setDisable(false);
         loadContentWithStyle(quesLabel, game1.getQuestion());
         for(int i = 0; i < ansSelections.getButtons().size(); i ++) {
             WebView btn = (WebView) ansSelections.getButtons().get(i);
             loadContentWithStyle(btn, game1.getSelections().get(i));
+            btn.setDisable(false);
         }
+    }
+
+    private void updateStatus() {
+        progressBar.setVisible(true);
+        progressBar.setProgress(game1.getProgress());
+        solved.setVisible(true);
+        fault.setVisible(true);
+        solved.setText(String.format("Solved: %02d / %02d", game1.getSolved() , Game1.NUM_QUESTION));
+        fault.setText(String.format("Solved: %02d / %02d", game1.getFault(), Game1.MAX_FAULT));
     }
 
     private void checkAns() {
         for(int i = 0; i < ansSelections.getButtons().size(); i ++) {
             WebView btn = (WebView) ansSelections.getButtons().get(i);
-            btn.setOnMouseClicked(actionEvent -> {});
+            btn.setDisable(true);
             if(i == game1.getSelectedAns()) setContainerColor(btn, "red");
             if(i == game1.getAnswerIndex()) setContainerColor(btn, "lawngreen");
         }
-        checkBtn.setText("Next question");
-        checkBtn.setDisable(game1.isLastQuestion());
-        checkBtn.setOnAction(actionEvent -> {
-            game1.toNextQuestion();
-            initComponents();
-            updateQuestion();
-        });
-    }
-
-    public void loadData() {
-        game1 = new Game1();
+        game1.submit();
+        updateStatus();
+        skipBtn.setVisible(false);
+        checkBtn.setText("Tiếp tục");
+        if(game1.checkFinish()) {
+            checkBtn.setOnAction(actionEvent -> finish());
+        } else {
+            checkBtn.setOnAction(actionEvent -> {
+                game1.toNextQuestion();
+                checkBtn.setText("Kiểm tra");
+                checkBtn.setOnAction(actionEvent1 -> checkAns());
+                updateQuestion();
+            });
+        }
     }
 
     private void setContainerColor(WebView webView, String color) {

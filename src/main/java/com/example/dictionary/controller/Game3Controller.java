@@ -5,6 +5,7 @@ import com.example.dictionary.scene.SuperScene;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -42,23 +43,23 @@ public class Game3Controller {
 
     @FXML
     void initialize() {
+        instance = this;
         time = new AtomicLong(0);
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.1), event -> time.incrementAndGet()));
         timeline.setCycleCount(Animation.INDEFINITE);
-
+        meaning.setVisible(false);
         newGame.setOnAction(event -> newGame());
         nextBtn.setOnAction(event -> nextQuestion());
         pauseBtn.setOnAction(actionEvent -> {
             isPaused = ! isPaused;
             pauseBtn.setText(isPaused ? "Tiếp tục" : "Dừng");
-            guessWord.getChildren().stream().forEach(btn -> btn.setDisable(isPaused));
-            input.getChildren().stream().forEach(btn -> btn.setDisable(isPaused));
+            guessWord.setVisible(! isPaused);
+            input.setVisible(! isPaused);
             nextBtn.setVisible(! isPaused);
         });
     }
     private AtomicLong time;
     private final Game3 game = new Game3();
-    private final int n = 5;
 
     private void newGame() {
         game.newGame();
@@ -67,6 +68,7 @@ public class Game3Controller {
             return;
         }
         newGame.setVisible(false);
+        meaning.setVisible(true);
         nextQuestion();
         bar.setProgress(0);
         isPaused = false;
@@ -127,5 +129,14 @@ public class Game3Controller {
         webView.getEngine().setUserStyleSheetLocation(css);
         webView.getEngine().loadContent(String.format(
                 "<div class = 'container noselect'> %s </div>", content));
+    }
+    private static Game3Controller instance;
+
+    public static Game3Controller getInstance() {
+        return instance;
+    }
+
+    public static void setInstance(Game3Controller instance) {
+        Game3Controller.instance = instance;
     }
 }

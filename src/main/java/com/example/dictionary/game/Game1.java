@@ -8,16 +8,8 @@ import java.util.stream.Collectors;
 import org.jsoup.Jsoup;
 
 public class Game1 extends AGame{
-    public final int NUM_QUESTION = 10;
-    private Map<String, Word> map;
-    private ArrayList<String> listWord;
-    private ArrayList<String> listDef;
-    private final ArrayList<String> questions = new ArrayList<>();
-    private final ArrayList<String> answers = new ArrayList<>();
-    private final ArrayList<ArrayList<String>> questionsSelections = new ArrayList<>();
-    private final ArrayList<Integer> selectedAnswers = new ArrayList<>();
-
-    private int currentQuestionIndex = 0;
+    public static final int NUM_QUESTION = 5;
+    public static final int MAX_FAULT = 3;
 
     public void init() {
         map = new HashMap<>();
@@ -29,19 +21,56 @@ public class Game1 extends AGame{
         listDef = this.map.values().stream().map(Word::getDef).distinct().
                 collect(Collectors.toCollection(ArrayList::new));
         currentQuestionIndex = 0;
-
+        solved = 0;
+        fault = 0;
+        isSolved.clear();
+        for(int i = 0; i < NUM_QUESTION; i ++) isSolved.add(false);
         setReady(listWord.size() >= 3 && listDef.size() >= 3);
         if(! isReady()) {
             return;
         }
+        generateRandomQuestions();
+    }
 
+    public boolean checkFinish() {
+        return questionRemain() == 0 || fault >= MAX_FAULT;
+    }
+
+    public void submit() {
+        if(getAnswerIndex() == getSelectedAns()) {
+            solved++;
+            isSolved.set(currentQuestionIndex, true);
+        }
+        else {
+            fault ++;
+        }
+    }
+
+
+    public void toNextQuestion() {
+        do {
+            currentQuestionIndex ++;
+            currentQuestionIndex %= NUM_QUESTION;
+        }
+        while (isSolved.get(currentQuestionIndex));
+        selectAns(- 1);
+    }
+
+    public int questionRemain() {
+        return NUM_QUESTION - solved;
+    }
+
+    public double getProgress() {
+        return 1.0 * solved / NUM_QUESTION;
+    }
+
+    private void generateRandomQuestions() {
         Collections.shuffle(listWord);
         Collections.shuffle(listDef);
         questions.clear();
         answers.clear();
         questionsSelections.clear();
         selectedAnswers.clear();
-
         for(int i = 0; i < NUM_QUESTION; i ++) {
             ArrayList<String> selections = new ArrayList<>();
             String question;
@@ -66,7 +95,6 @@ public class Game1 extends AGame{
                                 w -> !map.get(w).getDef().equals(finalAns)
                         ).toList().subList(0, 2));
             }
-
             Collections.shuffle(selections);
             questions.add(question);
             answers.add(answer);
@@ -74,15 +102,25 @@ public class Game1 extends AGame{
             selectedAnswers.add(-1);
         }
     }
+    private Map<String, Word> map;
+    private ArrayList<String> listWord;
+    private ArrayList<String> listDef;
+    private final ArrayList<String> questions = new ArrayList<>();
+    private final ArrayList<String> answers = new ArrayList<>();
+    private final ArrayList<ArrayList<String>> questionsSelections = new ArrayList<>();
+    private final ArrayList<Integer> selectedAnswers = new ArrayList<>();
+    private final ArrayList<Boolean> isSolved = new ArrayList<>();
+    private int solved = 0;
+    private int fault = 0;
+    private int currentQuestionIndex = 0;
 
-    private String getTextFromHTML(String html) {
-        return Jsoup.parse(html).text();
+    public int getSolved() {
+        return solved;
     }
 
-    public void playAgain() {
-        init();
+    public int getFault() {
+        return fault;
     }
-
     public String getQuestion() {
         return questions.get(currentQuestionIndex);
     }
@@ -101,25 +139,12 @@ public class Game1 extends AGame{
     public void selectAns(int selectedAns) {
         selectedAnswers.set(currentQuestionIndex, selectedAns);
     }
-
     public int getSelectedAns() {
         return selectedAnswers.get(currentQuestionIndex);
     }
 
-    public int getCurrentQuestionIndex() {
-        return currentQuestionIndex;
+    private String getTextFromHTML(String html) {
+        return Jsoup.parse(html).text();
     }
 
-    public void toNextQuestion() {
-        if(currentQuestionIndex + 1 < NUM_QUESTION) {
-            currentQuestionIndex++;
-        }
-    }
-
-    public void toPrevQuestion() {
-        if(currentQuestionIndex > 0) currentQuestionIndex --;
-    }
-    public boolean isLastQuestion() {
-        return currentQuestionIndex == NUM_QUESTION - 1;
-    }
 }

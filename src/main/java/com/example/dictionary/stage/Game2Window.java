@@ -11,5 +11,6 @@ public class Game2Window extends Window {
         window.setTitle("Game2");
         window.setResizable(false);
         window.setScene((new SuperScene(SceneEnum.GAME_2)).getScene());
+        window.setOnHiding(windowEvent -> window.setScene((new SuperScene(SceneEnum.GAME_2)).getScene()));
     }
 }

@@ -27,7 +27,6 @@ public class LoginController {
                return;
             }
             HomeController.getInstance().loadData();
-            Game1Controller.getInstance().loadData();
             PrimaryWindow.getInstance().setSceneType(SceneEnum.HOME);
         });
 

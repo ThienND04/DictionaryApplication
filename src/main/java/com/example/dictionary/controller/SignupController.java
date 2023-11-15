@@ -33,7 +33,6 @@ public class SignupController {
                 boolean res = UserManager.getInstance().create(username.getText(), password1.getText());
                 if (res) {
                     HomeController.getInstance().loadData();
-                    Game1Controller.getInstance().loadData();
                     PrimaryWindow.getInstance().setSceneType(SceneEnum.HOME);
                 } else {
                     new Alert(Alert.AlertType.WARNING, "Tên đăng nhập đã tồn tại").show();

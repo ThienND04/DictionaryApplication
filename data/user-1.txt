@@ -3,12 +3,12 @@ expert<::>chuyên gia<::>
 bicycle<::>xe đạp<::>
 captain american<::>đội trưởng mỹ<::>
 malfunction<::>sự cố<::>
-computer<::><html dir="ltr"><head></head><body contenteditable="false">máy tính</body></html><::>
+computer<::>máy tính<::>
 so far away<::><html dir="ltr"><head></head><body contenteditable="false"><h1>quá đỗi xa vời<span style="font-weight: bold;">&nbsp;</span></h1></body></html><::>
 helper<::><html>người giúp đỡ</html><::>
 car<::>xe hơi<::>
 hello my friend<::>xin chào bạn của tôi<::>
-duck<::><html dir="ltr"><head></head><body contenteditable="false"><span style="font-size: large; font-weight: bold; font-style: italic; text-decoration: underline;">con vịt</span></body></html><::>
+duck<::>con vịt<::>
 im fine<::>Tôi ổn<::>
 how are you<::>Bạn khỏe không<::>
 helpful<::><html>hữu ích</html><::>
@@ -17,7 +17,7 @@ sacred<::><html>Linh thiêng</html><::>
 where are you now<::>Giờ bạn đang ở đâu<::>
 hometown<::>quê hương<::>
 homework<::>bài tập về nhà<::>
-unspecified<::><html dir="ltr"><head></head><body contenteditable="false">không xác định</body></html><::>
+unspecified<::>không xác định<::>
 super idol<::>siêu thần tượng<::>
 query<::><html dir="ltr"><head></head><body contenteditable="false"><p><span style="font-weight: bold; font-family: &quot;&quot;;">truy vấn</span></p></body></html><::>
 hello world<::>Chào thế giới<::>
@@ -28,4 +28,4 @@ Faulty<::><html dir="ltr"><head></head><body><span style="text-decoration: under
 supervise<::><html>giám sát</html><::>
 hello<::>Xin chào<::>
 supervisor<::><html><html dir="ltr"><head></head><body contenteditable="false">người giám sát</body></html></html><::>
-helperess<::><html>người giúp việc</html><::>
+helperess<::>người giúp việc<::>

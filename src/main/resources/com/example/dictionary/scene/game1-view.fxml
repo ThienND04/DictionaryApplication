@@ -2,6 +2,8 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -15,9 +17,24 @@
                <children>
                   <VBox prefHeight="82.0" prefWidth="600.0">
                      <children>
-                        <HBox prefHeight="24.0" prefWidth="600.0">
+                        <HBox alignment="CENTER_LEFT" prefHeight="36.0" prefWidth="600.0">
                            <children>
                               <Button fx:id="newGameBtn" mnemonicParsing="false" text="New Game" />
+                              <HBox alignment="CENTER_RIGHT" prefHeight="36.0" prefWidth="337.0">
+                                 <children>
+                                    <Label fx:id="solved" text="Solved" textFill="#12ae0f" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER" prefHeight="36.0" prefWidth="175.0">
+                                 <children>
+                                    <Label fx:id="fault" text="Fault" textFill="#e42a0e" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="35.0" prefWidth="600.0">
+                           <children>
+                              <ProgressBar fx:id="progressBar" prefHeight="20.0" prefWidth="569.0" progress="0.0" />
                            </children>
                         </HBox>
                      </children></VBox>

@@ -14,5 +14,9 @@ public class Game2Window extends Window {
         window.setTitle("Game2");
         window.setResizable(false);
         changeScene(SceneEnum.GAME_2);
+        window.setOnHiding(windowEvent -> {
+            scenes.put(SceneEnum.GAME_2, new SuperScene(SceneEnum.GAME_2));
+            changeScene(SceneEnum.GAME_2);
+        });
     }
 }

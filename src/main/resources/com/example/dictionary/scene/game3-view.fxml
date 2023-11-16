@@ -8,12 +8,11 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.web.WebView?>
 
-<AnchorPane prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.dictionary.controller.Game3Controller">
+<AnchorPane prefHeight="365.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.dictionary.controller.Game3Controller">
    <children>
-      <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <VBox maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS">
+      <VBox prefHeight="445.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <VBox maxWidth="1.7976931348623157E308" prefWidth="580.0" VBox.vgrow="ALWAYS">
             <children>
                <HBox>
                   <children>
@@ -28,13 +27,9 @@
                </ProgressBar>
                <HBox alignment="CENTER" focusTraversable="true" maxWidth="1.7976931348623157E308" prefHeight="126.0" prefWidth="579.0">
                   <children>
-                     <Label maxHeight="1.7976931348623157E308" prefHeight="111.0" prefWidth="162.0" text="Nghĩa:">
-                        <font>
-                           <Font size="20.0" />
-                        </font>
-                     </Label>
-                     <WebView fx:id="meaning" prefHeight="137.0" prefWidth="385.0" HBox.hgrow="ALWAYS" />
-                     <Label fx:id="inform" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="111.0" prefWidth="153.0" wrapText="true">
+                     <HBox prefHeight="126.0" prefWidth="169.0" />
+                     <Label fx:id="meaning" alignment="CENTER" prefHeight="80.0" prefWidth="295.0" text="Meaning" />
+                     <Label fx:id="inform" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="111.0" prefWidth="165.0" wrapText="true">
                         <font>
                            <Font size="20.0" />
                         </font>

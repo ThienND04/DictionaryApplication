@@ -86,7 +86,7 @@
                                           <StackPane alignment="TOP_RIGHT" VBox.vgrow="ALWAYS">
                                              <children>
                                                             <WebView fx:id="definitionView" maxHeight="400.0" maxWidth="100000.0" minHeight="-1.0" minWidth="-1.0" prefHeight="174.0" prefWidth="226.0" />
-                                                <Button styleClass="btn-11" fx:id="speakBtn" mnemonicParsing="false" prefHeight="14.0" prefWidth="11.0">
+                                                <Button fx:id="speakBtn" mnemonicParsing="false" prefHeight="14.0" prefWidth="11.0" styleClass="btn-11">
                                                    <graphic>
                                                       <ImageView fx:id="speakImg" fitHeight="28.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true" />
                                                    </graphic>
@@ -100,7 +100,7 @@
                                         </VBox>
                                         <VBox spacing="5.0">
                                             <children>
-                                                <Button fx:id="addBtn" contentDisplay="BOTTOM" focusTraversable="false" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="100.0" text="Thêm từ mới" />
+                                                <Button fx:id="addBtn" contentDisplay="BOTTOM" focusTraversable="false" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="104.0" text="Thêm từ mới" />
                                                 <Button fx:id="editBtn" contentDisplay="BOTTOM" focusTraversable="false" mnemonicParsing="false" prefHeight="26.0" prefWidth="100.0" text="Chỉnh sửa" visible="false" />
                                                 <Button fx:id="deleteBtn" contentDisplay="BOTTOM" focusTraversable="false" mnemonicParsing="false" prefHeight="26.0" prefWidth="100.0" text="Xóa" visible="false" />
                                             </children>

@@ -5,6 +5,7 @@ import com.example.dictionary.scene.SuperScene;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -21,15 +22,10 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class Game3Controller {
-    private static Game3Controller instance;
-
-    public static Game3Controller getInstance() {
-        return instance;
-    }
     @FXML
     public Label inform;
     @FXML
-    private WebView meaning;
+    private Label meaning;
     @FXML
     private HBox guessWord;
     @FXML
@@ -50,20 +46,19 @@ public class Game3Controller {
         time = new AtomicLong(0);
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.1), event -> time.incrementAndGet()));
         timeline.setCycleCount(Animation.INDEFINITE);
-
+        meaning.setVisible(false);
         newGame.setOnAction(event -> newGame());
         nextBtn.setOnAction(event -> nextQuestion());
         pauseBtn.setOnAction(actionEvent -> {
             isPaused = ! isPaused;
             pauseBtn.setText(isPaused ? "Tiếp tục" : "Dừng");
-            guessWord.getChildren().stream().forEach(btn -> btn.setDisable(isPaused));
-            input.getChildren().stream().forEach(btn -> btn.setDisable(isPaused));
+            guessWord.setVisible(! isPaused);
+            input.setVisible(! isPaused);
             nextBtn.setVisible(! isPaused);
         });
     }
     private AtomicLong time;
-    private Game3 game;
-    private final int n = 5;
+    private final Game3 game = new Game3();
 
     private void newGame() {
         game.newGame();
@@ -72,6 +67,7 @@ public class Game3Controller {
             return;
         }
         newGame.setVisible(false);
+        meaning.setVisible(true);
         nextQuestion();
         bar.setProgress(0);
         isPaused = false;
@@ -86,7 +82,7 @@ public class Game3Controller {
 
     private void nextQuestion() {
         game.nextQuestion();
-        loadContentWithStyle(meaning, game.getMeaning());
+        meaning.setText(game.getMeaning());
         inform.setText("");
         guessWord.getChildren().clear();
         input.getChildren().clear();
@@ -127,14 +123,11 @@ public class Game3Controller {
         }
     }
 
-    private void loadContentWithStyle(WebView webView, String content) {
-        String css = SuperScene.class.getResource("common.css").toExternalForm();
-        webView.getEngine().setUserStyleSheetLocation(css);
-        webView.getEngine().loadContent(String.format(
-                "<div class = 'container noselect'> %s </div>", content));
+    private static Game3Controller instance;
+    public static Game3Controller getInstance() {
+        return instance;
     }
-
-    public void handleLogin() {
-         game = new Game3();
+    public static void setInstance(Game3Controller instance) {
+        Game3Controller.instance = instance;
     }
 }

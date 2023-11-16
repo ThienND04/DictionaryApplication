@@ -25,7 +25,7 @@ public class Game2Controller {
         return instance;
     }
     public static final int NUMBER_OF_QUESTIONS = 10;
-    private Game2 game;
+    private Game2 game = new Game2();
     private final AtomicLong time = new AtomicLong(0);
     @FXML
     GridPane grid;
@@ -38,19 +38,19 @@ public class Game2Controller {
     Button pauseBtn;
     private int solvedQuestion = 0;
     private boolean isPaused;
-    private WebView clickedWord;
+    private Button clickedWord;
     private String clickedText;
 
 
     @FXML
-    void initialize() {
+    public void initialize() {
         instance = this;
         newGameBtn.setOnAction(event -> newGame());
         pauseBtn.setOnAction(event -> handlePauseBtn());
         timeline.setCycleCount(Animation.INDEFINITE);
 
         for (int i = 0; i < 2 * NUMBER_OF_QUESTIONS; i++) {
-            WebView temp = (WebView) grid.getChildren().get(i);
+            Button temp = (Button) grid.getChildren().get(i);
             temp.setVisible(false);
         }
     }
@@ -65,29 +65,26 @@ public class Game2Controller {
         }
 
         for (int i = 0; i < 2 * NUMBER_OF_QUESTIONS; i++) {
-            WebView temp = (WebView) grid.getChildren().get(i);
-            loadContentWithStyle(temp, list.get(i));
-            temp.setVisible(true);
+            Button btn = (Button) grid.getChildren().get(i);
+            btn.setText(list.get(i));
+            btn.setVisible(true);
             int finalI = i;
-            temp.setOnMouseClicked(event -> {
+            btn.setOnMouseClicked(event -> {
                 if (clickedWord != null) {
                     if (game.checkAnswer(clickedText, list.get(finalI))) {
                         clickedWord.setVisible(false);
-                        temp.setVisible(false);
+                        btn.setVisible(false);
                         this.solvedQuestion++;
                         if (this.solvedQuestion == NUMBER_OF_QUESTIONS)
                             finishGame();
                     } else {
-                        setWebContainerStyle(clickedWord, "backgroundColor = '#05386B'");
-                        setWebContainerStyle(clickedWord, "borderColor = '#05386B'");
-                        setWebContainerStyle(clickedWord, "color = 'black'");
+                        btn.setStyle("-fx-background-color: #05386B; -fx-text-fill: white");
+                        clickedWord.setStyle("-fx-background-color: #05386B; -fx-text-fill: white");
                     }
                     clickedWord = null;
                 } else {
-                    setWebContainerStyle(temp, "backgroundColor = 'lightblue'");
-                    setWebContainerStyle(temp, "borderColor = 'lightblue'");
-                    setWebContainerStyle(temp,"color = '#EDF5E1'");
-                    clickedWord = temp;
+                    btn.setStyle("-fx-background-color: lightblue; -fx-text-fill: black");
+                    clickedWord = btn;
                     clickedText = list.get(finalI);
                 }
             });
@@ -104,12 +101,7 @@ public class Game2Controller {
         if (isPaused) timeline.pause();
         else timeline.play();
         pauseBtn.setText(isPaused ? "Tiếp tục" : "Tạm dừng");
-        for (int i = 0; i < grid.getChildren().size(); i++) {
-            WebView temp = (WebView) grid.getChildren().get(i);
-            if (i < 2 * NUMBER_OF_QUESTIONS) {
-                temp.setDisable(isPaused);
-            }
-        }
+        grid.setVisible(! isPaused);
     }
 
     private void finishGame() {
@@ -120,30 +112,8 @@ public class Game2Controller {
         newGameBtn.setVisible(true);
         pauseBtn.setVisible(false);
 
-        for (int i = 0; i < 2 * NUMBER_OF_QUESTIONS; i++) {
+          for (int i = 0; i < 2 * NUMBER_OF_QUESTIONS; i++) {
             grid.getChildren().get(i).setVisible(false);
         }
-    }
-
-    private void setWebContainerStyle(WebView webView, String style) {
-        webView.getEngine().executeScript(String.format(
-                "document.getElementsByClassName('container')[0].style.%s", style));
-    }
-
-    /**
-     * Note: after loading content, webview need to load.
-     *
-     * @param webView webview
-     * @param content web's content
-     */
-    private void loadContentWithStyle(WebView webView, String content) {
-        String css = SuperScene.class.getResource("common.css").toExternalForm();
-        webView.getEngine().setUserStyleSheetLocation(css);
-        webView.getEngine().loadContent(String.format(
-                "<div class = 'container noselect'> %s </div>", content));
-    }
-
-    public void handleLogin() {
-        game = new Game2();
     }
 }

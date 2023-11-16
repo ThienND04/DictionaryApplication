@@ -2,6 +2,7 @@ package com.example.dictionary.game;
 
 import com.example.dictionary.word.Word;
 import com.example.dictionary.user.UserManager;
+import org.jsoup.Jsoup;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,7 +32,7 @@ public class Game3 {
     }
 
     public String getMeaning() {
-        return list.get(currentQuestionI).getDef();
+        return getTextFromHTML(list.get(currentQuestionI).getDef());
     }
 
     public String getGuessWord() {
@@ -60,5 +61,8 @@ public class Game3 {
 
     public void increaseSolvedQuestion() {
         solvedQuestion ++;
+    }
+    private String getTextFromHTML(String html) {
+        return Jsoup.parse(html).text();
     }
 }

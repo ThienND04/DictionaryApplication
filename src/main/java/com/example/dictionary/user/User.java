@@ -11,6 +11,8 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class User implements Serializable {
     public static final String SPLITTING_CHARACTERS = "<::>";
@@ -136,20 +138,36 @@ public class User implements Serializable {
         }
     }
 
-    public ArrayList<Word> getRandomWords(int n) {
+    public ArrayList<Word> getRandomWords(int n, Predicate<? super Word> predicate) {
         Random random = new Random();
         ArrayList<Word> res = new ArrayList<>();
         Set<Integer> st = new HashSet<>();
+        ArrayList<Word> wordsFiltered = new ArrayList<>(words.values().stream().filter(predicate).collect(Collectors.toList()));
 
-        if (n > words.size()) return res;
+        if (n > wordsFiltered.size()) return res;
         while (st.size() < n) {
-            st.add(random.nextInt(words.size()));
+            st.add(random.nextInt(wordsFiltered.size()));
         }
         for (Integer t : st) {
             res.add(words.get(allWords.get(t)));
         }
         return res;
     }
+//
+//    public ArrayList<Word> getRandomWords(int n) {
+//        Random random = new Random();
+//        ArrayList<Word> res = new ArrayList<>();
+//        Set<Integer> st = new HashSet<>();
+//
+//        if (n > words.size()) return res;
+//        while (st.size() < n) {
+//            st.add(random.nextInt(words.size()));
+//        }
+//        for (Integer t : st) {
+//            res.add(words.get(allWords.get(t)));
+//        }
+//        return res;
+//    }
 
     private void readImage() {
         try {

@@ -6,9 +6,6 @@ import com.example.dictionary.stage.PrimaryWindow;
 public class Controller {
     public static void handleChangeUser() {
         HomeController.getInstance().handleLogin();
-        Game1Controller.getInstance().handleLogin();
-        Game2Controller.getInstance().handleLogin();
-        Game3Controller.getInstance().handleLogin();
         GameController.getInstance().handleLogin();
         HomeController.getInstance().handleLogin();
         TranslateController.getInstance().handleLogin();

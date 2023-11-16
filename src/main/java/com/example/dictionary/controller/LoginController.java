@@ -18,21 +18,18 @@ public class LoginController {
     private Button loginBtn;
     @FXML
     private PasswordField password;
+
     @FXML
     void initialize() {
         loginBtn.setOnAction(event -> {
             boolean res = UserManager.getInstance().login(username.getText(), password.getText());
-            if(!res) {
-               new Alert(Alert.AlertType.WARNING, "Tên đăng nhập hoặc mật khẩu không chính xác").show();
-               return;
+            if (!res) {
+                new Alert(Alert.AlertType.WARNING, "Tên đăng nhập hoặc mật khẩu không chính xác").show();
             }
-            HomeController.getInstance().loadData();
-            Game1Controller.getInstance().loadData();
-            PrimaryWindow.getInstance().setSceneType(SceneEnum.HOME);
         });
 
         createBtn.setOnAction(event -> {
-            PrimaryWindow.getInstance().setSceneType(SceneEnum.SIGNUP);
+            PrimaryWindow.getInstance().changeScene(SceneEnum.SIGNUP);
         });
     }
 }

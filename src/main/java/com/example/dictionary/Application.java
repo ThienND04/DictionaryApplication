@@ -28,11 +28,9 @@ public class Application extends javafx.application.Application {
     }
 
     public void handleLogOut() {
-        for(WindowEnum windowEnum : windows.keySet()) {
-            windows.get(windowEnum).hide();
-        }
+        windows.forEach((k, v) -> v.hide());
         windows.get(WindowEnum.PRIMARY).show();
-        PrimaryWindow.getInstance().setSceneType(SceneEnum.LOGIN);
+        PrimaryWindow.getInstance().changeScene(SceneEnum.LOGIN);
     }
 
     @Override

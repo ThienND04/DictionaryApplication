@@ -27,14 +27,14 @@
                                         </HBox>
                                         <HBox alignment="CENTER_RIGHT" spacing="10.0">
                                             <children>
-                                                <Label maxHeight="1.7976931348623157E308" text="Nhập mật khẩu" />
+                                                <Label maxHeight="1.7976931348623157E308" text="Mật khẩu" />
                                                 <PasswordField fx:id="password" />
                                             </children>
                                         </HBox>
                                     </children>
                                 </VBox>
-                                <Button fx:id="loginBtn" mnemonicParsing="false" prefHeight="21.0" prefWidth="78.0" text="Login" />
-                                <Button fx:id="createBtn" maxHeight="1.7976931348623157E308" mnemonicParsing="false" prefHeight="26.0" prefWidth="160.0" text="Create new account" />
+                                <Button fx:id="loginBtn" mnemonicParsing="false" prefHeight="21.0" prefWidth="78.0" text="Đăng nhập" />
+                                <Button fx:id="createBtn" maxHeight="1.7976931348623157E308" mnemonicParsing="false" prefHeight="26.0" prefWidth="160.0" text="Tạo tài khoản mới" />
                             </children>
                         </VBox>
                     </children>

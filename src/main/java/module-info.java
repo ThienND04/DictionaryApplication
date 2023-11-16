@@ -18,4 +18,6 @@ module com.example.dictionary {
     opens com.example.dictionary.scene to javafx.fxml;
     exports com.example.dictionary.user;
     opens com.example.dictionary.user to javafx.fxml;
+    exports com.example.dictionary.word;
+    opens com.example.dictionary.word to javafx.fxml;
 }

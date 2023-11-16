@@ -3,10 +3,7 @@ package com.example.dictionary.stage;
 import com.example.dictionary.scene.*;
 import javafx.stage.Stage;
 
-import java.util.HashMap;
-
 public class PrimaryWindow extends Window {
-    private final HashMap<SceneEnum, SuperScene> map = new HashMap<>();
 
     private static PrimaryWindow instance;
 
@@ -15,26 +12,20 @@ public class PrimaryWindow extends Window {
     }
 
     public PrimaryWindow(Stage stage) {
+        super(stage, "Dictionary Application");
         instance = this;
-        window = stage;
-        window.setTitle("Dictionary Application");
-        initScenes();
-        setSceneType(SceneEnum.LOGIN);
+        changeScene(SceneEnum.LOGIN);
     }
 
 
+    @Override
     public void initScenes() {
-        map.put(SceneEnum.LOGIN, new SuperScene(SceneEnum.LOGIN));
-        map.put(SceneEnum.GAME, new PrimaryScene(this, SceneEnum.GAME));
-        map.put(SceneEnum.HOME, new PrimaryScene(this, SceneEnum.HOME));
-        map.put(SceneEnum.TRANSLATE, new PrimaryScene(this, SceneEnum.TRANSLATE));
-        map.put(SceneEnum.USER, new PrimaryScene(this, SceneEnum.USER));
-        map.put(SceneEnum.SIGNUP, new SuperScene(SceneEnum.SIGNUP));
-    }
-
-    public void setSceneType(SceneEnum sceneType) {
-        window.setScene(map.get(sceneType).getScene());
-        window.setMaximized(false);
+        scenes.put(SceneEnum.LOGIN, new SuperScene(SceneEnum.LOGIN));
+        scenes.put(SceneEnum.GAME, new SuperScene(SceneEnum.GAME));
+        scenes.put(SceneEnum.TRANSLATE, new SuperScene(SceneEnum.TRANSLATE));
+        scenes.put(SceneEnum.USER, new SuperScene(SceneEnum.USER));
+        scenes.put(SceneEnum.SIGNUP, new SuperScene(SceneEnum.SIGNUP));
+        scenes.put(SceneEnum.HOME, new SuperScene(SceneEnum.HOME));
     }
 }
 

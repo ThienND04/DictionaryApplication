@@ -1,6 +1,6 @@
 package com.example.dictionary.controller;
 
-import com.example.dictionary.user.Data;
+import com.example.dictionary.word.Data;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;

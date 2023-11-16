@@ -110,7 +110,7 @@ public class Game1Controller {
         });
     }
 
-    public void loadData() {
+    public void handleLogin() {
         game1 = new Game1();
     }
 

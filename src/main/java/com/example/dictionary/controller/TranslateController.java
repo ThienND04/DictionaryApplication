@@ -1,11 +1,13 @@
 package com.example.dictionary.controller;
 
-import com.example.dictionary.user.Data;
 import com.example.dictionary.Application;
-import com.example.dictionary.Word;
+import com.example.dictionary.word.Word;
 import com.example.dictionary.api.TextToSpeech;
 import com.example.dictionary.api.Translate;
+import com.example.dictionary.scene.SceneEnum;
+import com.example.dictionary.stage.PrimaryWindow;
 import com.example.dictionary.stage.WindowEnum;
+import com.example.dictionary.user.UserManager;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.concurrent.Worker;
@@ -13,6 +15,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Circle;
 import javafx.scene.web.WebView;
 import netscape.javascript.JSObject;
 
@@ -20,6 +24,14 @@ import java.util.ArrayList;
 
 public class TranslateController {
     private static final Connector connector = new Connector();
+    @FXML
+    Circle userNav;
+    @FXML
+    Label gameNav;
+    @FXML
+    Label translateNav;
+    @FXML
+    Label homeNav;
     @FXML
     private Button editBtn;
     @FXML
@@ -42,6 +54,7 @@ public class TranslateController {
     private ImageView speakImg;
 
     public void find(String word) {
+        UserManager.getInstance().getCurrentUser().increaseCountOfSearchWords();
         wordToTranslate.setText(word);
         translateBtn.fire();
     }
@@ -68,6 +81,10 @@ public class TranslateController {
 
         type.getItems().addAll(langs);
         type.setValue(langs.get(0));
+
+        homeNav.setOnMouseClicked(e -> PrimaryWindow.getInstance().changeScene(SceneEnum.HOME));
+        gameNav.setOnMouseClicked(e -> PrimaryWindow.getInstance().changeScene(SceneEnum.GAME));
+        userNav.setOnMouseClicked(e -> PrimaryWindow.getInstance().changeScene(SceneEnum.USER));
 
         wordToTranslate.textProperty().addListener((a, b, c) -> {
             if (c.trim().length() > 0) {
@@ -156,7 +173,7 @@ public class TranslateController {
             if (!wordToTranslate.getText().equals("") && !meaning.equals("")) {
                 Alert a = new Alert(Alert.AlertType.INFORMATION, "Đã thêm thành công");
                 a.show();
-                Data.getInstance().addWord(new Word(wordToTranslate.getText(), "<html>" + meaning + "</html>"));
+                UserManager.getInstance().getCurrentUser().addWord(new Word(wordToTranslate.getText(), "<html>" + meaning + "</html>"));
                 HomeController.getInstance().loadWordList();
             } else
                 new Alert(Alert.AlertType.WARNING, "Không được để trống").show();
@@ -178,6 +195,14 @@ public class TranslateController {
         meaning = newDefinition;
     }
 
+    public void handleLogin() {
+        initUserImage();
+    }
+
+    public void initUserImage() {
+        ImagePattern imagePattern = new ImagePattern(UserManager.getInstance().getCurrentUser().getImage());
+        userNav.setFill(imagePattern);
+    }
 }
 
 

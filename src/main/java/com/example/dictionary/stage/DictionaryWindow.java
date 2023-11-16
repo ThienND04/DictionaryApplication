@@ -6,8 +6,12 @@ import javafx.stage.Stage;
 
 public class DictionaryWindow extends Window {
     public DictionaryWindow(Stage stage) {
-        window = new Stage();
-        window.setTitle("Offline Dictionary");
-        window.setScene((new SuperScene(SceneEnum.DICTIONARY)).getScene());
+        super("Offline Dictionary");
+        changeScene(SceneEnum.DICTIONARY);
+    }
+
+    @Override
+    protected void initScenes() {
+        scenes.put(SceneEnum.DICTIONARY, new SuperScene(SceneEnum.DICTIONARY));
     }
 }

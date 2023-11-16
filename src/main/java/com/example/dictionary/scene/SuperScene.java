@@ -14,7 +14,7 @@ public class SuperScene {
     public SuperScene(SceneEnum type) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader();
-            String path = SceneConstants.fxmlPaths.get(type);
+            String path = type.getValue();
             AnchorPane root = fxmlLoader.load(getClass().getResourceAsStream(path));
             scene = new Scene(root);
 

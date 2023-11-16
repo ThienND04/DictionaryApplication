@@ -39,8 +39,8 @@
                               </HBox>
                            </children>
                         </VBox>
-                        <Button fx:id="createBtn" maxHeight="1.7976931348623157E308" mnemonicParsing="false" prefHeight="26.0" prefWidth="76.0" text="Create" />
-                        <Button fx:id="loginBtn" mnemonicParsing="false" prefHeight="30.0" prefWidth="65.0" text="Login" />
+                        <Button fx:id="createBtn" maxHeight="1.7976931348623157E308" mnemonicParsing="false" prefHeight="26.0" prefWidth="53.0" text="Tạo" />
+                        <Button fx:id="loginBtn" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Đăng nhập" />
                      </children>
                   </VBox>
                </children>

@@ -1,12 +1,11 @@
 package com.example.dictionary.game;
 
-import com.example.dictionary.user.Data;
-import com.example.dictionary.Word;
+import com.example.dictionary.word.Word;
+import com.example.dictionary.user.UserManager;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class Game3 {
     private Map<String, Word> map;
@@ -20,7 +19,7 @@ public class Game3 {
     }
 
     public void newGame() {
-        map = Data.getInstance().getData();
+        map = UserManager.getInstance().getCurrentUser().getWords();
         list = new ArrayList<Word>(map.values().stream().distinct().toList());
         solvedQuestion = 0;
         currentQuestionI = 0;

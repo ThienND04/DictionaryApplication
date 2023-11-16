@@ -1,13 +1,19 @@
 package com.example.dictionary.stage;
 
+import com.example.dictionary.scene.SceneEnum;
 import com.example.dictionary.scene.WaitingScene;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 
 public class WaitingWindow extends Window {
+    @Override
+    protected void initScenes() {
+        scenes.put(SceneEnum.WAITING, new WaitingScene());
+    }
+
     public WaitingWindow(Stage stage) {
-        window = new Stage();
+        super();
         window.initStyle(StageStyle.TRANSPARENT);
         window.setScene((new WaitingScene()).getScene());
         window.setAlwaysOnTop(true);
@@ -20,5 +26,6 @@ public class WaitingWindow extends Window {
         stage.yProperty().addListener((a, b, c) -> window.setY(stage.getY() + stage.getHeight() / 2 - window.getHeight() / 2));
         stage.widthProperty().addListener((a, b, c) -> window.setX(stage.getX() + stage.getWidth() / 2 - window.getWidth() / 2));
         stage.heightProperty().addListener((a, b, c) -> window.setY(stage.getY() + stage.getHeight() / 2 - window.getHeight() / 2));
+        changeScene(SceneEnum.WAITING);
     }
 }

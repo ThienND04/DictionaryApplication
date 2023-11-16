@@ -1,21 +1,19 @@
 package com.example.dictionary.game;
 
-import com.example.dictionary.user.Data;
-import com.example.dictionary.Word;
+import com.example.dictionary.word.Word;
 import com.example.dictionary.controller.Game2Controller;
+import com.example.dictionary.user.UserManager;
 import org.jsoup.Jsoup;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 public class Game2 extends AGame{
     private ArrayList<Word> data;
 
     public ArrayList<String> generate() {
         ArrayList<String> res = new ArrayList<>();
-        data = Data.getInstance().getRandomWords(Game2Controller.NUMBER_OF_QUESTIONS);
+        data = UserManager.getInstance().getCurrentUser().getRandomWords(Game2Controller.NUMBER_OF_QUESTIONS);
         data.forEach(
             word -> {
                 word.setWord(getTextFromHTML(word.getWord()));

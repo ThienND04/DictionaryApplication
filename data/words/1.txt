@@ -1,31 +1,35 @@
-gun<::><html dir="ltr"><head></head><body contenteditable="false"><span style="font-weight: bold; font-style: italic;">súng</span></body></html><::>
+gun<::><html dir="ltr"><head></head><body contenteditable="false">súng</body></html><::>
 expert<::>chuyên gia<::>
 bicycle<::>xe đạp<::>
+about<::><html>Về</html><::>
 captain american<::>đội trưởng mỹ<::>
+faulty<::><html dir="ltr"><head></head><body contenteditable="false"><span style="text-decoration: underline;">bị lỗi&nbsp;</span></body></html><::>
 malfunction<::>sự cố<::>
 computer<::><html dir="ltr"><head></head><body contenteditable="false">máy tính</body></html><::>
-so far away<::><html dir="ltr"><head></head><body contenteditable="false"><h1>quá đỗi xa vời<span style="font-weight: bold;">&nbsp;</span></h1></body></html><::>
+so far away<::>quá đỗi xa vời<::>
 helper<::><html>người giúp đỡ</html><::>
 car<::>xe hơi<::>
 hello my friend<::>xin chào bạn của tôi<::>
 duck<::><html dir="ltr"><head></head><body contenteditable="false"><span style="font-size: large; font-weight: bold; font-style: italic; text-decoration: underline;">con vịt</span></body></html><::>
 im fine<::>Tôi ổn<::>
 how are you<::>Bạn khỏe không<::>
-helpful<::><html>hữu ích</html><::>
+helpful<::>hữu ích<::>
 bullet<::><html dir="ltr"><head></head><body contenteditable="false"><h5>đạn</h5></body></html><::>
-sacred<::><html>Linh thiêng</html><::>
+sacred<::>Linh thiêng<::>
+summary<::>bản tóm tắt<::>
 where are you now<::>Giờ bạn đang ở đâu<::>
 hometown<::>quê hương<::>
 homework<::>bài tập về nhà<::>
-unspecified<::><html dir="ltr"><head></head><body contenteditable="false">không xác định</body></html><::>
+unspecified<::>không xác định<::>
 super idol<::>siêu thần tượng<::>
-query<::><html dir="ltr"><head></head><body contenteditable="false"><p><span style="font-weight: bold; font-family: &quot;&quot;;">truy vấn</span></p></body></html><::>
+query<::>truy vấn<::>
 hello world<::>Chào thế giới<::>
 let me love you<::>hãy để tôi yêu bạn<::>
-heart<::><html dir="ltr"><head></head><body contenteditable="false"><p><span style="font-family: &quot;&quot;;">trái tim</span></p></body></html><::>
+heart<::>trái tim<::>
 helpmeet<::><html><html dir="ltr"><head></head><body contenteditable="false"><span style="font-weight: bold;">gặp gỡ trợ giúp</span></body></html></html><::>
-Faulty<::><html dir="ltr"><head></head><body><span style="text-decoration: underline;">bị lỗi&nbsp;</span></body></html><::>
-supervise<::><html>giám sát</html><::>
+shellfish<::>động vật có vỏ<::>
+supervise<::>giám sát<::>
+campaign<::><html>chiến dịch</html><::>
 hello<::>Xin chào<::>
 supervisor<::><html><html dir="ltr"><head></head><body contenteditable="false">người giám sát</body></html></html><::>
-helperess<::><html>người giúp việc</html><::>
+helperess<::>người giúp việc<::>

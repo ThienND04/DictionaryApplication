@@ -5,10 +5,14 @@ import com.example.dictionary.scene.SuperScene;
 import javafx.stage.Stage;
 
 public class Game1Window extends Window {
+    @Override
+    protected void initScenes() {
+        scenes.put(SceneEnum.GAME_1, new SuperScene(SceneEnum.GAME_1));
+    }
+
     public Game1Window(Stage stage) {
-        window = new Stage();
-        window.setTitle("Game1");
+        super("Game1");
         window.setResizable(false);
-        window.setScene((new SuperScene(SceneEnum.GAME_1)).getScene());
+        changeScene(SceneEnum.GAME_1);
     }
 }

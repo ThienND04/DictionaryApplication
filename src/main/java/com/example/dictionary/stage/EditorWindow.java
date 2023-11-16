@@ -6,11 +6,15 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class EditorWindow extends Window {
+    @Override
+    protected void initScenes() {
+        scenes.put(SceneEnum.EDITOR, new SuperScene(SceneEnum.EDITOR));
+    }
+
     public EditorWindow(Stage stage) {
-        window = new Stage();
+        super("Editor");
         window.initModality(Modality.APPLICATION_MODAL);
-        window.setScene(new SuperScene(SceneEnum.EDITOR).getScene());
-        window.setTitle("Editor");
         window.setResizable(false);
+        changeScene(SceneEnum.EDITOR);
     }
 }

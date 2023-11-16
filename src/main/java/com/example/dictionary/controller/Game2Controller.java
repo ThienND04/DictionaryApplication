@@ -1,5 +1,6 @@
 package com.example.dictionary.controller;
 
+import com.example.dictionary.game.Game1;
 import com.example.dictionary.game.Game2;
 import com.example.dictionary.scene.SuperScene;
 import javafx.animation.Animation;
@@ -18,10 +19,13 @@ import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class Game2Controller {
-
-    public static final int NUMBER_OF_QUESTIONS = 10;
     private static Game2Controller instance;
-    private final Game2 game = new Game2();
+
+    public static Game2Controller getInstance() {
+        return instance;
+    }
+    public static final int NUMBER_OF_QUESTIONS = 10;
+    private Game2 game;
     private final AtomicLong time = new AtomicLong(0);
     @FXML
     GridPane grid;
@@ -37,9 +41,6 @@ public class Game2Controller {
     private WebView clickedWord;
     private String clickedText;
 
-    public static Game2Controller getInstance() {
-        return instance;
-    }
 
     @FXML
     void initialize() {
@@ -140,5 +141,9 @@ public class Game2Controller {
         webView.getEngine().setUserStyleSheetLocation(css);
         webView.getEngine().loadContent(String.format(
                 "<div class = 'container noselect'> %s </div>", content));
+    }
+
+    public void handleLogin() {
+        game = new Game2();
     }
 }

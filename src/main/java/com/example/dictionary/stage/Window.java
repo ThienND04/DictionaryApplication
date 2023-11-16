@@ -1,9 +1,22 @@
 package com.example.dictionary.stage;
 
+import com.example.dictionary.scene.SceneEnum;
+import com.example.dictionary.scene.SuperScene;
 import javafx.stage.Stage;
+
+import java.util.HashMap;
 
 public abstract class Window {
     protected Stage window;
+
+    protected final HashMap<SceneEnum, SuperScene> scenes = new HashMap<>();
+
+    public void changeScene(SceneEnum sceneType) {
+        window.setScene(scenes.get(sceneType).getScene());
+        window.setMaximized(false);
+    }
+
+    protected abstract void initScenes();
 
     public void show() {
         window.show();
@@ -22,6 +35,24 @@ public abstract class Window {
     }
 
     public Window() {
+        window = new Stage();
+        initScenes();
+    }
 
+    public Window(String title) {
+        window = new Stage();
+        window.setTitle(title);
+        initScenes();
+    }
+
+    public Window(Stage stage) {
+        window = stage;
+        initScenes();
+    }
+
+    public Window(Stage stage, String title) {
+        window = stage;
+        window.setTitle(title);
+        initScenes();
     }
 }

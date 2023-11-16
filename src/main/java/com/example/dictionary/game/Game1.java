@@ -1,10 +1,11 @@
 package com.example.dictionary.game;
 
-import com.example.dictionary.user.Data;
-import com.example.dictionary.Word;
+import com.example.dictionary.word.Word;
 
 import java.util.*;
 import java.util.stream.Collectors;
+
+import com.example.dictionary.user.UserManager;
 import org.jsoup.Jsoup;
 
 public class Game1 extends AGame{
@@ -21,7 +22,7 @@ public class Game1 extends AGame{
 
     public void init() {
         map = new HashMap<>();
-        Data.getInstance().getData().values().forEach(word -> {
+        UserManager.getInstance().getCurrentUser().getWords().values().forEach(word -> {
             map.put(getTextFromHTML(word.getWord()),
                     new Word(getTextFromHTML(word.getWord()), getTextFromHTML(word.getDef())));
         });
@@ -58,7 +59,7 @@ public class Game1 extends AGame{
             } else {
                 // cho nghĩa, chọn từ đúng
                 question = listDef.get(i % listDef.size());
-                answer = map.keySet().stream().filter(w -> map.get(w).getDef().equals(question)).toList().getFirst();
+                answer = map.keySet().stream().filter(w -> map.get(w).getDef().equals(question)).toList().get(0);
                 selections.add(answer);
                 final String finalAns = answer;
                 selections.addAll(

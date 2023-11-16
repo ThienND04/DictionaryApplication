@@ -32,9 +32,7 @@ public class SignupController {
             if (password1.getText().equals(password2.getText())) {
                 boolean res = UserManager.getInstance().create(username.getText(), password1.getText());
                 if (res) {
-                    HomeController.getInstance().loadData();
-                    Game1Controller.getInstance().loadData();
-                    PrimaryWindow.getInstance().setSceneType(SceneEnum.HOME);
+                    Controller.handleChangeUser();
                 } else {
                     new Alert(Alert.AlertType.WARNING, "Tên đăng nhập đã tồn tại").show();
                 }
@@ -44,7 +42,7 @@ public class SignupController {
         });
 
         loginBtn.setOnAction(event -> {
-            PrimaryWindow.getInstance().setSceneType(SceneEnum.LOGIN);
+            PrimaryWindow.getInstance().changeScene(SceneEnum.LOGIN);
         });
     }
 

@@ -1,18 +1,35 @@
 package com.example.dictionary.controller;
 
 import com.example.dictionary.Application;
-import com.example.dictionary.user.Data;
-import com.example.dictionary.Word;
+import com.example.dictionary.api.TextToSpeech;
+import com.example.dictionary.word.Data;
+import com.example.dictionary.word.Word;
 import com.example.dictionary.scene.SceneEnum;
 import com.example.dictionary.stage.PrimaryWindow;
 import com.example.dictionary.stage.WindowEnum;
+import com.example.dictionary.user.UserManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Circle;
 import javafx.scene.web.WebView;
+
 import java.util.ArrayList;
 import java.util.Optional;
 
-public class HomeController  {
+public class HomeController {
+    @FXML
+    Button speakBtn;
+    @FXML
+    ImageView speakImg;
+    @FXML
+    Circle userNav;
+    @FXML
+    Label translateNav;
+    @FXML
+    Label gameNav;
     @FXML
     WebView randomDefinitions;
     @FXML
@@ -42,7 +59,8 @@ public class HomeController  {
 
     public static final int WORDS_EVERY_DAY = 5;
 
-    private ArrayList<String> wordsEveryDay;
+    private final ArrayList<Word> wordsEveryDay = Data.getInstance().getRandomWordsByDay(WORDS_EVERY_DAY);
+    ;
 
     public static HomeController getInstance() {
         return instance;
@@ -51,30 +69,40 @@ public class HomeController  {
     @FXML
     public void initialize() {
         instance = this;
+        translateNav.setOnMouseClicked(e -> PrimaryWindow.getInstance().changeScene(SceneEnum.TRANSLATE));
+        gameNav.setOnMouseClicked(e -> PrimaryWindow.getInstance().changeScene(SceneEnum.GAME));
+        userNav.setOnMouseClicked(e -> PrimaryWindow.getInstance().changeScene(SceneEnum.USER));
+        speakImg.setImage(new Image(getClass().getResourceAsStream("speaker.png")));
+        speakBtn.setOnAction(e -> TextToSpeech.textToSpeech(listView.getSelectionModel().getSelectedItem()));
+
         initComponents();
     }
 
     private void loadRandomWords(int i) {
-        randomWords.setText(wordsEveryDay.get(2*i));
-        randomDefinitions.getEngine().loadContent(wordsEveryDay.get(2*i+1));
+        randomWords.setText(wordsEveryDay.get(i).getWord());
+        randomDefinitions.getEngine().loadContent(wordsEveryDay.get(i).getDef());
     }
 
     private int i = 0;
 
     private void initComponents() {
+        loadRandomWords(0);
+
         rightBtn.setOnMouseClicked(event -> {
             loadRandomWords(++i);
             leftBtn.setVisible(true);
-            if(i == WORDS_EVERY_DAY - 1)
+            if (i == WORDS_EVERY_DAY - 1)
                 rightBtn.setVisible(false);
         });
 
         leftBtn.setOnMouseClicked(event -> {
             loadRandomWords(--i);
             rightBtn.setVisible(true);
-            if(i == 0)
+            if (i == 0)
                 leftBtn.setVisible(false);
         });
+
+        randomWords.setOnMouseClicked(e -> TextToSpeech.textToSpeech(randomWords.getText()));
 
         listView.getSelectionModel().selectedItemProperty().addListener(
                 (a, b, c) -> {
@@ -82,9 +110,9 @@ public class HomeController  {
                         deleteBtn.setVisible(true);
                         editBtn.setVisible(true);
                         searchBtn.setVisible(true);
-                        definitionView.getEngine().loadContent(Data.getInstance().getData().get(c).getDef());
+                        definitionView.getEngine().loadContent(UserManager.getInstance().getCurrentUser().getWords().get(c).getDef());
                         searchBtn.setOnAction(event -> {
-                            PrimaryWindow.getInstance().setSceneType(SceneEnum.TRANSLATE);
+                            PrimaryWindow.getInstance().changeScene(SceneEnum.TRANSLATE);
                             TranslateController.getInstance().find(c);
                         });
                     } else {
@@ -100,14 +128,14 @@ public class HomeController  {
             Alert a = new Alert(Alert.AlertType.CONFIRMATION, "Bạn có muốn xóa từ này không?");
             Optional<ButtonType> result = a.showAndWait();
             if (result.isPresent() && result.get() == ButtonType.OK) {
-                Data.getInstance().removeWord(listView.getSelectionModel().getSelectedItem());
+                UserManager.getInstance().getCurrentUser().removeWord(listView.getSelectionModel().getSelectedItem());
                 loadWordList();
             }
         });
 
         editBtn.setOnAction(event -> {
             EditorController.getInstance().loadData(listView.getSelectionModel().getSelectedItem(),
-                    Data.getInstance().getData().get(listView.getSelectionModel().getSelectedItem()).getDef(), 0);
+                    UserManager.getInstance().getCurrentUser().getWords().get(listView.getSelectionModel().getSelectedItem()).getDef(), 0);
             Application.getInstance().showWindow(WindowEnum.EDITOR);
         });
 
@@ -122,20 +150,24 @@ public class HomeController  {
     }
 
     public void handleEdited(String newWord, String newDefinition, String oldWord) {
-        Data.getInstance().removeWord(oldWord);
-        Data.getInstance().addWord(new Word(newWord, newDefinition));
+        UserManager.getInstance().getCurrentUser().removeWord(oldWord);
+        UserManager.getInstance().getCurrentUser().addWord(new Word(newWord, newDefinition));
         loadWordList();
         listView.getSelectionModel().select(newWord);
     }
 
     public void loadWordList() {
         listView.getItems().clear();
-        listView.getItems().addAll(Data.getInstance().getTrie().getAllWordsStartWith(wordToFind.getText()));
+        listView.getItems().addAll(UserManager.getInstance().getCurrentUser().getTrie().getAllWordsStartWith(wordToFind.getText()));
     }
 
-    public void loadData() {
-        wordsEveryDay = Data.getInstance().getRandomWordsByDay(WORDS_EVERY_DAY);
-        loadRandomWords(0);
+    public void handleLogin() {
         loadWordList();
+        initUserImage();
+    }
+
+    public void initUserImage() {
+        ImagePattern imagePattern = new ImagePattern(UserManager.getInstance().getCurrentUser().getImage());
+        userNav.setFill(imagePattern);
     }
 }

@@ -21,7 +21,11 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class Game3Controller {
+    private static Game3Controller instance;
 
+    public static Game3Controller getInstance() {
+        return instance;
+    }
     @FXML
     public Label inform;
     @FXML
@@ -42,6 +46,7 @@ public class Game3Controller {
 
     @FXML
     void initialize() {
+        instance = this;
         time = new AtomicLong(0);
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.1), event -> time.incrementAndGet()));
         timeline.setCycleCount(Animation.INDEFINITE);
@@ -57,7 +62,7 @@ public class Game3Controller {
         });
     }
     private AtomicLong time;
-    private final Game3 game = new Game3();
+    private Game3 game;
     private final int n = 5;
 
     private void newGame() {
@@ -127,5 +132,9 @@ public class Game3Controller {
         webView.getEngine().setUserStyleSheetLocation(css);
         webView.getEngine().loadContent(String.format(
                 "<div class = 'container noselect'> %s </div>", content));
+    }
+
+    public void handleLogin() {
+         game = new Game3();
     }
 }

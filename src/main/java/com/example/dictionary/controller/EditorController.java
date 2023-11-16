@@ -16,7 +16,6 @@ public class EditorController {
     @FXML
     Button saveBtn;
 
-
     private static EditorController instance;
 
     public static EditorController getInstance() {

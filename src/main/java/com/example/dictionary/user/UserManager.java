@@ -1,18 +1,37 @@
 package com.example.dictionary.user;
 
+import com.example.dictionary.controller.Controller;
+
 import java.io.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class UserManager implements Serializable {
+    private static final String DATA_PATH = "data/users.dat";
     private ArrayList<User> users;
     private static UserManager instance;
+
+    private transient User currentUser;
+
+    public User getCurrentUser() {
+        return currentUser;
+    }
+
+    private void setCurrentUser(User user) {
+        if (currentUser != null) {
+            currentUser.writeData();
+        }
+        currentUser = user;
+        user.login();
+        Controller.handleChangeUser();
+    }
 
     public static UserManager getInstance() {
         if (instance == null) {
             try {
-                ObjectInputStream is = new ObjectInputStream(new FileInputStream("data/users.dat"));
+                ObjectInputStream is = new ObjectInputStream(new FileInputStream(DATA_PATH));
                 instance = (UserManager) is.readObject();
-                if(instance.users.size() != 0) {
+                if (instance.users.size() != 0) {
                     User.lastUserId = instance.users.get(instance.users.size() - 1).getId();
                 }
             } catch (Exception e) {
@@ -22,18 +41,10 @@ public class UserManager implements Serializable {
         return instance;
     }
 
-    public ArrayList<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(ArrayList<User> users) {
-        this.users = users;
-    }
-
     public boolean login(String username, String password) {
         for (User user : users) {
             if (user.getPassword().equals(password) && user.getUsername().equals(username)) {
-                Data.getInstance().setUser(user);
+                setCurrentUser(user);
                 return true;
             }
         }
@@ -48,22 +59,14 @@ public class UserManager implements Serializable {
         }
         User user = new User(username, password);
         users.add(user);
-        File t = new File("data/user-" + user.getId() + ".txt");
-        try {
-            t.createNewFile();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            Data.getInstance().setUser(user);
-            return true;
-        }
+        setCurrentUser(user);
+        return true;
     }
 
     public void remove() {
-        File t = new File("data/user-" + Data.getInstance().getUser().getId() + ".txt");
-        t.delete();
-        users.remove(Data.getInstance().getUser());
-        Data.getInstance().setUser(null);
+        currentUser.remove();
+        users.remove(currentUser);
+        currentUser = null;
     }
 
     @Override
@@ -78,9 +81,10 @@ public class UserManager implements Serializable {
 
     public void writeData() {
         try {
-            ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream("data/users.dat"));
+            if(currentUser != null)
+                currentUser.writeData();
+            ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream(DATA_PATH));
             os.writeObject(instance);
-            Data.getInstance().writeData();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -89,11 +93,15 @@ public class UserManager implements Serializable {
     public static void main(String[] args) {
         try {
             UserManager userManager = new UserManager();
-            userManager.setUsers(new ArrayList<>());
-            userManager.create("pmquy", "pmquy");
-            userManager.create("admin", "admin");
+            userManager.users = new ArrayList<>();
+            User user = new User("pmquy", "pmquy");
+            user.getLoginDays().add(LocalDate.of(2023,11,15));
+            userManager.users.add(user);
+
+            System.out.println(user.getLoginDays());
+
             System.out.println(userManager);
-            ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream("data/users.dat"));
+            ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream(DATA_PATH));
             os.writeObject(userManager);
         } catch (IOException e) {
             e.printStackTrace();

@@ -5,6 +5,9 @@ import com.example.dictionary.scene.SuperScene;
 import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.effect.Effect;
+import javafx.scene.effect.InnerShadow;
+import javafx.scene.effect.Lighting;
 import javafx.scene.web.WebView;
 
 public class Game1Controller {
@@ -17,7 +20,7 @@ public class Game1Controller {
     private final String BLUE_2 = "#05386B";
 
     @FXML
-    WebView quesLabel;
+    Label quesLabel;
     @FXML
     ButtonBar ansSelections;
     @FXML
@@ -53,25 +56,23 @@ public class Game1Controller {
         });
         checkBtn.setText("Kiểm tra");
         checkBtn.setOnAction(actionEvent -> checkAns());
-        quesLabel.getEngine().getLoadWorker().stateProperty().addListener((observable, oldState, newState) -> {
-            if (newState == Worker.State.SUCCEEDED) {
-                setContainerColor(quesLabel, BLUE_2);
-            }
-        });
         for(int i = 0; i < ansSelections.getButtons().size(); i ++) {
-            final int curBtnIndex = i;
-            WebView btn = (WebView) ansSelections.getButtons().get(i);
+            final int finalI = i;
+            Button btn = (Button) ansSelections.getButtons().get(i);
             btn.setVisible(false);
-
-            btn.getEngine().getLoadWorker().stateProperty().addListener((observable, oldState, newState) -> {
-                if (newState == Worker.State.SUCCEEDED) {
-                    setContainerColor(btn, BLUE_2);
-                }
+            btn.setOnMouseEntered(mouseEvent -> {
+                btn.setEffect(new Lighting());
             });
-            btn.setOnMouseClicked(actionEvent -> {
-                if(game1.getSelectedAns() >= 0) setContainerColor(getSelectedAns(), BLUE_2);
-                game1.selectAns(curBtnIndex);
-                setContainerColor(getSelectedAns(), "lightblue");
+            btn.setOnMouseExited(mouseEvent -> {
+                btn.setEffect(null);
+            });
+            btn.setOnAction(actionEvent -> {
+                if(game1.getSelectedAns() >= 0) {
+                    getSelectedAns().setStyle("-fx-text-fill: white");
+                    getSelectedAns().setStyle("-fx-background-color: " + BLUE_2);
+                }
+                game1.selectAns(finalI);
+                btn.setStyle("-fx-text-fill: black; -fx-background-color: lightblue");
             });
         }
     }
@@ -90,7 +91,7 @@ public class Game1Controller {
         skipBtn.setVisible(true);
         quesLabel.setVisible(true);
         for(int i = 0; i < ansSelections.getButtons().size(); i ++) {
-            WebView btn = (WebView) ansSelections.getButtons().get(i);
+            Button btn = (Button) ansSelections.getButtons().get(i);
             btn.setVisible(true);
         }
     }
@@ -102,10 +103,11 @@ public class Game1Controller {
     private void updateQuestion() {
         skipBtn.setVisible(game1.questionRemain() > 1);
         checkBtn.setDisable(false);
-        loadContentWithStyle(quesLabel, game1.getQuestion());
+        quesLabel.setText(game1.getQuestion());
         for(int i = 0; i < ansSelections.getButtons().size(); i ++) {
-            WebView btn = (WebView) ansSelections.getButtons().get(i);
-            loadContentWithStyle(btn, game1.getSelections().get(i));
+            Button btn = (Button) ansSelections.getButtons().get(i);
+            btn.setText(game1.getSelections().get(i));
+            btn.setStyle("-fx-background-color: " + BLUE_2);
             btn.setDisable(false);
         }
     }
@@ -121,10 +123,11 @@ public class Game1Controller {
 
     private void checkAns() {
         for(int i = 0; i < ansSelections.getButtons().size(); i ++) {
-            WebView btn = (WebView) ansSelections.getButtons().get(i);
+            Button btn = (Button) ansSelections.getButtons().get(i);
             btn.setDisable(true);
-            if(i == game1.getSelectedAns()) setContainerColor(btn, "red");
-            if(i == game1.getAnswerIndex()) setContainerColor(btn, "lawngreen");
+            btn.setOpacity(1);
+            if(i == game1.getSelectedAns()) btn.setStyle("-fx-background-color: red");
+            if(i == game1.getAnswerIndex()) btn.setStyle("-fx-background-color: lawngreen");
         }
         game1.submit();
         updateStatus();
@@ -142,21 +145,7 @@ public class Game1Controller {
         }
     }
 
-    private void setContainerColor(WebView webView, String color) {
-        webView.getEngine().executeScript(String.format(
-                "document.getElementsByClassName('container')[0].style.backgroundColor = '%s'", color));
-        webView.getEngine().executeScript(String.format(
-                "document.getElementsByClassName('container')[0].style.borderColor = '%s'", color));
-    }
-
-    private void loadContentWithStyle(WebView webView, String content) {
-        String css = SuperScene.class.getResource("common.css").toExternalForm();
-        webView.getEngine().setUserStyleSheetLocation(css);
-        webView.getEngine().loadContent(String.format(
-                "<div class = 'container noselect'> %s </div>", content));
-    }
-
-    private WebView getSelectedAns() {
-        return (WebView) ansSelections.getButtons().get(game1.getSelectedAns());
+    private Button getSelectedAns() {
+        return (Button) ansSelections.getButtons().get(game1.getSelectedAns());
     }
 }

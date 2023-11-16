@@ -6,6 +6,8 @@ import com.example.dictionary.Word;
 import java.io.*;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public final class Data {
     private static final Data instance = new Data();
@@ -143,12 +145,13 @@ public final class Data {
         }
     }
 
-    public ArrayList<Word> getRandomWords(int n) {
+    public ArrayList<Word> getRandomWords(int n, Predicate<? super Word> predicate) {
         Random random = new Random();
         ArrayList<Word> res = new ArrayList<>();
         Set<Integer> st = new HashSet<>();
+        ArrayList<Word> words = new ArrayList<>(data.values().stream().filter(predicate).collect(Collectors.toList()));
 
-        if (n > data.size()) return res;
+        if (n > words.size()) return res;
         while (st.size() < n) {
             st.add(random.nextInt(data.size()));
         }

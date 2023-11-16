@@ -15,7 +15,8 @@ public class Game2 extends AGame{
 
     public ArrayList<String> generate() {
         ArrayList<String> res = new ArrayList<>();
-        data = Data.getInstance().getRandomWords(Game2Controller.NUMBER_OF_QUESTIONS);
+        data = Data.getInstance().getRandomWords(
+                Game2Controller.NUMBER_OF_QUESTIONS, word -> true);
         data.forEach(
             word -> {
                 word.setWord(getTextFromHTML(word.getWord()));

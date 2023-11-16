@@ -4,3 +4,10 @@
     -fx-padding : 10px;
     -fx-font-size : 20px;
 }
+
+#meaning{
+    -fx-font-weight : bold;
+    -fx-background-color: -fx-blue-2;
+    -fx-text-fill: -fx-white-2;
+    -fx-background-radius: 20px;
+}

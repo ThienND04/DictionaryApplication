@@ -11,9 +11,9 @@ hello my friend<::>xin chào bạn của tôi<::>
 duck<::>con vịt<::>
 im fine<::>Tôi ổn<::>
 how are you<::>Bạn khỏe không<::>
-helpful<::><html>hữu ích</html><::>
+helpful<::>hữu ích<::>
 bullet<::><html dir="ltr"><head></head><body contenteditable="false"><h5>đạn</h5></body></html><::>
-sacred<::><html>Linh thiêng</html><::>
+sacred<::>Linh thiêng<::>
 where are you now<::>Giờ bạn đang ở đâu<::>
 hometown<::>quê hương<::>
 homework<::>bài tập về nhà<::>
@@ -24,8 +24,8 @@ hello world<::>Chào thế giới<::>
 let me love you<::>hãy để tôi yêu bạn<::>
 heart<::><html dir="ltr"><head></head><body contenteditable="false"><p><span style="font-family: &quot;&quot;;">trái tim</span></p></body></html><::>
 helpmeet<::><html><html dir="ltr"><head></head><body contenteditable="false"><span style="font-weight: bold;">gặp gỡ trợ giúp</span></body></html></html><::>
-Faulty<::><html dir="ltr"><head></head><body><span style="text-decoration: underline;">bị lỗi&nbsp;</span></body></html><::>
+Faulty<::>bị lỗi<::>
 supervise<::><html>giám sát</html><::>
 hello<::>Xin chào<::>
-supervisor<::><html><html dir="ltr"><head></head><body contenteditable="false">người giám sát</body></html></html><::>
+supervisor<::>người giám sát<::>
 helperess<::>người giúp việc<::>

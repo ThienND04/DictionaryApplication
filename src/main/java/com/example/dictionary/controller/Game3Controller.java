@@ -26,7 +26,7 @@ public class Game3Controller {
     @FXML
     public Label inform;
     @FXML
-    private WebView meaning;
+    private Label meaning;
     @FXML
     private HBox guessWord;
     @FXML
@@ -83,7 +83,7 @@ public class Game3Controller {
 
     private void nextQuestion() {
         game.nextQuestion();
-        loadContentWithStyle(meaning, game.getMeaning());
+        meaning.setText(game.getMeaning());
         inform.setText("");
         guessWord.getChildren().clear();
         input.getChildren().clear();
@@ -124,18 +124,10 @@ public class Game3Controller {
         }
     }
 
-    private void loadContentWithStyle(WebView webView, String content) {
-        String css = SuperScene.class.getResource("common.css").toExternalForm();
-        webView.getEngine().setUserStyleSheetLocation(css);
-        webView.getEngine().loadContent(String.format(
-                "<div class = 'container noselect'> %s </div>", content));
-    }
     private static Game3Controller instance;
-
     public static Game3Controller getInstance() {
         return instance;
     }
-
     public static void setInstance(Game3Controller instance) {
         Game3Controller.instance = instance;
     }

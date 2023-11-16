@@ -7,7 +7,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.web.WebView?>
 
 <AnchorPane prefHeight="349.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.dictionary.controller.Game1Controller">
    <children>
@@ -42,20 +41,21 @@
                      <children>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                            <children>
-                              <WebView fx:id="quesLabel" minHeight="-Infinity" prefHeight="100.0" prefWidth="437.0" visible="false" />
+                              <Label fx:id="quesLabel" alignment="CENTER" prefHeight="84.0" prefWidth="337.0" text="quesLabel" textAlignment="CENTER" />
                            </children>
                         </HBox>
                      </children>
                   </VBox>
                   <ButtonBar fx:id="ansSelections" prefHeight="174.0" prefWidth="600.0">
                      <buttons>
-                        <WebView prefHeight="174.0" prefWidth="187.0" visible="false" />
-                        <WebView prefHeight="174.0" prefWidth="200.0" visible="false" />
-                        <WebView prefHeight="174.0" prefWidth="200.0" visible="false" />
+                        <Button mnemonicParsing="false" prefHeight="174.0" prefWidth="193.0" style="-fx-border-radius: 20px; -fx-background-radius: 20px;" text="Ans1" textAlignment="CENTER" />
+                        <Button layoutX="417.0" layoutY="10.0" mnemonicParsing="false" prefHeight="174.0" prefWidth="193.0" style="-fx-border-radius: 20px; -fx-background-radius: 20px;" text="Ans2" textAlignment="CENTER" />
+                        <Button layoutX="417.0" layoutY="10.0" mnemonicParsing="false" prefHeight="174.0" prefWidth="193.0" style="-fx-border-radius: 20px; -fx-background-radius: 20px;" text="Ans3" textAlignment="CENTER" />
                      </buttons>
                   </ButtonBar>
                </children>
             </VBox>
+            <HBox prefHeight="38.0" prefWidth="600.0" />
             <HBox prefHeight="22.0" prefWidth="600.0">
                <children>
                   <HBox alignment="CENTER_LEFT" prefHeight="24.0" prefWidth="311.0">

@@ -2,13 +2,31 @@ package com.example.dictionary.controller;
 
 import com.example.dictionary.game.Game1;
 import com.example.dictionary.scene.SuperScene;
+import com.example.dictionary.user.User;
+import com.example.dictionary.user.UserManager;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.beans.property.ReadOnlyIntegerProperty;
+import javafx.beans.property.ReadOnlyIntegerWrapper;
+import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.effect.Effect;
 import javafx.scene.effect.InnerShadow;
 import javafx.scene.effect.Lighting;
 import javafx.scene.web.WebView;
+import javafx.util.Callback;
+import javafx.util.Duration;
+
+import java.util.Comparator;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.Collectors;
 
 public class Game1Controller {
     private final Game1 game1 = new Game1();
@@ -18,6 +36,7 @@ public class Game1Controller {
     }
     private static Game1Controller instance;
     private final String BLUE_2 = "#05386B";
+    private final int MAX_PLAYER_SHOW = 5;
 
     @FXML
     Label quesLabel;
@@ -35,6 +54,19 @@ public class Game1Controller {
     Label solved;
     @FXML
     Label fault;
+    @FXML
+    Label timeLabel;
+    @FXML
+    TableView<User> topPlayer;
+    @FXML
+    TableColumn<User, Integer> sttCol;
+    @FXML
+    TableColumn<User, String> userCol;
+    @FXML
+    TableColumn<User, Double> timeCol;
+    private final AtomicLong time = new AtomicLong(0);
+    private final Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.1),
+            event -> timeLabel.setText(String.valueOf((double) time.incrementAndGet() / 10))));
 
     @FXML
     public void initialize() {
@@ -48,6 +80,8 @@ public class Game1Controller {
         fault.setVisible(false);
         checkBtn.setVisible(false);
         quesLabel.setVisible(false);
+        timeLabel.setStyle("-fx-text-fill: white");
+        timeline.setCycleCount(Animation.INDEFINITE);
 
         newGameBtn.setOnAction(actionEvent -> newGame());
         skipBtn.setOnAction(actionEvent -> {
@@ -75,6 +109,14 @@ public class Game1Controller {
                 btn.setStyle("-fx-text-fill: black; -fx-background-color: lightblue");
             });
         }
+        ObservableList<User> players = FXCollections.observableArrayList(UserManager.getInstance().getUsers()).
+                sorted(Comparator.comparingDouble(User::getBestTime1));
+        sttCol.setCellValueFactory(collumn -> new ReadOnlyObjectWrapper<>(topPlayer.getItems().indexOf(collumn.getValue()) + 1));
+        userCol.setCellValueFactory(new PropertyValueFactory<>("username"));
+        timeCol.setCellValueFactory(new PropertyValueFactory<>("bestTime1"));
+        topPlayer.getItems().clear();
+        topPlayer.setItems(FXCollections.observableArrayList(
+                players.stream().filter(player -> players.indexOf(player) < MAX_PLAYER_SHOW).collect(Collectors.toList())));
     }
 
     private void newGame() {
@@ -90,14 +132,34 @@ public class Game1Controller {
         checkBtn.setVisible(true);
         skipBtn.setVisible(true);
         quesLabel.setVisible(true);
+        timeLabel.setVisible(true);
         for(int i = 0; i < ansSelections.getButtons().size(); i ++) {
             Button btn = (Button) ansSelections.getButtons().get(i);
             btn.setVisible(true);
         }
+        timeline.play();
     }
 
     private void finish() {
-        initComponents();
+        timeline.stop();
+        if(game1.questionRemain() == 0) {
+            double playedTime = 1.0 * time.get() / 10;
+            if(playedTime < UserManager.getInstance().getCurrentUser().getBestTime1()) {
+                UserManager.getInstance().getCurrentUser().setBestTime1(playedTime);
+            }
+        }
+        newGameBtn.setVisible(true);
+        solved.setVisible(false);
+        fault.setVisible(false);
+        checkBtn.setVisible(false);
+        quesLabel.setVisible(false);
+        time.set(0);
+        checkBtn.setOnAction(actionEvent -> checkAns());
+        for(int i = 0; i < ansSelections.getButtons().size(); i ++) {
+            Button btn = (Button) ansSelections.getButtons().get(i);
+            btn.setVisible(false);
+        }
+        topPlayer.refresh();
     }
 
     private void updateQuestion() {

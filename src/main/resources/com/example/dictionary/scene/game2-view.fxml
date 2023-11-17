@@ -3,94 +3,123 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="679.0" prefWidth="825.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.dictionary.controller.Game2Controller">
+<AnchorPane prefHeight="616.0" prefWidth="1057.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.dictionary.controller.Game2Controller">
    <children>
-      <VBox AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
-         <HBox alignment="CENTER_LEFT" VBox.vgrow="ALWAYS">
-            <children>
-               <VBox alignment="CENTER">
+      <HBox prefHeight="679.0" prefWidth="1057.0">
+         <children>
+            <VBox prefHeight="679.0" prefWidth="842.0">
+               <HBox alignment="CENTER" prefHeight="0.0" prefWidth="841.0" VBox.vgrow="ALWAYS">
                   <children>
-                     <HBox fillHeight="false" prefHeight="0.0" prefWidth="120.0">
+                     <Label alignment="CENTER" prefHeight="64.0" prefWidth="762.0" style="-fx-font-weight: bolder; -fx-text-fill: #05386B;" text="GAME 2">
+                        <font>
+                           <Font size="26.0" />
+                        </font>
+                     </Label>
+                  </children>
+               </HBox>
+               <VBox prefHeight="516.0" prefWidth="725.0" VBox.vgrow="ALWAYS">
+                  <VBox.margin>
+                     <Insets right="10.0" />
+                  </VBox.margin>
+                  <children>
+                     <GridPane fx:id="grid" prefHeight="563.0" prefWidth="811.0" style="-fx-hgap: 10; -fx-vgap: 10;">
+                       <columnConstraints>
+                           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                       </columnConstraints>
+                       <rowConstraints>
+                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                       </rowConstraints>
                         <children>
-                           <Label text="Thời gian:">
-                              <HBox.margin>
-                                 <Insets right="10.0" />
-                              </HBox.margin>
-                           </Label>
-                           <Label fx:id="timeLabel" maxHeight="1.7976931348623157E308" prefHeight="18.0" prefWidth="57.0" HBox.hgrow="ALWAYS" />
+                           <Button mnemonicParsing="false" prefHeight="120.0" prefWidth="199.0" />
+                           <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="120.0" prefWidth="199.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                           <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="120.0" prefWidth="199.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                           <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="120.0" prefWidth="199.0" GridPane.rowIndex="2" />
+                           <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="120.0" prefWidth="199.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                           <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="120.0" prefWidth="199.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                           <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="120.0" prefWidth="199.0" GridPane.columnIndex="3" />
+                           <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="120.0" prefWidth="199.0" GridPane.columnIndex="2" />
+                           <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="120.0" prefWidth="199.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                           <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="120.0" prefWidth="199.0" GridPane.columnIndex="1" />
+                           <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="120.0" prefWidth="199.0" GridPane.rowIndex="1" />
+                           <Button layoutX="408.0" layoutY="236.0" mnemonicParsing="false" prefHeight="120.0" prefWidth="199.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                           <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="120.0" prefWidth="199.0" GridPane.rowIndex="4" />
+                           <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="120.0" prefWidth="199.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                           <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="120.0" prefWidth="199.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                           <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="120.0" prefWidth="199.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                           <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="120.0" prefWidth="199.0" GridPane.rowIndex="3" />
+                           <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="120.0" prefWidth="199.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                           <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="120.0" prefWidth="199.0" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+                           <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="120.0" prefWidth="199.0" GridPane.columnIndex="2" GridPane.rowIndex="4" />
                         </children>
-                     </HBox>
-                     <HBox fillHeight="false" layoutX="10.0" layoutY="10.0" prefHeight="0.0" prefWidth="120.0">
-                        <children>
-                           <Label text="Kỉ lục:">
-                              <HBox.margin>
-                                 <Insets right="10.0" />
-                              </HBox.margin>
-                           </Label>
-                           <Label fx:id="timeLabel1" maxHeight="1.7976931348623157E308" prefHeight="18.0" prefWidth="57.0" HBox.hgrow="ALWAYS" />
-                        </children>
-                     </HBox>
+                        <VBox.margin>
+                           <Insets left="10.0" />
+                        </VBox.margin>
+                     </GridPane>
                   </children>
                </VBox>
-               <VBox alignment="CENTER" prefHeight="31.0" prefWidth="134.0">
-                  <children>
-                     <Button fx:id="newGameBtn" focusTraversable="false" mnemonicParsing="false" text="Bắt đầu" />
-                     <Button fx:id="pauseBtn" alignment="TOP_RIGHT" focusTraversable="false" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#handlePauseBtn" text="Tạm dừng" visible="false" />
-                  </children>
-               </VBox>
-            </children>
-         </HBox>
-         <VBox prefHeight="516.0" prefWidth="725.0" VBox.vgrow="ALWAYS">
-            <VBox.margin>
-               <Insets right="10.0" />
-            </VBox.margin>
-            <children>
-               <GridPane fx:id="grid" prefHeight="563.0" prefWidth="811.0" style="-fx-hgap: 10; -fx-vgap: 10;">
-                 <columnConstraints>
-                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                 </columnConstraints>
-                 <rowConstraints>
-                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                 </rowConstraints>
-                  <children>
-                     <Button mnemonicParsing="false" prefHeight="120.0" prefWidth="199.0" />
-                     <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="120.0" prefWidth="199.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                     <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="120.0" prefWidth="199.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                     <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="120.0" prefWidth="199.0" GridPane.rowIndex="2" />
-                     <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="120.0" prefWidth="199.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                     <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="120.0" prefWidth="199.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                     <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="120.0" prefWidth="199.0" GridPane.columnIndex="3" />
-                     <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="120.0" prefWidth="199.0" GridPane.columnIndex="2" />
-                     <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="120.0" prefWidth="199.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                     <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="120.0" prefWidth="199.0" GridPane.columnIndex="1" />
-                     <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="120.0" prefWidth="199.0" GridPane.rowIndex="1" />
-                     <Button layoutX="408.0" layoutY="236.0" mnemonicParsing="false" prefHeight="120.0" prefWidth="199.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                     <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="120.0" prefWidth="199.0" GridPane.rowIndex="4" />
-                     <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="120.0" prefWidth="199.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
-                     <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="120.0" prefWidth="199.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-                     <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="120.0" prefWidth="199.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                     <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="120.0" prefWidth="199.0" GridPane.rowIndex="3" />
-                     <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="120.0" prefWidth="199.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-                     <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="120.0" prefWidth="199.0" GridPane.columnIndex="3" GridPane.rowIndex="4" />
-                     <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="120.0" prefWidth="199.0" GridPane.columnIndex="2" GridPane.rowIndex="4" />
-                  </children>
-               </GridPane>
-            </children>
-         </VBox>
-      </VBox>      
+            </VBox>
+            <VBox prefHeight="679.0" prefWidth="217.0">
+               <children>
+                  <VBox alignment="CENTER" prefHeight="65.0" prefWidth="216.0">
+                     <children>
+                        <Label fx:id="timeLabel1" alignment="CENTER" maxHeight="1.7976931348623157E308" prefHeight="55.0" prefWidth="172.0" />
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" prefHeight="67.0" prefWidth="216.0">
+                     <children>
+                        <Button fx:id="newGameBtn" focusTraversable="false" mnemonicParsing="false" prefHeight="36.0" prefWidth="94.0" text="Bắt đầu" />
+                        <Button fx:id="pauseBtn" alignment="CENTER" focusTraversable="false" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#handlePauseBtn" prefHeight="28.0" prefWidth="115.0" text="Tạm dừng" textAlignment="CENTER" visible="false" />
+                     </children>
+                  </VBox>
+                  <HBox alignment="CENTER" fillHeight="false" prefHeight="48.0" prefWidth="216.0">
+                     <children>
+                        <Label text="Thời gian:">
+                           <HBox.margin>
+                              <Insets right="10.0" />
+                           </HBox.margin>
+                        </Label>
+                        <Label fx:id="timeLabel" maxHeight="1.7976931348623157E308" prefHeight="18.0" prefWidth="57.0" HBox.hgrow="ALWAYS" />
+                     </children>
+                  </HBox>
+                  <VBox prefHeight="163.0" prefWidth="216.0" />
+                  <Label prefHeight="16.0" prefWidth="207.0" text="Top player">
+                     <VBox.margin>
+                        <Insets left="10.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                  <TableView fx:id="topPlayer" prefHeight="327.0" prefWidth="206.0">
+                    <columns>
+                      <TableColumn fx:id="sttCol" prefWidth="40.0" text="#" />
+                      <TableColumn fx:id="userCol" minWidth="0.0" prefWidth="100.0" text="User" />
+                        <TableColumn fx:id="timeCol" prefWidth="65.0" text="Time" />
+                    </columns>
+                     <VBox.margin>
+                        <Insets bottom="20.0" left="5.0" right="5.0" />
+                     </VBox.margin>
+                  </TableView>
+               </children>
+            </VBox>
+         </children>
+      </HBox>      
    </children>
 </AnchorPane>

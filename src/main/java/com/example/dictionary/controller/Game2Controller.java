@@ -26,6 +26,7 @@ public class Game2Controller {
     }
     public static final int NUMBER_OF_QUESTIONS = 10;
     private Game2 game = new Game2();
+    private ArrayList<String> list;
     private final AtomicLong time = new AtomicLong(0);
     @FXML
     GridPane grid;
@@ -50,24 +51,8 @@ public class Game2Controller {
         timeline.setCycleCount(Animation.INDEFINITE);
 
         for (int i = 0; i < 2 * NUMBER_OF_QUESTIONS; i++) {
-            Button temp = (Button) grid.getChildren().get(i);
-            temp.setVisible(false);
-        }
-    }
-
-    private void newGame() {
-        pauseBtn.setVisible(true);
-        ArrayList<String> list = game.generate();
-
-        if (list.isEmpty()) {
-            new Alert(Alert.AlertType.WARNING, "Không đủ số lượng từ").show();
-            return;
-        }
-
-        for (int i = 0; i < 2 * NUMBER_OF_QUESTIONS; i++) {
             Button btn = (Button) grid.getChildren().get(i);
-            btn.setText(list.get(i));
-            btn.setVisible(true);
+            btn.setVisible(false);
             int finalI = i;
             btn.setOnMouseClicked(event -> {
                 if (clickedWord != null) {
@@ -88,6 +73,23 @@ public class Game2Controller {
                     clickedText = list.get(finalI);
                 }
             });
+        }
+    }
+
+    private void newGame() {
+        pauseBtn.setVisible(true);
+        list = game.generate();
+
+        if (list.isEmpty()) {
+            new Alert(Alert.AlertType.WARNING, "Không đủ số lượng từ").show();
+            return;
+        }
+
+        for (int i = 0; i < 2 * NUMBER_OF_QUESTIONS; i++) {
+            Button btn = (Button) grid.getChildren().get(i);
+            btn.setText(list.get(i));
+            btn.setVisible(true);
+            btn.setStyle("-fx-background-color: #05386B; -fx-text-fill: white");
         }
         isPaused = false;
         pauseBtn.setVisible(true);

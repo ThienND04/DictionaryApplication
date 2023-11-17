@@ -17,3 +17,8 @@ Button:hover{
     -fx-text-fill: -fx-white-2;
     -fx-background-radius: 20px;
 }
+
+#scoreBoard{
+    -fx-background-color: -fx-blue-2;
+    -fx-text-fill: -fx-white-2;
+}

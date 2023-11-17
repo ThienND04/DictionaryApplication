@@ -107,4 +107,8 @@ public class UserManager implements Serializable {
             e.printStackTrace();
         }
     }
+
+    public ArrayList<User> getUsers() {
+        return users;
+    }
 }

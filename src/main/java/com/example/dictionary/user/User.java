@@ -25,6 +25,9 @@ public class User implements Serializable {
     private final int id;
     private transient Image image;
     private final Set<LocalDate> loginDays = new HashSet<>();
+    private double bestTime1;
+    private double bestTime2;
+    private double bestTime3;
 
     private int countOfAddWords;
 
@@ -199,6 +202,9 @@ public class User implements Serializable {
         this.username = username;
         this.password = password;
         this.id = ++lastUserId;
+        this.bestTime1 = 999;
+        this.bestTime2 = 999;
+        this.bestTime3 = 999;
 
         try {
             new File(WORDS_PATH + id + ".txt").createNewFile();
@@ -234,5 +240,29 @@ public class User implements Serializable {
     @Override
     public String toString() {
         return "User{" + "username='" + username + '\'' + ", password='" + password + '\'' + ", id=" + id + '}';
+    }
+
+    public double getBestTime1() {
+        return bestTime1;
+    }
+
+    public void setBestTime1(double bestTime1) {
+        this.bestTime1 = bestTime1;
+    }
+
+    public double getBestTime2() {
+        return bestTime2;
+    }
+
+    public void setBestTime2(double bestTime2) {
+        this.bestTime2 = bestTime2;
+    }
+
+    public double getBestTime3() {
+        return bestTime3;
+    }
+
+    public void setBestTime3(double bestTime3) {
+        this.bestTime3 = bestTime3;
     }
 }

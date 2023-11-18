@@ -1,6 +1,9 @@
 package com.example.dictionary.user;
 
 import com.example.dictionary.controller.Controller;
+import com.example.dictionary.game.Game1;
+import com.example.dictionary.game.Game2;
+import com.example.dictionary.game.Game3;
 
 import java.io.*;
 import java.time.LocalDate;
@@ -85,6 +88,9 @@ public class UserManager implements Serializable {
                 currentUser.writeData();
             ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream(DATA_PATH));
             os.writeObject(instance);
+            Game1.writeData();
+            Game2.writeData();
+            Game3.writeData();
         } catch (IOException e) {
             e.printStackTrace();
         }

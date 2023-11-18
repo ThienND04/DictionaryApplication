@@ -109,14 +109,10 @@ public class Game1Controller {
                 btn.setStyle("-fx-text-fill: black; -fx-background-color: lightblue");
             });
         }
-        ObservableList<User> players = FXCollections.observableArrayList(UserManager.getInstance().getUsers()).
-                sorted(Comparator.comparingDouble(User::getBestTime1));
         sttCol.setCellValueFactory(collumn -> new ReadOnlyObjectWrapper<>(topPlayer.getItems().indexOf(collumn.getValue()) + 1));
         userCol.setCellValueFactory(new PropertyValueFactory<>("username"));
-        timeCol.setCellValueFactory(new PropertyValueFactory<>("bestTime1"));
-        topPlayer.getItems().clear();
-        topPlayer.setItems(FXCollections.observableArrayList(
-                players.stream().filter(player -> players.indexOf(player) < MAX_PLAYER_SHOW).collect(Collectors.toList())));
+        timeCol.setCellValueFactory(collumn -> new ReadOnlyObjectWrapper<>(Game1.getBestTime(collumn.getValue().getId())));
+        updateBXH();
     }
 
     private void newGame() {
@@ -144,8 +140,8 @@ public class Game1Controller {
         timeline.stop();
         if(game1.questionRemain() == 0) {
             double playedTime = 1.0 * time.get() / 10;
-            if(playedTime < UserManager.getInstance().getCurrentUser().getBestTime1()) {
-                UserManager.getInstance().getCurrentUser().setBestTime1(playedTime);
+            if(playedTime < Game1.getBestTime()) {
+                Game1.setBestTime(playedTime);
             }
         }
         newGameBtn.setVisible(true);
@@ -159,7 +155,7 @@ public class Game1Controller {
             Button btn = (Button) ansSelections.getButtons().get(i);
             btn.setVisible(false);
         }
-        topPlayer.refresh();
+        updateBXH();
     }
 
     private void updateQuestion() {
@@ -205,6 +201,14 @@ public class Game1Controller {
                 updateQuestion();
             });
         }
+    }
+
+    public void updateBXH() {
+        ObservableList<User> players = FXCollections.observableArrayList(UserManager.getInstance().getUsers()).
+                sorted(Comparator.comparingDouble(u -> Game1.getBestTime(u.getId())));
+        topPlayer.getItems().clear();
+        topPlayer.setItems(FXCollections.observableArrayList(
+                players.stream().filter(player -> players.indexOf(player) < MAX_PLAYER_SHOW).collect(Collectors.toList())));
     }
 
     private Button getSelectedAns() {

@@ -92,14 +92,10 @@ public class Game2Controller {
                 }
             });
         }
-        ObservableList<User> players = FXCollections.observableArrayList(UserManager.getInstance().getUsers()).
-                sorted(Comparator.comparingDouble(User::getBestTime2));
         sttCol.setCellValueFactory(collumn -> new ReadOnlyObjectWrapper<>(topPlayer.getItems().indexOf(collumn.getValue()) + 1));
         userCol.setCellValueFactory(new PropertyValueFactory<>("username"));
-        timeCol.setCellValueFactory(new PropertyValueFactory<>("bestTime2"));
-        topPlayer.getItems().clear();
-        topPlayer.setItems(FXCollections.observableArrayList(
-                players.stream().filter(player -> players.indexOf(player) < MAX_PLAYER_SHOW).collect(Collectors.toList())));
+        timeCol.setCellValueFactory(collumn -> new ReadOnlyObjectWrapper<>(Game2.getBestTime(collumn.getValue().getId())));
+        updateBXH();
     }
 
     private void newGame() {
@@ -135,8 +131,8 @@ public class Game2Controller {
     private void finishGame() {
         if(solvedQuestion == NUMBER_OF_QUESTIONS) {
             double playedTime = 1.0 * time.get() / 10;
-            if(playedTime < UserManager.getInstance().getCurrentUser().getBestTime2()) {
-                UserManager.getInstance().getCurrentUser().setBestTime2(playedTime);
+            if(playedTime < Game2.getBestTime()) {
+                Game2.setBestTime(playedTime);
             }
         }
 
@@ -149,6 +145,14 @@ public class Game2Controller {
         for (int i = 0; i < 2 * NUMBER_OF_QUESTIONS; i++) {
             grid.getChildren().get(i).setVisible(false);
         }
-        topPlayer.refresh();
+        updateBXH();
+    }
+
+    public void updateBXH() {
+        ObservableList<User> players = FXCollections.observableArrayList(UserManager.getInstance().getUsers()).
+                sorted(Comparator.comparingDouble(u -> Game2.getBestTime(u.getId())));
+        topPlayer.getItems().clear();
+        topPlayer.setItems(FXCollections.observableArrayList(
+                players.stream().filter(player -> players.indexOf(player) < MAX_PLAYER_SHOW).collect(Collectors.toList())));
     }
 }

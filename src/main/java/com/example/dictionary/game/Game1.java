@@ -2,6 +2,7 @@ package com.example.dictionary.game;
 
 import com.example.dictionary.word.Word;
 
+import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -26,7 +27,7 @@ public class Game1 extends AGame{
         fault = 0;
         isSolved.clear();
         for(int i = 0; i < NUM_QUESTION; i ++) isSolved.add(false);
-        setReady(listWord.size() >= 3 && listDef.size() >= 3);
+        setReady(listWord.size() >= NUM_QUESTION && listDef.size() >= NUM_QUESTION);
         if(! isReady()) {
             return;
         }
@@ -47,7 +48,6 @@ public class Game1 extends AGame{
         }
     }
 
-
     public void toNextQuestion() {
         do {
             currentQuestionIndex ++;
@@ -66,6 +66,7 @@ public class Game1 extends AGame{
     }
 
     private void generateRandomQuestions() {
+        Random rd = new Random();
         Collections.shuffle(listWord);
         Collections.shuffle(listDef);
         questions.clear();
@@ -81,7 +82,12 @@ public class Game1 extends AGame{
                 // cho từ, chọn nghĩa đúng
                 question = listWord.get(i % listWord.size());
                 answer = map.get(question).getDef();
-                selections.addAll(listDef.subList(0, 3));
+                Set<Integer> tmp = new HashSet<>();
+                while(tmp.size() < 3) {
+                    tmp.add(rd.nextInt(listDef.size()));
+                }
+                selections = tmp.stream().map(integer -> listDef.get(integer)).
+                        collect(Collectors.toCollection(ArrayList::new));
                 if (!selections.contains(answer)) {
                     selections.set(2, answer);
                 }
@@ -89,12 +95,14 @@ public class Game1 extends AGame{
                 // cho nghĩa, chọn từ đúng
                 question = listDef.get(i % listDef.size());
                 answer = map.keySet().stream().filter(w -> map.get(w).getDef().equals(question)).toList().get(0);
+                Set<Integer> tmp = new HashSet<>();
+                while(tmp.size() < 2) {
+                    int ii = rd.nextInt(listWord.size());
+                    if (! listWord.get(ii).equals(answer)) tmp.add(ii);
+                }
+                selections = tmp.stream().map(integer -> listWord.get(integer)).
+                        collect(Collectors.toCollection(ArrayList::new));
                 selections.add(answer);
-                final String finalAns = answer;
-                selections.addAll(
-                        listWord.stream().filter(
-                                w -> !map.get(w).getDef().equals(finalAns)
-                        ).toList().subList(0, 2));
             }
             Collections.shuffle(selections);
             questions.add(question);
@@ -114,38 +122,59 @@ public class Game1 extends AGame{
     private int solved = 0;
     private int fault = 0;
     private int currentQuestionIndex = 0;
-
     public int getSolved() {
         return solved;
     }
-
     public int getFault() {
         return fault;
     }
     public String getQuestion() {
         return questions.get(currentQuestionIndex);
     }
-
     public String getAnswer() {
         return answers.get(currentQuestionIndex);
     }
     public int getAnswerIndex() {
         return questionsSelections.get(currentQuestionIndex).indexOf(getAnswer());
     }
-
     public ArrayList<String> getSelections() {
         return questionsSelections.get(currentQuestionIndex);
     }
-
     public void selectAns(int selectedAns) {
         selectedAnswers.set(currentQuestionIndex, selectedAns);
     }
     public int getSelectedAns() {
         return selectedAnswers.get(currentQuestionIndex);
     }
-
     private String getTextFromHTML(String html) {
         return Jsoup.parse(html).text();
     }
 
+    private static final String PATH = "data/games/1.txt";
+    private static final String SPLITTING_CHARACTERS = " ";
+    public static Map<Integer, Double> playersBestTime = new HashMap<>();
+
+    public static void readData() {
+        System.out.println("read data");
+        readData(playersBestTime, PATH, SPLITTING_CHARACTERS);
+    }
+
+    public static void writeData() {
+        System.out.println("write data");
+        writeData(PATH, playersBestTime, SPLITTING_CHARACTERS);
+    }
+
+    public static double getBestTime() {
+        return getBestTime(UserManager.getInstance().getCurrentUser().getId());
+    }
+    public static double getBestTime(int id) {
+        return playersBestTime.getOrDefault(id, Double.MAX_VALUE);
+    }
+    public static void setBestTime(double time) {
+        playersBestTime.put(UserManager.getInstance().getCurrentUser().getId(), time);
+    }
+
+    static {
+        readData();
+    }
 }

@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Game2 extends AGame{
+    public static final int GAME_ID = 2;
     private ArrayList<Word> data;
 
     public ArrayList<String> generate() {
@@ -36,27 +37,5 @@ public class Game2 extends AGame{
 
     private String getTextFromHTML(String html) {
         return Jsoup.parse(html).text();
-    }
-
-    private static final String PATH = "data/games/2.txt";
-    private static final String SPLITTING_CHARACTERS = " ";
-    public static Map<Integer, Double> playersBestTime = new HashMap<>();
-    public static void readData() {
-        readData(playersBestTime, PATH, SPLITTING_CHARACTERS);
-    }
-    public static void writeData() {
-        writeData(PATH, playersBestTime, SPLITTING_CHARACTERS);
-    }
-    public static double getBestTime() {
-        return getBestTime(UserManager.getInstance().getCurrentUser().getId());
-    }
-    public static double getBestTime(int id) {
-        return playersBestTime.getOrDefault(id, Double.MAX_VALUE);
-    }
-    public static void setBestTime(double time) {
-        playersBestTime.put(UserManager.getInstance().getCurrentUser().getId(), time);
-    }
-    static {
-        readData();
     }
 }

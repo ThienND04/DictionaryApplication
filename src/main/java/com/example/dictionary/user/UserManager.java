@@ -4,6 +4,7 @@ import com.example.dictionary.controller.Controller;
 import com.example.dictionary.game.Game1;
 import com.example.dictionary.game.Game2;
 import com.example.dictionary.game.Game3;
+import com.example.dictionary.game.GameManager;
 
 import java.io.*;
 import java.time.LocalDate;
@@ -88,9 +89,7 @@ public class UserManager implements Serializable {
                 currentUser.writeData();
             ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream(DATA_PATH));
             os.writeObject(instance);
-            Game1.writeData();
-            Game2.writeData();
-            Game3.writeData();
+            GameManager.writeData();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -103,12 +102,16 @@ public class UserManager implements Serializable {
             User user = new User("pmquy", "pmquy");
             user.getLoginDays().add(LocalDate.of(2023,11,15));
             userManager.users.add(user);
-
             System.out.println(user.getLoginDays());
 
             System.out.println(userManager);
             ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream(DATA_PATH));
             os.writeObject(userManager);
+            os.close();
+            GameManager gameManager = new GameManager();
+            os = new ObjectOutputStream(new FileOutputStream(GameManager.DATA_PATH));
+            os.writeObject(gameManager);
+            os.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

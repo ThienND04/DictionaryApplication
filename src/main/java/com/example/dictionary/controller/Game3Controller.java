@@ -2,6 +2,8 @@ package com.example.dictionary.controller;
 
 import com.example.dictionary.game.Game1;
 import com.example.dictionary.game.Game3;
+import com.example.dictionary.game.GameInfo;
+import com.example.dictionary.game.GameManager;
 import com.example.dictionary.scene.SuperScene;
 import com.example.dictionary.user.User;
 import com.example.dictionary.user.UserManager;
@@ -74,7 +76,8 @@ public class Game3Controller {
         });
         sttCol.setCellValueFactory(collumn -> new ReadOnlyObjectWrapper<>(topPlayer.getItems().indexOf(collumn.getValue()) + 1));
         userCol.setCellValueFactory(new PropertyValueFactory<>("username"));
-        timeCol.setCellValueFactory(collumn -> new ReadOnlyObjectWrapper<>(Game3.getBestTime(collumn.getValue().getId())));
+        timeCol.setCellValueFactory(collumn -> new ReadOnlyObjectWrapper<>(
+                GameManager.getInstance().getBestTime(Game3.GAME_ID, collumn.getValue().getId())));
         updateBXH();
     }
     private final Game3 game = new Game3();
@@ -103,9 +106,7 @@ public class Game3Controller {
         nextBtn.setVisible(false);
         timeline.pause();
         double playedTime = 1.0 * time.get() / 10;
-        if(playedTime < Game3.getBestTime()) {
-            Game3.setBestTime(playedTime);
-        }
+        GameManager.getInstance().getPlayersHistory().add(new GameInfo(Game3.GAME_ID, playedTime, GameInfo.Status.WIN));
         time.set(0);
         updateBXH();
     }
@@ -155,7 +156,9 @@ public class Game3Controller {
 
     public void updateBXH() {
         ObservableList<User> players = FXCollections.observableArrayList(UserManager.getInstance().getUsers()).
-                sorted(Comparator.comparingDouble(u -> Game3.getBestTime(u.getId())));
+                filtered(user -> GameManager.getInstance().getPlayersHistory().stream().
+                        anyMatch(gameInfo -> gameInfo.getPlayerId() == user.getId() && gameInfo.getGameId() == Game3.GAME_ID)).
+                sorted(Comparator.comparingDouble(u -> GameManager.getInstance().getBestTime(Game3.GAME_ID, u.getId())));
         topPlayer.getItems().clear();
         topPlayer.setItems(FXCollections.observableArrayList(
                 players.stream().filter(player -> players.indexOf(player) < MAX_PLAYER_SHOW).collect(Collectors.toList())));

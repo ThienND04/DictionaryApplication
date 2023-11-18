@@ -1,6 +1,8 @@
 package com.example.dictionary.controller;
 
 import com.example.dictionary.game.Game1;
+import com.example.dictionary.game.GameInfo;
+import com.example.dictionary.game.GameManager;
 import com.example.dictionary.scene.SuperScene;
 import com.example.dictionary.user.User;
 import com.example.dictionary.user.UserManager;
@@ -111,7 +113,8 @@ public class Game1Controller {
         }
         sttCol.setCellValueFactory(collumn -> new ReadOnlyObjectWrapper<>(topPlayer.getItems().indexOf(collumn.getValue()) + 1));
         userCol.setCellValueFactory(new PropertyValueFactory<>("username"));
-        timeCol.setCellValueFactory(collumn -> new ReadOnlyObjectWrapper<>(Game1.getBestTime(collumn.getValue().getId())));
+        timeCol.setCellValueFactory(collumn -> new ReadOnlyObjectWrapper<>(
+                GameManager.getInstance().getBestTime(Game1.GAME_ID, collumn.getValue().getId())));
         updateBXH();
     }
 
@@ -138,11 +141,11 @@ public class Game1Controller {
 
     private void finish() {
         timeline.stop();
+        double playedTime = 1.0 * time.get() / 10;
         if(game1.questionRemain() == 0) {
-            double playedTime = 1.0 * time.get() / 10;
-            if(playedTime < Game1.getBestTime()) {
-                Game1.setBestTime(playedTime);
-            }
+            GameManager.getInstance().getPlayersHistory().add(new GameInfo(Game1.GAME_ID, playedTime, GameInfo.Status.WIN));
+        } else {
+            GameManager.getInstance().getPlayersHistory().add(new GameInfo(Game1.GAME_ID, playedTime, GameInfo.Status.LOSE));
         }
         newGameBtn.setVisible(true);
         solved.setVisible(false);
@@ -205,7 +208,9 @@ public class Game1Controller {
 
     public void updateBXH() {
         ObservableList<User> players = FXCollections.observableArrayList(UserManager.getInstance().getUsers()).
-                sorted(Comparator.comparingDouble(u -> Game1.getBestTime(u.getId())));
+                filtered(user -> GameManager.getInstance().getPlayersHistory().stream().
+                        anyMatch(gameInfo -> gameInfo.getPlayerId() == user.getId() && gameInfo.getGameId() == Game1.GAME_ID)).
+                sorted(Comparator.comparingDouble(u -> GameManager.getInstance().getBestTime(Game1.GAME_ID, u.getId())));
         topPlayer.getItems().clear();
         topPlayer.setItems(FXCollections.observableArrayList(
                 players.stream().filter(player -> players.indexOf(player) < MAX_PLAYER_SHOW).collect(Collectors.toList())));

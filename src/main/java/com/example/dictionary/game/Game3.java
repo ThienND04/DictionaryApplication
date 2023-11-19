@@ -6,9 +6,11 @@ import org.jsoup.Jsoup;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
-public class Game3 {
+public class Game3 extends AGame {
+    public static final int GAME_ID = 3;
     private Map<String, Word> map;
     private ArrayList<Word> list;
     public static final int NUM_QUESTION = 5;
@@ -27,6 +29,7 @@ public class Game3 {
         Collections.shuffle(list);
     }
 
+    @Override
     public boolean isReady() {
         return !list.isEmpty();
     }

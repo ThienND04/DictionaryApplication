@@ -1,6 +1,9 @@
 package com.example.dictionary.controller;
 
+import com.example.dictionary.game.Game1;
 import com.example.dictionary.game.Game3;
+import com.example.dictionary.game.GameInfo;
+import com.example.dictionary.game.GameManager;
 import com.example.dictionary.scene.SuperScene;
 import com.example.dictionary.user.User;
 import com.example.dictionary.user.UserManager;
@@ -71,14 +74,11 @@ public class Game3Controller {
             if(isPaused) timeline.pause();
             else timeline.play();
         });
-        ObservableList<User> players = FXCollections.observableArrayList(UserManager.getInstance().getUsers()).
-                sorted(Comparator.comparingDouble(User::getBestTime3));
         sttCol.setCellValueFactory(collumn -> new ReadOnlyObjectWrapper<>(topPlayer.getItems().indexOf(collumn.getValue()) + 1));
         userCol.setCellValueFactory(new PropertyValueFactory<>("username"));
-        timeCol.setCellValueFactory(new PropertyValueFactory<>("bestTime3"));
-        topPlayer.getItems().clear();
-        topPlayer.setItems(FXCollections.observableArrayList(
-                players.stream().filter(player -> players.indexOf(player) < MAX_PLAYER_SHOW).collect(Collectors.toList())));
+        timeCol.setCellValueFactory(collumn -> new ReadOnlyObjectWrapper<>(
+                GameManager.getInstance().getBestTime(Game3.GAME_ID, collumn.getValue().getId())));
+        updateBXH();
     }
     private final Game3 game = new Game3();
 
@@ -103,13 +103,12 @@ public class Game3Controller {
     private void finish() {
         newGame.setVisible(true);
         pauseBtn.setVisible(false);
+        nextBtn.setVisible(false);
         timeline.pause();
         double playedTime = 1.0 * time.get() / 10;
-        if(playedTime < UserManager.getInstance().getCurrentUser().getBestTime3()) {
-            UserManager.getInstance().getCurrentUser().setBestTime3(playedTime);
-        }
+        GameManager.getInstance().getPlayersHistory().add(new GameInfo(Game3.GAME_ID, playedTime, GameInfo.Status.WIN));
         time.set(0);
-        topPlayer.refresh();
+        updateBXH();
     }
 
     private void nextQuestion() {
@@ -153,6 +152,16 @@ public class Game3Controller {
             });
             input.getChildren().add(btn);
         }
+    }
+
+    public void updateBXH() {
+        ObservableList<User> players = FXCollections.observableArrayList(UserManager.getInstance().getUsers()).
+                filtered(user -> GameManager.getInstance().getPlayersHistory().stream().
+                        anyMatch(gameInfo -> gameInfo.getPlayerId() == user.getId() && gameInfo.getGameId() == Game3.GAME_ID)).
+                sorted(Comparator.comparingDouble(u -> GameManager.getInstance().getBestTime(Game3.GAME_ID, u.getId())));
+        topPlayer.getItems().clear();
+        topPlayer.setItems(FXCollections.observableArrayList(
+                players.stream().filter(player -> players.indexOf(player) < MAX_PLAYER_SHOW).collect(Collectors.toList())));
     }
 
     private static final int MAX_PLAYER_SHOW = 10;

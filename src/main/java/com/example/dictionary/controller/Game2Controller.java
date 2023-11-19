@@ -2,6 +2,8 @@ package com.example.dictionary.controller;
 
 import com.example.dictionary.game.Game1;
 import com.example.dictionary.game.Game2;
+import com.example.dictionary.game.GameInfo;
+import com.example.dictionary.game.GameManager;
 import com.example.dictionary.scene.SuperScene;
 import com.example.dictionary.user.User;
 import com.example.dictionary.user.UserManager;
@@ -92,14 +94,11 @@ public class Game2Controller {
                 }
             });
         }
-        ObservableList<User> players = FXCollections.observableArrayList(UserManager.getInstance().getUsers()).
-                sorted(Comparator.comparingDouble(User::getBestTime2));
         sttCol.setCellValueFactory(collumn -> new ReadOnlyObjectWrapper<>(topPlayer.getItems().indexOf(collumn.getValue()) + 1));
         userCol.setCellValueFactory(new PropertyValueFactory<>("username"));
-        timeCol.setCellValueFactory(new PropertyValueFactory<>("bestTime2"));
-        topPlayer.getItems().clear();
-        topPlayer.setItems(FXCollections.observableArrayList(
-                players.stream().filter(player -> players.indexOf(player) < MAX_PLAYER_SHOW).collect(Collectors.toList())));
+        timeCol.setCellValueFactory(collumn -> new ReadOnlyObjectWrapper<>(
+                GameManager.getInstance().getBestTime(Game2.GAME_ID, collumn.getValue().getId())));
+        updateBXH();
     }
 
     private void newGame() {
@@ -135,9 +134,7 @@ public class Game2Controller {
     private void finishGame() {
         if(solvedQuestion == NUMBER_OF_QUESTIONS) {
             double playedTime = 1.0 * time.get() / 10;
-            if(playedTime < UserManager.getInstance().getCurrentUser().getBestTime2()) {
-                UserManager.getInstance().getCurrentUser().setBestTime2(playedTime);
-            }
+            GameManager.getInstance().getPlayersHistory().add(new GameInfo(Game2.GAME_ID, playedTime, GameInfo.Status.WIN));
         }
 
         clickedWord = null;
@@ -149,6 +146,16 @@ public class Game2Controller {
         for (int i = 0; i < 2 * NUMBER_OF_QUESTIONS; i++) {
             grid.getChildren().get(i).setVisible(false);
         }
-        topPlayer.refresh();
+        updateBXH();
+    }
+
+    public void updateBXH() {
+        ObservableList<User> players = FXCollections.observableArrayList(UserManager.getInstance().getUsers()).
+                filtered(user -> GameManager.getInstance().getPlayersHistory().stream().
+                        anyMatch(gameInfo -> gameInfo.getPlayerId() == user.getId() && gameInfo.getGameId() == Game2.GAME_ID)).
+                sorted(Comparator.comparingDouble(u -> GameManager.getInstance().getBestTime(Game2.GAME_ID, u.getId())));
+        topPlayer.getItems().clear();
+        topPlayer.setItems(FXCollections.observableArrayList(
+                players.stream().filter(player -> players.indexOf(player) < MAX_PLAYER_SHOW).collect(Collectors.toList())));
     }
 }

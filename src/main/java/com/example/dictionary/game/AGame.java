@@ -1,7 +1,10 @@
 package com.example.dictionary.game;
 
-public abstract class AGame {
-    private boolean isReady = true;
+import java.io.*;
+import java.util.Map;
+
+public abstract class AGame implements Serializable {
+    private transient boolean isReady = true;
 
     public boolean isReady() {
         return isReady;

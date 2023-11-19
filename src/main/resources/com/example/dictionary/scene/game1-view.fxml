@@ -84,9 +84,9 @@
                   <Label alignment="CENTER" prefHeight="16.0" prefWidth="228.0" text="Top player" />
                   <TableView fx:id="topPlayer" prefHeight="200.0" prefWidth="200.0">
                     <columns>
-                      <TableColumn fx:id="sttCol" prefWidth="40.0" text="#" />
-                      <TableColumn fx:id="userCol" prefWidth="78.0" text="User" />
-                        <TableColumn fx:id="timeCol" prefWidth="102.0" text="Best Time" />
+                      <TableColumn fx:id="sttCol" editable="false" prefWidth="40.0" sortable="false" text="#" />
+                      <TableColumn fx:id="userCol" editable="false" prefWidth="78.0" sortable="false" text="User" />
+                        <TableColumn fx:id="timeCol" editable="false" prefWidth="102.0" text="Best Time" />
                     </columns>
                      <VBox.margin>
                         <Insets left="10.0" right="10.0" />

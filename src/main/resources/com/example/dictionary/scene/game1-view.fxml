@@ -26,7 +26,10 @@
                                  <children>
                                     <Button fx:id="newGameBtn" mnemonicParsing="false" prefHeight="24.0" prefWidth="102.0" text="New Game" />
                                     <HBox alignment="CENTER_RIGHT" prefHeight="36.0" prefWidth="337.0" />
-                                    <HBox alignment="CENTER" prefHeight="36.0" prefWidth="175.0" />
+                                    <HBox alignment="CENTER" prefHeight="36.0" prefWidth="175.0">
+                                       <children>
+                                          <Button fx:id="hintBtn" mnemonicParsing="false" text="Hint" />
+                                       </children></HBox>
                                  </children>
                               </HBox>
                               <HBox alignment="CENTER" prefHeight="35.0" prefWidth="600.0">

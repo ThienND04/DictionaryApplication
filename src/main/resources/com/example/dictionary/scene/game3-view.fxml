@@ -18,10 +18,19 @@
             <VBox prefHeight="372.0" prefWidth="603.0">
                <VBox maxWidth="1.7976931348623157E308" prefWidth="580.0" VBox.vgrow="ALWAYS">
                   <children>
-                     <HBox>
+                     <HBox prefHeight="26.0" prefWidth="239.0">
                         <children>
-                           <Button fx:id="newGame" focusTraversable="false" mnemonicParsing="false" prefHeight="26.0" text="Bắt đầu" />
-                           <Button fx:id="pauseBtn" focusTraversable="false" mnemonicParsing="false" prefHeight="26.0" text="Dừng" visible="false" />
+                           <HBox prefHeight="100.0" prefWidth="200.0">
+                              <children>
+                                 <Button fx:id="newGame" focusTraversable="false" mnemonicParsing="false" prefHeight="26.0" text="Bắt đầu" />
+                                 <Button fx:id="pauseBtn" focusTraversable="false" mnemonicParsing="false" prefHeight="26.0" text="Dừng" visible="false" />
+                              </children>
+                           </HBox>
+                           <HBox alignment="CENTER_RIGHT" prefHeight="26.0" prefWidth="383.0">
+                              <children>
+                                 <Button fx:id="hintBtn" mnemonicParsing="false" text="Hint" />
+                              </children>
+                           </HBox>
                         </children>
                      </HBox>
                      <ProgressBar fx:id="bar" maxWidth="1.7976931348623157E308" prefWidth="200.0" progress="0.0">

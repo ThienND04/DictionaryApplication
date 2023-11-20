@@ -26,7 +26,7 @@ import javafx.scene.web.WebView;
 import javafx.util.Callback;
 import javafx.util.Duration;
 
-import java.util.Comparator;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
@@ -51,6 +51,8 @@ public class Game1Controller {
     @FXML
     Button newGameBtn;
     @FXML
+    Button hintBtn;
+    @FXML
     ProgressBar progressBar;
     @FXML
     Label solved;
@@ -66,6 +68,7 @@ public class Game1Controller {
     TableColumn<User, String> userCol;
     @FXML
     TableColumn<User, Double> timeCol;
+    private int cntHint = 0;
     private final AtomicLong time = new AtomicLong(0);
     private final Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.1),
             event -> timeLabel.setText(String.valueOf((double) time.incrementAndGet() / 10))));
@@ -78,6 +81,7 @@ public class Game1Controller {
 
     private void initComponents() {
         newGameBtn.setVisible(true);
+        hintBtn.setVisible(false);
         solved.setVisible(false);
         fault.setVisible(false);
         checkBtn.setVisible(false);
@@ -86,6 +90,7 @@ public class Game1Controller {
         timeline.setCycleCount(Animation.INDEFINITE);
 
         newGameBtn.setOnAction(actionEvent -> newGame());
+        hintBtn.setOnAction(actionEvent -> hint());
         skipBtn.setOnAction(actionEvent -> {
             game1.toNextQuestion();
             updateQuestion();
@@ -120,12 +125,14 @@ public class Game1Controller {
 
     private void newGame() {
         game1.init();
+        cntHint = 0;
         progressBar.setProgress(0);
         if(! game1.isReady()) {
             new Alert(Alert.AlertType.WARNING, "Không đủ số lượng từ").show();
             return;
         }
         newGameBtn.setVisible(false);
+        hintBtn.setVisible(true);
         updateQuestion();
         updateStatus();
         checkBtn.setVisible(true);
@@ -152,6 +159,7 @@ public class Game1Controller {
         fault.setVisible(false);
         checkBtn.setVisible(false);
         quesLabel.setVisible(false);
+        hintBtn.setVisible(false);
         time.set(0);
         checkBtn.setOnAction(actionEvent -> checkAns());
         for(int i = 0; i < ansSelections.getButtons().size(); i ++) {
@@ -170,6 +178,7 @@ public class Game1Controller {
             btn.setText(game1.getSelections().get(i));
             btn.setStyle("-fx-background-color: " + BLUE_2);
             btn.setDisable(false);
+            btn.setVisible(true);
         }
     }
 
@@ -203,6 +212,21 @@ public class Game1Controller {
                 checkBtn.setOnAction(actionEvent1 -> checkAns());
                 updateQuestion();
             });
+        }
+    }
+
+    private void hint() {
+        ArrayList<Integer> slt = new ArrayList<>(Arrays.asList(0, 1, 2));
+        slt.removeIf(i ->
+            ! ansSelections.getButtons().get(i).isVisible()
+            || i == game1.getAnswerIndex());
+        if(slt.isEmpty() || cntHint == Game1.MAX_HINT) {
+            new Alert(Alert.AlertType.WARNING, "Không thể dùng ").show();
+        } else {
+            Random rd = new Random();
+            int i = slt.get(rd.nextInt(slt.size()));
+            ansSelections.getButtons().get(i).setVisible(false);
+            cntHint ++;
         }
     }
 

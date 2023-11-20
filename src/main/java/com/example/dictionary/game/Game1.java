@@ -13,6 +13,7 @@ public class Game1 extends AGame{
     public static final int GAME_ID = 1;
     public static final int NUM_QUESTION = 5;
     public static final int MAX_FAULT = 3;
+    public static final int MAX_HINT = 3;
 
     public void init() {
         map = new HashMap<>();
@@ -112,6 +113,7 @@ public class Game1 extends AGame{
             selectedAnswers.add(-1);
         }
     }
+
     private Map<String, Word> map;
     private ArrayList<String> listWord;
     private ArrayList<String> listDef;

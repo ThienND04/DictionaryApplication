@@ -17,6 +17,7 @@ import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.effect.Lighting;
 import javafx.scene.layout.HBox;
 import javafx.scene.web.WebView;
 import javafx.util.Duration;
@@ -27,17 +28,19 @@ import java.util.stream.Collectors;
 
 public class Game3Controller {
     @FXML
-    public Label inform;
+    Label inform;
     @FXML
-    private Label meaning;
+    Label meaning;
     @FXML
-    private HBox guessWord;
+    HBox guessWord;
     @FXML
-    private HBox input;
+    HBox input;
     @FXML
-    private Button newGame;
+    Button newGame;
     @FXML
-    private Button pauseBtn;
+    Button hintBtn;
+    @FXML
+    Button pauseBtn;
     @FXML
     ProgressBar bar;
     @FXML
@@ -63,7 +66,9 @@ public class Game3Controller {
         instance = this;
         timeline.setCycleCount(Animation.INDEFINITE);
         meaning.setVisible(false);
+        hintBtn.setVisible(false);
         newGame.setOnAction(event -> newGame());
+        hintBtn.setOnAction(event -> hint());
         nextBtn.setOnAction(event -> nextQuestion());
         pauseBtn.setOnAction(actionEvent -> {
             isPaused = ! isPaused;
@@ -98,6 +103,7 @@ public class Game3Controller {
         pauseBtn.setVisible(true);
         pauseBtn.setText("Dừng");
         nextBtn.setVisible(true);
+        hintBtn.setVisible(true);
     }
 
     private void finish() {
@@ -162,6 +168,25 @@ public class Game3Controller {
         topPlayer.getItems().clear();
         topPlayer.setItems(FXCollections.observableArrayList(
                 players.stream().filter(player -> players.indexOf(player) < MAX_PLAYER_SHOW).collect(Collectors.toList())));
+    }
+
+    private void hint() {
+        StringBuilder playerGuess = new StringBuilder();
+        guessWord.getChildren().stream().map(button -> ((Button)button).getText()).
+                reduce(playerGuess, (StringBuilder::append), StringBuilder::append);
+        if(game.isGuessedWord(playerGuess.toString())) {
+            new Alert(Alert.AlertType.WARNING, "Không thể dùng ").show();
+        } else if(game.getGuessWord().startsWith(playerGuess.toString())) {
+            input.getChildren().stream().filter(btn -> btn.isVisible()).map(btn -> (Button) btn).filter(btn -> {
+                playerGuess.append(btn.getText());
+                if(game.getGuessWord().startsWith(playerGuess.toString())) {
+                    btn.setStyle("-fx-background-color: #66FF66");
+                    return true;
+                }
+                playerGuess.deleteCharAt(playerGuess.length() - 1);
+                return false;
+            }).findFirst();
+        }
     }
 
     private static final int MAX_PLAYER_SHOW = 10;

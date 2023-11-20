@@ -1,8 +1,11 @@
+aaa<::><html dir="ltr"><head></head><body contenteditable="false"><p><span style="font-family: &quot;&quot;;">111</span></p></body></html><::>
 gun<::><html dir="ltr"><head></head><body contenteditable="false">súng</body></html><::>
 expert<::><html dir="ltr"><head></head><body contenteditable="false">chuyên gia</body></html><::>
+ccc<::><html dir="ltr"><head></head><body contenteditable="false"><p><span style="font-family: &quot;&quot;;">333</span></p></body></html><::>
 bicycle<::><html dir="ltr"><head></head><body contenteditable="false">xe đạp</body></html><::>
 about<::>Về<::>
 captain american<::><html dir="ltr"><head></head><body contenteditable="false"><span style="font-size: x-large;">đội trưởng mỹ</span></body></html><::>
+aorist<::><html>người theo thuyết bất thường</html><::>
 malfunction<::>sự cố<::>
 computer<::><html><html dir="ltr"><head></head><body contenteditable="false"><ul><li><h1 style="color: rgb(5, 56, 107);">computer</h1><ul><li><h2 style="color: rgb(92, 219, 149);">Phát âm :&nbsp;</h2><ul><li>/kəmˈpjuːtə/</li><li>/kəmˈpjutɚ/</li></ul></li><li><h2 style="color: rgb(92, 219, 149);">Nghĩa :&nbsp;</h2><ul><li><h3 style="color: rgb(0, 153, 204);">Loại : danh từ</h3><ul><li><h4 style="color: rgb(204, 102, 0);">Các định nghĩa :&nbsp;</h4><ul style="list-style: circle;"><li><p>Nghĩa : A person employed to perform computations; one who computes.</p></li><li><p>Nghĩa : (by restriction) A male computer, where the female computer is called a computress.</p></li><li><p>Nghĩa : A programmable electronic device that performs mathematical calculations and logical operations, especially one that can process, store and retrieve large amounts of data very quickly; now especially, a small one for personal or home use employed for manipulating text or graphics, accessing the Internet, or playing games or media.</p></li></ul></li><li><h4 style="color: rgb(204, 102, 0);">Từ đồng nghĩa :&nbsp;</h4><ul style="list-style: circle;"><li>'puter</li><li>box</li><li>calculator</li><li>machine</li><li>processor</li></ul></li><li><h4 style="color: rgb(204, 102, 0);">Từ trái nghĩa :</h4></li></ul></li></ul></li></ul></li></ul></body></html></html><::>
 so far away<::>quá đỗi xa vời<::>
@@ -20,8 +23,10 @@ summary<::>bản tóm tắt<::>
 where are you now<::>Giờ bạn đang ở đâu<::>
 a<::><html>Một</html><::>
 hometown<::>quê hương<::>
+bbb<::><html dir="ltr"><head></head><body contenteditable="false"><p><span style="font-family: &quot;&quot;;">222</span></p></body></html><::>
 homework<::>bài tập về nhà<::>
 unspecified<::>không xác định<::>
+ddd<::><html dir="ltr"><head></head><body contenteditable="false"><p><span style="font-family: &quot;&quot;;">444</span></p></body></html><::>
 super idol<::>siêu thần tượng<::>
 query<::><html dir="ltr"><head></head><body contenteditable="false">truy vấnfdfs</body></html><::>
 hello world<::>Chào thế giới<::>

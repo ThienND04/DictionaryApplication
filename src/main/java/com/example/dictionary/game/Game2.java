@@ -5,10 +5,14 @@ import com.example.dictionary.controller.Game2Controller;
 import com.example.dictionary.user.UserManager;
 import org.jsoup.Jsoup;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Game2 extends AGame{
+    public static final int GAME_ID = 2;
     private ArrayList<Word> data;
 
     public ArrayList<String> generate() {
@@ -34,5 +38,4 @@ public class Game2 extends AGame{
     private String getTextFromHTML(String html) {
         return Jsoup.parse(html).text();
     }
-
 }

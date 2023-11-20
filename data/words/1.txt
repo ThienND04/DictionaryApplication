@@ -13,7 +13,7 @@ duck<::>con vịt<::>
 im fine<::>Tôi ổn<::>
 how are you<::>Bạn khỏe không<::>
 helpful<::>hữu ích<::>
-bullet<::><html dir="ltr"><head></head><body contenteditable="false"><h5>đạn</h5></body></html><::>
+bullet<::>đạn<::>
 sacred<::>Linh thiêng<::>
 summary<::>bản tóm tắt<::>
 where are you now<::>Giờ bạn đang ở đâu<::>
@@ -28,7 +28,7 @@ heart<::>trái tim<::>
 helpmeet<::><html><html dir="ltr"><head></head><body contenteditable="false"><span style="font-weight: bold;">gặp gỡ trợ giúp</span></body></html></html><::>
 shellfish<::>động vật có vỏ<::>
 supervise<::>giám sát<::>
-campaign<::><html>chiến dịch</html><::>
+campaign<::>chiến dịch<::>
 hello<::>Xin chào<::>
 supervisor<::>người giám sát<::>
 helperess<::>người giúp việc<::>

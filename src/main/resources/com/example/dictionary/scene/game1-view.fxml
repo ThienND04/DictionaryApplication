@@ -28,7 +28,10 @@
                                     <HBox alignment="CENTER_RIGHT" prefHeight="36.0" prefWidth="337.0" />
                                     <HBox alignment="CENTER" prefHeight="36.0" prefWidth="175.0">
                                        <children>
-                                          <Button fx:id="hintBtn" mnemonicParsing="false" text="Hint" />
+                                          <Button fx:id="hintBtn" mnemonicParsing="false" text="Hint">
+                                             <graphic>
+                                                <ImageView fx:id="hintImg" fitHeight="20.0" fitWidth="41.0" pickOnBounds="true" preserveRatio="true" />
+                                             </graphic></Button>
                                        </children></HBox>
                                  </children>
                               </HBox>
@@ -48,13 +51,7 @@
                               </HBox>
                            </children>
                         </VBox>
-                        <ButtonBar fx:id="ansSelections" nodeOrientation="LEFT_TO_RIGHT" prefHeight="174.0" prefWidth="600.0">
-                           <buttons>
-                              <Button mnemonicParsing="false" prefHeight="174.0" prefWidth="193.0" style="-fx-border-radius: 20px; -fx-background-radius: 20px;" text="Ans1" textAlignment="CENTER" />
-                              <Button layoutX="417.0" layoutY="10.0" mnemonicParsing="false" prefHeight="174.0" prefWidth="193.0" style="-fx-border-radius: 20px; -fx-background-radius: 20px;" text="Ans2" textAlignment="CENTER" />
-                              <Button layoutX="417.0" layoutY="10.0" mnemonicParsing="false" prefHeight="174.0" prefWidth="193.0" style="-fx-border-radius: 20px; -fx-background-radius: 20px;" text="Ans3" textAlignment="CENTER" />
-                           </buttons>
-                        </ButtonBar>
+                        <ButtonBar fx:id="ansSelections" nodeOrientation="LEFT_TO_RIGHT" prefHeight="174.0" prefWidth="600.0" />
                      </children>
                   </VBox>
                   <HBox prefHeight="38.0" prefWidth="600.0" />
@@ -89,7 +86,7 @@
                     <columns>
                       <TableColumn fx:id="sttCol" editable="false" prefWidth="40.0" sortable="false" text="#" />
                       <TableColumn fx:id="userCol" editable="false" prefWidth="78.0" sortable="false" text="User" />
-                        <TableColumn fx:id="timeCol" editable="false" prefWidth="102.0" text="Best Time" />
+                        <TableColumn fx:id="timeCol" editable="false" prefWidth="93.0" text="Time" />
                     </columns>
                      <VBox.margin>
                         <Insets left="10.0" right="10.0" />

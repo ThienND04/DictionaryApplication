@@ -6,6 +6,7 @@
 <?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -28,7 +29,10 @@
                            </HBox>
                            <HBox alignment="CENTER_RIGHT" prefHeight="26.0" prefWidth="383.0">
                               <children>
-                                 <Button fx:id="hintBtn" mnemonicParsing="false" text="Hint" />
+                                 <Button fx:id="hintBtn" mnemonicParsing="false" text="Hint">
+                                    <graphic>
+                                       <ImageView fx:id="hintImg" fitHeight="26.0" fitWidth="51.0" pickOnBounds="true" preserveRatio="true" />
+                                    </graphic></Button>
                               </children>
                            </HBox>
                         </children>

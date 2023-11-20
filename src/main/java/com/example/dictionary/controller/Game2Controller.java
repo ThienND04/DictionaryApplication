@@ -57,7 +57,7 @@ public class Game2Controller {
     TableColumn<User, Double> timeCol;
     private int solvedQuestion = 0;
     private boolean isPaused;
-    private Button clickedWord;
+    private ToggleButton clickedWord;
     private String clickedText;
 
 
@@ -69,11 +69,9 @@ public class Game2Controller {
         timeline.setCycleCount(Animation.INDEFINITE);
 
         for (int i = 0; i < 2 * NUMBER_OF_QUESTIONS; i++) {
-            Button btn = (Button) grid.getChildren().get(i);
+            ToggleButton btn = (ToggleButton) grid.getChildren().get(i);
             btn.setVisible(false);
             int finalI = i;
-//            btn.setRotationAxis(new Point3D(0, 0, 0));
-//            btn.getTransforms().add(new Rotate(20, 20, 20));
             btn.setOnMouseClicked(event -> {
                 if (clickedWord != null) {
                     if (game.checkAnswer(clickedText, list.get(finalI))) {
@@ -83,12 +81,10 @@ public class Game2Controller {
                         if (this.solvedQuestion == NUMBER_OF_QUESTIONS)
                             finishGame();
                     } else {
-                        btn.setStyle("-fx-background-color: #05386B; -fx-text-fill: white");
-                        clickedWord.setStyle("-fx-background-color: #05386B; -fx-text-fill: white");
+                        btn.setSelected(false);
                     }
                     clickedWord = null;
                 } else {
-                    btn.setStyle("-fx-background-color: lightblue; -fx-text-fill: black");
                     clickedWord = btn;
                     clickedText = list.get(finalI);
                 }
@@ -111,10 +107,9 @@ public class Game2Controller {
         }
 
         for (int i = 0; i < 2 * NUMBER_OF_QUESTIONS; i++) {
-            Button btn = (Button) grid.getChildren().get(i);
+            ToggleButton btn = (ToggleButton) grid.getChildren().get(i);
             btn.setText(list.get(i));
             btn.setVisible(true);
-            btn.setStyle("-fx-background-color: #05386B; -fx-text-fill: white");
         }
         isPaused = false;
         pauseBtn.setVisible(true);

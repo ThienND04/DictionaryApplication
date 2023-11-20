@@ -2,7 +2,6 @@
 
 Button{
     -fx-cursor : hand;
-    /*-fx-font-weight : bold;*/
     -fx-text-fill: -fx-white-2;
     -fx-background-color: -fx-blue-2;
     -fx-background-radius: 20px;
@@ -10,4 +9,37 @@ Button{
 
 Button:hover{
     -fx-text-fill: black;
+}
+
+ToggleButton{
+    -fx-cursor : hand;
+    -fx-text-fill: -fx-white-2;
+    -fx-background-color: -fx-blue-2;
+    -fx-background-radius: 20px;
+}
+
+ToggleButton:hover, ToggleButton:selected{
+    -fx-background-color : -fx-white-1;
+    -fx-text-fill : -fx-green-2;
+}
+
+TableView {
+    -fx-background-color: -fx-blue-2;
+}
+
+TableView .column-header {
+    -fx-background-color: -fx-blue-2;
+}
+
+TableView .table-cell:even{
+    -fx-background-color : -fx-green-1;
+}
+
+TableView .table-cell:odd{
+    -fx-background-color : -fx-white-2;
+}
+
+TableView .table-cell:hover {
+    -fx-background-color : -fx-blue-1;
+    -fx-text-fill : -fx-white-2;
 }

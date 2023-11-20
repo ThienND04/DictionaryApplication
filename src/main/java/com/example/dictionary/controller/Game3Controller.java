@@ -18,6 +18,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.effect.Lighting;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.web.WebView;
 import javafx.util.Duration;
@@ -40,11 +42,11 @@ public class Game3Controller {
     @FXML
     Button hintBtn;
     @FXML
+    Button nextBtn;
+    @FXML
     Button pauseBtn;
     @FXML
     ProgressBar bar;
-    @FXML
-    Button nextBtn;
     @FXML
     Label timeLabel;
     @FXML
@@ -55,6 +57,9 @@ public class Game3Controller {
     TableColumn<User, String> userCol;
     @FXML
     TableColumn<User, Double> timeCol;
+    @FXML
+    ImageView hintImg;
+
     private boolean isPaused = false;
 
     private final AtomicLong time = new AtomicLong(0);
@@ -66,6 +71,7 @@ public class Game3Controller {
         instance = this;
         timeline.setCycleCount(Animation.INDEFINITE);
         meaning.setVisible(false);
+        hintImg.setImage(new Image(UserController.getInstance().getClass().getResourceAsStream("hint.png")));
         hintBtn.setVisible(false);
         newGame.setOnAction(event -> newGame());
         hintBtn.setOnAction(event -> hint());

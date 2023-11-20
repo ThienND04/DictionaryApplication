@@ -22,6 +22,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.effect.Effect;
 import javafx.scene.effect.InnerShadow;
 import javafx.scene.effect.Lighting;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.web.WebView;
 import javafx.util.Callback;
 import javafx.util.Duration;
@@ -37,7 +39,7 @@ public class Game1Controller {
         return instance;
     }
     private static Game1Controller instance;
-    private final String BLUE_2 = "#05386B";
+    private final String BUTTON_COLOR = "#05386B";
     private final int MAX_PLAYER_SHOW = 5;
 
     @FXML
@@ -68,6 +70,8 @@ public class Game1Controller {
     TableColumn<User, String> userCol;
     @FXML
     TableColumn<User, Double> timeCol;
+    @FXML
+    ImageView hintImg;
     private int cntHint = 0;
     private final AtomicLong time = new AtomicLong(0);
     private final Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.1),
@@ -80,6 +84,8 @@ public class Game1Controller {
     }
 
     private void initComponents() {
+        hintImg.setImage(new Image(UserController.getInstance().getClass().getResourceAsStream("hint.png")));
+
         newGameBtn.setVisible(true);
         hintBtn.setVisible(false);
         solved.setVisible(false);
@@ -97,25 +103,6 @@ public class Game1Controller {
         });
         checkBtn.setText("Kiểm tra");
         checkBtn.setOnAction(actionEvent -> checkAns());
-        for(int i = 0; i < ansSelections.getButtons().size(); i ++) {
-            final int finalI = i;
-            Button btn = (Button) ansSelections.getButtons().get(i);
-            btn.setVisible(false);
-            btn.setOnMouseEntered(mouseEvent -> {
-                btn.setEffect(new Lighting());
-            });
-            btn.setOnMouseExited(mouseEvent -> {
-                btn.setEffect(null);
-            });
-            btn.setOnAction(actionEvent -> {
-                if(game1.getSelectedAns() >= 0) {
-                    getSelectedAns().setStyle("-fx-text-fill: white");
-                    getSelectedAns().setStyle("-fx-background-color: " + BLUE_2);
-                }
-                game1.selectAns(finalI);
-                btn.setStyle("-fx-text-fill: black; -fx-background-color: lightblue");
-            });
-        }
         sttCol.setCellValueFactory(collumn -> new ReadOnlyObjectWrapper<>(topPlayer.getItems().indexOf(collumn.getValue()) + 1));
         userCol.setCellValueFactory(new PropertyValueFactory<>("username"));
         timeCol.setCellValueFactory(collumn -> new ReadOnlyObjectWrapper<>(
@@ -131,6 +118,7 @@ public class Game1Controller {
             new Alert(Alert.AlertType.WARNING, "Không đủ số lượng từ").show();
             return;
         }
+        hintBtn.setText("x " + String.valueOf(UserManager.getInstance().getCurrentUser().getHint()));
         newGameBtn.setVisible(false);
         hintBtn.setVisible(true);
         updateQuestion();
@@ -139,10 +127,6 @@ public class Game1Controller {
         skipBtn.setVisible(true);
         quesLabel.setVisible(true);
         timeLabel.setVisible(true);
-        for(int i = 0; i < ansSelections.getButtons().size(); i ++) {
-            Button btn = (Button) ansSelections.getButtons().get(i);
-            btn.setVisible(true);
-        }
         timeline.play();
     }
 
@@ -162,10 +146,7 @@ public class Game1Controller {
         hintBtn.setVisible(false);
         time.set(0);
         checkBtn.setOnAction(actionEvent -> checkAns());
-        for(int i = 0; i < ansSelections.getButtons().size(); i ++) {
-            Button btn = (Button) ansSelections.getButtons().get(i);
-            btn.setVisible(false);
-        }
+        ansSelections.getButtons().forEach(btn -> btn.setVisible(false));
         updateBXH();
     }
 
@@ -173,12 +154,19 @@ public class Game1Controller {
         skipBtn.setVisible(game1.questionRemain() > 1);
         checkBtn.setDisable(false);
         quesLabel.setText(game1.getQuestion());
-        for(int i = 0; i < ansSelections.getButtons().size(); i ++) {
-            Button btn = (Button) ansSelections.getButtons().get(i);
-            btn.setText(game1.getSelections().get(i));
-            btn.setStyle("-fx-background-color: " + BLUE_2);
+        ansSelections.getButtons().clear();
+        for(int i = 0; i < 3; i ++) {
+            ToggleButton btn = new ToggleButton(game1.getSelections().get(i));
             btn.setDisable(false);
             btn.setVisible(true);
+            btn.setSelected(false);
+            final int finalI = i;
+            btn.setOnAction(actionEvent -> {
+                ToggleButton selectedAns = getSelectedAns();
+                if(selectedAns != null) getSelectedAns().setSelected(false);
+                game1.selectAns(finalI);
+            });
+            ansSelections.getButtons().add(btn);
         }
     }
 
@@ -188,17 +176,15 @@ public class Game1Controller {
         solved.setVisible(true);
         fault.setVisible(true);
         solved.setText(String.format("Solved: %02d / %02d", game1.getSolved() , Game1.NUM_QUESTION));
-        fault.setText(String.format("Solved: %02d / %02d", game1.getFault(), Game1.MAX_FAULT));
+        fault.setText(String.format("Fault: %02d / %02d", game1.getFault(), Game1.MAX_FAULT));
     }
 
     private void checkAns() {
-        for(int i = 0; i < ansSelections.getButtons().size(); i ++) {
-            Button btn = (Button) ansSelections.getButtons().get(i);
+        ansSelections.getButtons().get(game1.getAnswerIndex()).setStyle("-fx-background-color: lawngreen; -fx-text-fill: black");
+        ansSelections.getButtons().forEach(btn -> {
             btn.setDisable(true);
             btn.setOpacity(1);
-            if(i == game1.getSelectedAns()) btn.setStyle("-fx-background-color: red");
-            if(i == game1.getAnswerIndex()) btn.setStyle("-fx-background-color: lawngreen");
-        }
+        });
         game1.submit();
         updateStatus();
         skipBtn.setVisible(false);
@@ -222,7 +208,11 @@ public class Game1Controller {
             || i == game1.getAnswerIndex());
         if(slt.isEmpty() || cntHint == Game1.MAX_HINT) {
             new Alert(Alert.AlertType.WARNING, "Không thể dùng ").show();
+        } else if (UserManager.getInstance().getCurrentUser().getHint() == 0){
+            new Alert(Alert.AlertType.WARNING, "Hết rồi :((. Nạp tiền đi").show();
         } else {
+            // giam hint
+            UserManager.getInstance().getCurrentUser().setHint(UserManager.getInstance().getCurrentUser().getHint() - 1);
             Random rd = new Random();
             int i = slt.get(rd.nextInt(slt.size()));
             ansSelections.getButtons().get(i).setVisible(false);
@@ -240,7 +230,8 @@ public class Game1Controller {
                 players.stream().filter(player -> players.indexOf(player) < MAX_PLAYER_SHOW).collect(Collectors.toList())));
     }
 
-    private Button getSelectedAns() {
-        return (Button) ansSelections.getButtons().get(game1.getSelectedAns());
+    private ToggleButton getSelectedAns() {
+        if(game1.getSelectedAns() >= 0) return (ToggleButton) ansSelections.getButtons().get(game1.getSelectedAns());
+        else return null;
     }
 }

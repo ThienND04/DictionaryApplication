@@ -7,9 +7,27 @@ Button{
     -fx-background-radius: 20px;
 }
 
+ToggleButton{
+    -fx-cursor : hand;
+    -fx-pref-width: 187;
+    -fx-pref-height: 165;
+    -fx-font-weight : bold;
+    -fx-text-fill: -fx-white-2;
+    -fx-background-color: -fx-blue-2;
+    -fx-background-radius: 20px;
+}
+
+ToggleButton:hover{
+    -fx-background-color : -fx-white-1;
+    -fx-text-fill : -fx-green-2;
+}
+
+ToggleButton:selected{
+    -fx-background-color: red;
+}
+
 Button:hover{
     -fx-text-fill: black;
-    /*-fx-rotate: 10  ;*/
 }
 
 #quesLabel{
@@ -19,7 +37,23 @@ Button:hover{
     -fx-background-radius: 20px;
 }
 
-#scoreBoard{
+TableView {
     -fx-background-color: -fx-blue-2;
-    -fx-text-fill: -fx-white-2;
+}
+
+TableView .column-header {
+    -fx-background-color: -fx-blue-2;
+}
+
+TableView .table-cell:even{
+    -fx-background-color : -fx-green-1;
+}
+
+TableView .table-cell:odd{
+    -fx-background-color : -fx-white-2;
+}
+
+TableView .table-cell:hover {
+    -fx-background-color : -fx-blue-1;
+    -fx-text-fill : -fx-white-2;
 }

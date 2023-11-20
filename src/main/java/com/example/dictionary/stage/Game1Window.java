@@ -12,7 +12,7 @@ public class Game1Window extends Window {
         scenes.put(SceneEnum.GAME_1, new SuperScene(SceneEnum.GAME_1));
     }
 
-    public Game1Window(Stage stage) {
+    public Game1Window() {
         super("Game1");
         window.setResizable(false);
         changeScene(SceneEnum.GAME_1);

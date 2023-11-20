@@ -6,7 +6,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.web.WebView;
 
-public class DictionaryController {
+public class DictionaryController extends SuperController {
     @FXML
     private TextField wordToFind;
     @FXML
@@ -14,19 +14,22 @@ public class DictionaryController {
     @FXML
     private WebView definitionView;
 
-    @FXML
-    public void initialize() {
+    @Override
+    protected void initComponents() {
         loadWordList();
-        listView.getSelectionModel().selectedItemProperty().addListener(
-                (observable, oldValue, newValue) -> {
-                    if (newValue != null) {
-                        definitionView.getEngine().loadContent(Data.getInstance().getSubData().get(newValue).getDef());
-                    } else {
-                        definitionView.getEngine().loadContent("");
-                    }
-                }
-        );
+    }
 
+    private void handleSelectWord(String newValue) {
+        if (newValue != null) {
+            definitionView.getEngine().loadContent(Data.getInstance().getSubData().get(newValue).getDef());
+        } else {
+            definitionView.getEngine().loadContent("");
+        }
+    }
+
+    @Override
+    protected void initEvents() {
+        listView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> handleSelectWord(newValue));
         wordToFind.textProperty().addListener((observable, oldValue, newValue) -> loadWordList());
     }
 

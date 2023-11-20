@@ -3,7 +3,6 @@ package com.example.dictionary.stage;
 import com.example.dictionary.scene.SceneEnum;
 import com.example.dictionary.scene.SuperScene;
 import javafx.stage.Stage;
-
 import java.util.HashMap;
 
 public abstract class Window {
@@ -14,6 +13,13 @@ public abstract class Window {
     public void changeScene(SceneEnum sceneType) {
         window.setScene(scenes.get(sceneType).getScene());
         window.setMaximized(false);
+    }
+
+    public void changeTheme(int theme) {
+        scenes.forEach((k, v) -> {
+            v.getScene().getStylesheets().clear();
+            v.initTheme(k, theme);
+        });
     }
 
     protected abstract void initScenes();

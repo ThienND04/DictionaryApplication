@@ -73,4 +73,23 @@ public final class Data {
         return res;
     }
 
+    public ArrayList<Word> getRandomWordsByDay(int n, LocalDate date) {
+        ArrayList<Word> res = new ArrayList<>();
+
+        if (n <= 0 || allSubWords.size() < n)
+            return res;
+        long seed = date.getYear() * 10000L + date.getMonthValue() * 100L + date.getDayOfMonth();
+        Random random = new Random(seed);
+        Set<Integer> st = new HashSet<>();
+
+        while (st.size() < n) {
+            int t = random.nextInt(allSubWords.size());
+            st.add(t);
+        }
+        for (Integer t : st) {
+            res.add(subWords.get(allSubWords.get(t)));
+        }
+        return res;
+    }
+
 }

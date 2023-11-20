@@ -5,7 +5,7 @@ import com.example.dictionary.scene.SuperScene;
 import javafx.stage.Stage;
 
 public class DictionaryWindow extends Window {
-    public DictionaryWindow(Stage stage) {
+    public DictionaryWindow() {
         super("Offline Dictionary");
         changeScene(SceneEnum.DICTIONARY);
     }

@@ -1,0 +1,13 @@
+@import "common.css";
+
+Button{
+    -fx-cursor : hand;
+    /*-fx-font-weight : bold;*/
+    -fx-text-fill: -fx-white-2;
+    -fx-background-color: -fx-blue-2;
+    -fx-background-radius: 20px;
+}
+
+Button:hover{
+    -fx-text-fill: black;
+}

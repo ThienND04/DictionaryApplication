@@ -1,8 +1,11 @@
 package com.example.dictionary.scene;
 
+import com.example.dictionary.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.AnchorPane;
+
+import java.io.File;
 
 public class SuperScene {
     protected Scene scene;
@@ -11,21 +14,22 @@ public class SuperScene {
         return scene;
     }
 
+    public void initTheme(SceneEnum type, int theme) {
+        String path = type.getValue().replace("fxml", "css");
+        File f = new File("data/css/theme-" + theme + "/" + path.replace("fxml", "css"));
+        if(!f.exists())
+            f = new File("data/css/theme-" + theme+"/common.css");
+        scene.getStylesheets().add("file:///" + f.getAbsolutePath().replace("\\", "/"));
+    }
+
     public SuperScene(SceneEnum type) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader();
             String path = type.getValue();
-            AnchorPane root = fxmlLoader.load(getClass().getResourceAsStream(path));
+            Parent root = fxmlLoader.load(getClass().getResourceAsStream(path));
             scene = new Scene(root);
-
-            String css = null;
-            try {
-                css = getClass().getResource(path.replace("fxml", "css")).toExternalForm();
-            } catch (Exception e) {
-                css = getClass().getResource("common.css").toExternalForm();
-            } finally {
-                scene.getStylesheets().add(css);
-            }
+            if(type == SceneEnum.LOGIN)
+                initTheme(type, 0);
         } catch (Exception e) {
             e.printStackTrace();
         }

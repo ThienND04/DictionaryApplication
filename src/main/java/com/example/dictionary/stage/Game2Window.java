@@ -9,7 +9,7 @@ public class Game2Window extends Window {
     protected void initScenes() {
         scenes.put(SceneEnum.GAME_2, new SuperScene(SceneEnum.GAME_2));
     }
-    public Game2Window(Stage stage) {
+    public Game2Window() {
         window = new Stage();
         window.setTitle("Game2");
         window.setResizable(false);

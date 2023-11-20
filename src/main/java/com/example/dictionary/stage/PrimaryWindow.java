@@ -24,8 +24,8 @@ public class PrimaryWindow extends Window {
         scenes.put(SceneEnum.GAME, new SuperScene(SceneEnum.GAME));
         scenes.put(SceneEnum.TRANSLATE, new SuperScene(SceneEnum.TRANSLATE));
         scenes.put(SceneEnum.USER, new SuperScene(SceneEnum.USER));
-        scenes.put(SceneEnum.SIGNUP, new SuperScene(SceneEnum.SIGNUP));
         scenes.put(SceneEnum.HOME, new SuperScene(SceneEnum.HOME));
+        scenes.put(SceneEnum.THEME, new SuperScene(SceneEnum.THEME));
     }
 }
 

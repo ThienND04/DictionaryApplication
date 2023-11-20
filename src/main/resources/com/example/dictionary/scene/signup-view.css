@@ -1,7 +1,0 @@
-@import 'common.css'
-
-#welcomeText {
-    -fx-font-size : 70px;
-    -fx-font-weight : bold;
-    -fx-text-alignment : center;
-}

@@ -8,11 +8,9 @@ public enum SceneEnum {
     GAME_2("game2-view.fxml"),
     GAME_3("game3-view.fxml"),
     DICTIONARY("dictionary-view.fxml"),
-    EDITOR("editor-view.fxml"),
     USER("user-view.fxml"),
     LOGIN("login-view.fxml"),
-    SIGNUP("signup-view.fxml"),
-    WAITING("waiting-view.fxml");
+    THEME("theme.fxml");
     private final String value;
     public String getValue() {
         return value;

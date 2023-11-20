@@ -2,8 +2,7 @@ gun<::><html dir="ltr"><head></head><body contenteditable="false">súng</body></
 expert<::>chuyên gia<::>
 bicycle<::>xe đạp<::>
 about<::>Về<::>
-captain american<::>đội trưởng mỹ<::>
-faulty<::><html dir="ltr"><head></head><body contenteditable="false"><span style="text-decoration: underline;">bị lỗi&nbsp;</span></body></html><::>
+captain american<::><html>đội trưởng mỹ</html><::>
 malfunction<::>sự cố<::>
 computer<::><html dir="ltr"><head></head><body contenteditable="false">máy tính</body></html><::>
 so far away<::>quá đỗi xa vời<::>

@@ -1,13 +1,13 @@
 package com.example.dictionary.controller;
 
-import com.example.dictionary.Application;
-import com.example.dictionary.word.Word;
 import com.example.dictionary.api.TextToSpeech;
 import com.example.dictionary.api.Translate;
-import com.example.dictionary.scene.SceneEnum;
-import com.example.dictionary.stage.PrimaryWindow;
-import com.example.dictionary.stage.WindowEnum;
 import com.example.dictionary.user.UserManager;
+import com.example.dictionary.utils.Utils;
+import com.example.dictionary.word.Word;
+import javafx.animation.Animation;
+import javafx.animation.RotateTransition;
+import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.concurrent.Worker;
@@ -15,23 +15,26 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.paint.ImagePattern;
-import javafx.scene.shape.Circle;
+import javafx.scene.layout.VBox;
+import javafx.scene.transform.Rotate;
+import javafx.scene.web.HTMLEditor;
 import javafx.scene.web.WebView;
+import javafx.util.Duration;
 import netscape.javascript.JSObject;
 
 import java.util.ArrayList;
 
-public class TranslateController {
+
+public class TranslateController extends MainController {
     private static final Connector connector = new Connector();
     @FXML
-    Circle userNav;
+    private TextField word;
     @FXML
-    Label gameNav;
+    private HTMLEditor definition;
     @FXML
-    Label translateNav;
+    private Button saveBtn;
     @FXML
-    Label homeNav;
+    private VBox div3;
     @FXML
     private Button editBtn;
     @FXML
@@ -52,11 +55,14 @@ public class TranslateController {
     private ChoiceBox<String> type;
     @FXML
     private ImageView speakImg;
+    @FXML
+    private ImageView loadingImg;
 
     public void find(String word) {
-        UserManager.getInstance().getCurrentUser().increaseCountOfSearchWords();
-        wordToTranslate.setText(word);
-        translateBtn.fire();
+        if (word != null && word.trim().length() > 0) {
+            wordToTranslate.setText(word);
+            translateBtn.fire();
+        }
     }
 
     public static TranslateController getInstance() {
@@ -74,134 +80,165 @@ public class TranslateController {
 
     private String meaning = "";
 
-    @FXML
-    public void initialize() {
-        instance = this;
+    @Override
+    protected void initComponents() {
+        super.initComponents();
+        Utils.Drag(div3);
         speakImg.setImage(new Image(getClass().getResourceAsStream("speaker.png")));
+        loadingImg.setImage(new Image(getClass().getResourceAsStream("loading.png")));
+
+        transition = new RotateTransition(Duration.millis(1000), loadingImg);
+        transition.setCycleCount(Animation.INDEFINITE);
+        transition.setAxis(Rotate.Z_AXIS);
+        transition.setByAngle(360);
 
         type.getItems().addAll(langs);
         type.setValue(langs.get(0));
+    }
 
-        homeNav.setOnMouseClicked(e -> PrimaryWindow.getInstance().changeScene(SceneEnum.HOME));
-        gameNav.setOnMouseClicked(e -> PrimaryWindow.getInstance().changeScene(SceneEnum.GAME));
-        userNav.setOnMouseClicked(e -> PrimaryWindow.getInstance().changeScene(SceneEnum.USER));
+    RotateTransition transition;
 
-        wordToTranslate.textProperty().addListener((a, b, c) -> {
-            if (c.trim().length() > 0) {
-                try {
-                    Task<Void> task = new Task<>() {
-                        @Override
-                        protected Void call() {
-                            ArrayList<String> res = Translate.getSuggestions(c.trim(), langs.indexOf(type.getValue()));
-                            Platform.runLater(() -> {
-                                suggestions.getItems().clear();
-                                suggestions.getItems().addAll(res);
-                            });
-                            return null;
-                        }
-                    };
-                    new Thread(task).start();
-                } catch (Exception ignored) {
-
-                }
-            } else {
-                suggestions.getItems().clear();
-            }
-        });
-
-
-        suggestions.getSelectionModel().selectedItemProperty().addListener((a, b, c) -> {
-            if (c != null)
-                find(c);
-        });
-
-        translateBtn.setOnAction(event -> {
-            String word = wordToTranslate.getText();
-
-            if (!word.equals("")) {
+    private void getSuggestions(String c) {
+        if (c.trim().length() > 0) {
+            try {
                 Task<Void> task = new Task<>() {
                     @Override
                     protected Void call() {
-                        try {
-                            String translatedWord;
-                            String detailContent;
-
-                            if (type.getValue().equals(langs.get(0))) {
-                                translatedWord = Translate.translate(word, "en", "vi");
-                                detailContent = Translate.getDetail(word);
-                            } else {
-                                translatedWord = Translate.translate(word, "vi", "en");
-                                detailContent = Translate.getDetail(translatedWord);
-                            }
-
-                            meaning = translatedWord;
-
-                            Platform.runLater(() -> {
-                                meaningView.getEngine().loadContent(translatedWord);
-                                detail.getEngine().loadContent(detailContent);
-                                detail.getEngine().getLoadWorker().stateProperty().addListener((a, b, c) -> {
-                                    if (c == Worker.State.SUCCEEDED) {
-                                        JSObject window = (JSObject) detail.getEngine().executeScript("window");
-                                        window.setMember("javaConnector", connector);
-                                    }
-                                });
-                            });
-
-                        } catch (Exception e) {
-                            Platform.runLater(() -> new Alert(Alert.AlertType.WARNING, "Lỗi mạng").show());
-                        } finally {
-                            Platform.runLater(() -> Application.getInstance().hideWindow(WindowEnum.WAITING));
-                        }
+                        ArrayList<String> res = Translate.getSuggestions(c.trim(), langs.indexOf(type.getValue()));
+                        Platform.runLater(() -> {
+                            suggestions.getItems().clear();
+                            suggestions.getItems().addAll(res);
+                        });
                         return null;
                     }
                 };
-                Application.getInstance().showWindow(WindowEnum.WAITING);
                 new Thread(task).start();
-            } else
-                new Alert(Alert.AlertType.WARNING, "Không được để trống").show();
-        });
+            } catch (Exception ignored) {
 
-        speakBtn.setOnAction(event -> {
-            if (!wordToTranslate.getText().equals(""))
-                TextToSpeech.textToSpeech(wordToTranslate.getText());
-            else {
-                new Alert(Alert.AlertType.WARNING, "Không được để trống").show();
             }
-        });
-
-        addBtn.setOnAction(event -> {
-            if (!wordToTranslate.getText().equals("") && !meaning.equals("")) {
-                Alert a = new Alert(Alert.AlertType.INFORMATION, "Đã thêm thành công");
-                a.show();
-                UserManager.getInstance().getCurrentUser().addWord(new Word(wordToTranslate.getText(), "<html>" + meaning + "</html>"));
-                HomeController.getInstance().loadWordList();
-            } else
-                new Alert(Alert.AlertType.WARNING, "Không được để trống").show();
-        });
-
-        editBtn.setOnAction(event -> {
-            if (!wordToTranslate.getText().trim().equals("") && !meaning.trim().equals("")) {
-                EditorController.getInstance().loadData(wordToTranslate.getText(), meaning, 1);
-                Application.getInstance().showWindow(WindowEnum.EDITOR);
-            } else {
-                new Alert(Alert.AlertType.WARNING, "Không được để trống").show();
-            }
-        });
+        } else {
+            suggestions.getItems().clear();
+        }
     }
 
-    public void handleEdited(String newWord, String newDefinition) {
+    private void handleTranslate() {
+        String word = wordToTranslate.getText();
+
+        if (!word.equals("")) {
+            Task<Void> task = new Task<>() {
+                @Override
+                protected Void call() {
+                    try {
+                        String translatedWord;
+                        String detailContent;
+
+                        if (type.getValue().equals(langs.get(0))) {
+                            translatedWord = Translate.translate(word, "en", "vi");
+                            detailContent = Translate.getDetail(word);
+                        } else {
+                            translatedWord = Translate.translate(word, "vi", "en");
+                            detailContent = Translate.getDetail(translatedWord);
+                        }
+                        meaning = translatedWord;
+
+                        Platform.runLater(() -> {
+                            meaningView.getEngine().loadContent(translatedWord);
+                            detail.getEngine().loadContent(detailContent);
+                            detail.getEngine().getLoadWorker().stateProperty().addListener((a, b, c) -> {
+                                if (c == Worker.State.SUCCEEDED) {
+                                    JSObject window = (JSObject) detail.getEngine().executeScript("window");
+                                    window.setMember("javaConnector", connector);
+                                }
+                            });
+                            UserManager.getInstance().getCurrentUser().handleSearchWord();
+                        });
+
+                    } catch (Exception e) {
+                        Platform.runLater(() -> new Alert(Alert.AlertType.WARNING, "Lỗi mạng").show());
+                    } finally {
+                        transition.stop();
+                        loadingImg.setVisible(false);
+                    }
+                    return null;
+                }
+            };
+
+            transition.play();
+            loadingImg.setVisible(true);
+            new Thread(task).start();
+        } else
+            new Alert(Alert.AlertType.WARNING, "Không được để trống").show();
+    }
+
+    private void speakWord() {
+        if (!wordToTranslate.getText().equals(""))
+            TextToSpeech.textToSpeech(wordToTranslate.getText());
+        else {
+            new Alert(Alert.AlertType.WARNING, "Không được để trống").show();
+        }
+    }
+
+    private void handleAddWord() {
+        if (!wordToTranslate.getText().equals("") && !meaning.equals("")) {
+            Alert a = new Alert(Alert.AlertType.INFORMATION, "Đã thêm thành công");
+            a.show();
+            UserManager.getInstance().getCurrentUser().addWord(new Word(wordToTranslate.getText(), "<html>" + meaning + "</html>"));
+            HomeController.getInstance().loadWordList();
+        } else
+            new Alert(Alert.AlertType.WARNING, "Không được để trống").show();
+    }
+
+    private void handleEditWord() {
+        if (!wordToTranslate.getText().trim().equals("") && !meaning.trim().equals("")) {
+            showEditor();
+            word.setText(wordToTranslate.getText());
+            definition.setHtmlText(meaning);
+        } else {
+            new Alert(Alert.AlertType.WARNING, "Không được để trống").show();
+        }
+    }
+
+    private void hideEditor() {
+        TranslateTransition transition = new TranslateTransition(Duration.millis(500), div3);
+        transition.setToX(-1000);
+        transition.play();
+    }
+
+    private void showEditor() {
+        TranslateTransition transition = new TranslateTransition(Duration.millis(500), div3);
+        transition.setToX(1000);
+        transition.play();
+    }
+
+    private void handleSaveEditWord() {
+        String newWord = word.getText().trim();
+        String newDefinition = definition.getHtmlText().replace("contenteditable=\"true\"", "contenteditable=\"false\"");
+        if (newWord.length() == 0) {
+            new Alert(Alert.AlertType.WARNING, "Không được để trống").show();
+            return;
+        }
+        hideEditor();
         wordToTranslate.setText(newWord);
         meaningView.getEngine().loadContent(newDefinition);
         meaning = newDefinition;
     }
 
-    public void handleLogin() {
-        initUserImage();
+    @Override
+    protected void initEvents() {
+        super.initEvents();
+        wordToTranslate.textProperty().addListener((a, b, c) -> getSuggestions(c));
+        suggestions.getSelectionModel().selectedItemProperty().addListener((a, b, c) -> find(c));
+        translateBtn.setOnAction(event -> handleTranslate());
+        speakBtn.setOnAction(event -> speakWord());
+        addBtn.setOnAction(event -> handleAddWord());
+        editBtn.setOnAction(event -> handleEditWord());
+        saveBtn.setOnAction(event -> handleSaveEditWord());
     }
 
-    public void initUserImage() {
-        ImagePattern imagePattern = new ImagePattern(UserManager.getInstance().getCurrentUser().getImage());
-        userNav.setFill(imagePattern);
+    @Override
+    public void initialize() {
+        super.initialize();
+        instance = this;
     }
 }
 

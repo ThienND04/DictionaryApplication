@@ -1,10 +1,10 @@
 package com.example.dictionary.user;
 
+import com.example.dictionary.Application;
 import com.example.dictionary.word.Trie;
 import com.example.dictionary.word.Word;
 import com.example.dictionary.controller.*;
 import javafx.scene.image.Image;
-
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -15,17 +15,64 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class User implements Serializable {
+    private int theme = 0;
+
+    public int getTheme() {
+        return theme;
+    }
+
     public static final String SPLITTING_CHARACTERS = "<::>";
     public static final String IMAGE_PATH = "data/images/";
     public static final String DEFAULT_IMAGE = "default.jpg";
     public static final String WORDS_PATH = "data/words/";
     public static int lastUserId;
+    private boolean isReceiveCoin = false;
+
+    public void setTheme(int theme) {
+        this.theme = theme;
+        Application.getInstance().changeTheme(theme);
+    }
+
+    public ArrayList<Integer> getTasksCount() {
+        return tasksCount;
+    }
+
+    public ArrayList<Boolean> getTasksTrack() {
+        return tasksTrack;
+    }
+
+    private final ArrayList<Integer> tasksCount = new ArrayList<>();
+    private final ArrayList<Boolean> tasksTrack = new ArrayList<>();
+    private int hint = 0;
+
+    public void setHint(int hint) {
+        this.hint = hint;
+        UserController.getInstance().initUserDetail();
+    }
+
+    public boolean isReceiveCoin() {
+        return isReceiveCoin;
+    }
+
+    public void setReceiveCoin() {
+        isReceiveCoin = true;
+        Controller.handleChangeStreak();
+    }
+
+    public int getCoin() {
+        return coin;
+    }
+
+    public void setCoin(int coin) {
+        this.coin = coin;
+        UserController.getInstance().initUserDetail();
+    }
+    private int coin = 0;
     private String username;
     private String password;
     private final int id;
     private transient Image image;
     private final Set<LocalDate> loginDays = new HashSet<>();
-
     private int countOfAddWords;
 
     public int getCountOfAddWords() {
@@ -36,8 +83,21 @@ public class User implements Serializable {
         return countOfSearchWords;
     }
 
-    public void increaseCountOfSearchWords() {
+
+    public void handleAddWord() {
+        countOfAddWords++;
+        tasksCount.set(2, tasksCount.get(2) + 1);
+        Controller.handleChangeStatics();
+    }
+
+    public void handleSearchWord() {
+        tasksCount.set(0, tasksCount.get(0) + 1);
         countOfSearchWords++;
+        Controller.handleChangeStatics();
+    }
+
+    public void handleFinishGame() {
+        tasksCount.set(1, tasksCount.get(1) + 1);
         Controller.handleChangeStatics();
     }
 
@@ -71,8 +131,7 @@ public class User implements Serializable {
         if (word != null) {
             words.put(word.getWord(), word);
             trie.insert(word.getWord());
-            countOfAddWords++;
-            Controller.handleChangeStatics();
+            handleAddWord();
         }
     }
 
@@ -153,21 +212,6 @@ public class User implements Serializable {
         }
         return res;
     }
-//
-//    public ArrayList<Word> getRandomWords(int n) {
-//        Random random = new Random();
-//        ArrayList<Word> res = new ArrayList<>();
-//        Set<Integer> st = new HashSet<>();
-//
-//        if (n > words.size()) return res;
-//        while (st.size() < n) {
-//            st.add(random.nextInt(words.size()));
-//        }
-//        for (Integer t : st) {
-//            res.add(words.get(allWords.get(t)));
-//        }
-//        return res;
-//    }
 
     private void readImage() {
         try {
@@ -205,13 +249,33 @@ public class User implements Serializable {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        tasksCount.add(0);
+        tasksCount.add(0);
+        tasksCount.add(0);
+
+        tasksTrack.add(false);
+        tasksTrack.add(false);
+        tasksTrack.add(false);
+
         login();
     }
 
     public void login() {
+        if (!loginDays.contains(LocalDate.now())) {
+            isReceiveCoin = false;
+            for(int i = 0;i < tasksCount.size(); i++) {
+                tasksCount.set(i, 0);
+            }
+            for(int i = 0;i < tasksTrack.size(); i++) {
+                tasksTrack.set(i, false);
+            }
+        }
         loginDays.add(LocalDate.now());
         readData();
         readImage();
+        Application.getInstance().changeTheme(theme);
+        Controller.handleChangeUser();
     }
 
     public void setPassword(String password) {
@@ -234,5 +298,9 @@ public class User implements Serializable {
     @Override
     public String toString() {
         return "User{" + "username='" + username + '\'' + ", password='" + password + '\'' + ", id=" + id + '}';
+    }
+
+    public int getHint() {
+        return hint;
     }
 }

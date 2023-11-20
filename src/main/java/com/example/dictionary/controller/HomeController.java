@@ -2,42 +2,113 @@ package com.example.dictionary.controller;
 
 import com.example.dictionary.Application;
 import com.example.dictionary.api.TextToSpeech;
+import com.example.dictionary.utils.Utils;
 import com.example.dictionary.word.Data;
 import com.example.dictionary.word.Word;
 import com.example.dictionary.scene.SceneEnum;
 import com.example.dictionary.stage.PrimaryWindow;
 import com.example.dictionary.stage.WindowEnum;
 import com.example.dictionary.user.UserManager;
+import javafx.animation.*;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.paint.ImagePattern;
-import javafx.scene.shape.Circle;
+import javafx.scene.layout.VBox;
+import javafx.scene.web.HTMLEditor;
 import javafx.scene.web.WebView;
-
+import javafx.util.Duration;
+import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Optional;
 
-public class HomeController {
+enum DailyTask {
+    TASK_FIND(0,"Tìm kiếm 10 lần", 5, 10, "img1.png"),
+    TASK_PLAY(1,"Chơi game 10 lần", 10, 10, "img2.png"),
+    TASK_ADD(2,"Thêm 10 từ", 10, 10, "img3.png");
+    private final int index;
+    private final String name;
+    private final int coin;
+    private final int max;
+    private final Image image;
+
+    public void handleEvent() {
+        switch (getState()) {
+            case 0 -> {
+                switch (this) {
+                    case TASK_FIND -> PrimaryWindow.getInstance().changeScene(SceneEnum.TRANSLATE);
+                    case TASK_PLAY -> PrimaryWindow.getInstance().changeScene(SceneEnum.GAME);
+                    case TASK_ADD -> HomeController.getInstance().handleAddNewWord();
+                }
+            }
+            case 1 -> {
+                UserManager.getInstance().getCurrentUser().setCoin(UserManager.getInstance().getCurrentUser().getCoin() + coin);
+                UserManager.getInstance().getCurrentUser().getTasksTrack().set(index, true);
+            }
+        }
+    }
+
+    public int getState() {
+        if(UserManager.getInstance().getCurrentUser().getTasksCount().get(index) < max) {
+            return 0;
+        }
+        return UserManager.getInstance().getCurrentUser().getTasksTrack().get(index) ? 2 : 1;
+    }
+
+
+    public int getCoin() {
+        return coin;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getMax() {
+        return max;
+    }
+
+    public Image getImage() {
+        return image;
+    }
+
+    public int getCurrent() {
+        return UserManager.getInstance().getCurrentUser().getTasksCount().get(index);
+    }
+
+    DailyTask(int index, String name, int coin, int max, String img) {
+        this.name = name;
+        this.coin = coin;
+        this.max = max;
+        this.image = new Image(getClass().getResourceAsStream(img));
+        this.index = index;
+    }
+}
+
+
+public class HomeController extends MainController {
+
     @FXML
-    Button speakBtn;
+    private VBox taskContainer;
     @FXML
-    ImageView speakImg;
+    private Label welcome;
     @FXML
-    Circle userNav;
+    private DatePicker datePicker;
     @FXML
-    Label translateNav;
+    private Button speakBtn;
     @FXML
-    Label gameNav;
+    private ImageView speakImg;
     @FXML
-    WebView randomDefinitions;
+    private WebView randomDefinitions;
     @FXML
-    Label leftBtn;
+    private Label leftBtn;
     @FXML
-    Label rightBtn;
+    private Label rightBtn;
     @FXML
-    Label randomWords;
+    private Label randomWords;
     @FXML
     private Button addBtn;
     @FXML
@@ -53,14 +124,22 @@ public class HomeController {
     @FXML
     private TextField wordToFind;
     @FXML
-    private Button searchBtn;
-
+    private Label searchBtn;
+    @FXML
+    private VBox div3;
+    @FXML
+    TextField word;
+    @FXML
+    HTMLEditor definition;
+    @FXML
+    Button saveBtn;
+    @FXML
+    Button exitBtn;
     private static HomeController instance;
 
     public static final int WORDS_EVERY_DAY = 5;
 
-    private final ArrayList<Word> wordsEveryDay = Data.getInstance().getRandomWordsByDay(WORDS_EVERY_DAY);
-    ;
+    private ArrayList<Word> wordsEveryDay;
 
     public static HomeController getInstance() {
         return instance;
@@ -68,92 +147,126 @@ public class HomeController {
 
     @FXML
     public void initialize() {
+        super.initialize();
         instance = this;
-        translateNav.setOnMouseClicked(e -> PrimaryWindow.getInstance().changeScene(SceneEnum.TRANSLATE));
-        gameNav.setOnMouseClicked(e -> PrimaryWindow.getInstance().changeScene(SceneEnum.GAME));
-        userNav.setOnMouseClicked(e -> PrimaryWindow.getInstance().changeScene(SceneEnum.USER));
-        speakImg.setImage(new Image(getClass().getResourceAsStream("speaker.png")));
-        speakBtn.setOnAction(e -> TextToSpeech.textToSpeech(listView.getSelectionModel().getSelectedItem()));
+    }
 
-        initComponents();
+    private void handleSelectWord(String word) {
+        if (word != null) {
+            deleteBtn.setVisible(true);
+            editBtn.setVisible(true);
+            searchBtn.setVisible(true);
+            definitionView.getEngine().loadContent(UserManager.getInstance().getCurrentUser().getWords().get(word).getDef());
+            speakBtn.setVisible(true);
+        } else {
+            deleteBtn.setVisible(false);
+            editBtn.setVisible(false);
+            speakBtn.setVisible(false);
+            searchBtn.setVisible(false);
+            definitionView.getEngine().loadContent("");
+        }
+    }
+
+    private void handelSearchWord() {
+        PrimaryWindow.getInstance().changeScene(SceneEnum.TRANSLATE);
+        TranslateController.getInstance().find(listView.getSelectionModel().getSelectedItem());
+    }
+
+    private void handleDeleteWord() {
+        Alert a = new Alert(Alert.AlertType.CONFIRMATION, "Bạn có muốn xóa từ này không?");
+        Optional<ButtonType> result = a.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            UserManager.getInstance().getCurrentUser().removeWord(listView.getSelectionModel().getSelectedItem());
+            loadWordList();
+        }
+    }
+
+    private void handleEditWord() {
+        showEditor();
+        String txt = listView.getSelectionModel().getSelectedItem();
+        saveBtn.setText("Save");
+        word.setText(txt);
+        definition.setHtmlText(UserManager.getInstance().getCurrentUser().getWords().get(txt).getDef());
+    }
+
+    public void handleAddNewWord() {
+        showEditor();
+        saveBtn.setText("Add");
+        word.setText("");
+        definition.setHtmlText("");
+    }
+
+    private void hideEditor() {
+        TranslateTransition transition = new TranslateTransition(Duration.millis(500), div3);
+        transition.setToY(-1000);
+        transition.play();
+    }
+
+    private void showEditor() {
+        TranslateTransition transition = new TranslateTransition(Duration.millis(500), div3);
+        transition.setToY(1000);
+        transition.play();
+    }
+
+    private void handleSaveEditWord() {
+        String newWord = word.getText().trim();
+        String newDefinition = definition.getHtmlText().replace("contenteditable=\"true\"", "contenteditable=\"false\"");
+        if (newWord.length() == 0) {
+            new Alert(Alert.AlertType.WARNING, "Không được để trống").show();
+            return;
+        }
+        hideEditor();
+        if (saveBtn.getText().equals("Save"))
+            UserManager.getInstance().getCurrentUser().removeWord(listView.getSelectionModel().getSelectedItem());
+        UserManager.getInstance().getCurrentUser().addWord(new Word(newWord, newDefinition));
+        loadWordList();
+        listView.getSelectionModel().select(newWord);
+    }
+
+    protected void initEvents() {
+        super.initEvents();
+        saveBtn.setOnAction(e -> handleSaveEditWord());
+        exitBtn.setOnAction(e -> hideEditor());
+        rightBtn.setOnMouseClicked(event -> loadRandomWords(++currentWord));
+        leftBtn.setOnMouseClicked(event -> loadRandomWords(--currentWord));
+        randomWords.setOnMouseClicked(e -> TextToSpeech.textToSpeech(randomWords.getText()));
+        listView.getSelectionModel().selectedItemProperty().addListener((a, b, c) -> handleSelectWord(c));
+        searchBtn.setOnMouseClicked(event -> handelSearchWord());
+        deleteBtn.setOnAction(event -> handleDeleteWord());
+        editBtn.setOnAction(event -> handleEditWord());
+        addBtn.setOnAction(event -> handleAddNewWord());
+        wordToFind.textProperty().addListener((a, b, c) -> loadWordList());
+        showDictionaryBtn.setOnAction(event -> Application.getInstance().showWindow(WindowEnum.DICTIONARY));
+        speakBtn.setOnAction(e -> TextToSpeech.textToSpeech(listView.getSelectionModel().getSelectedItem()));
+        datePicker.valueProperty().addListener((a, b, c) -> handleDateChange(c));
+    }
+
+    private void handleDateChange(LocalDate date) {
+        if (date != null) {
+            if (date.isAfter(LocalDate.now())) {
+                new Alert(Alert.AlertType.WARNING, "Hãy chờ đến " + date).show();
+                return;
+            }
+            wordsEveryDay = Data.getInstance().getRandomWordsByDay(WORDS_EVERY_DAY, date);
+            currentWord = 0;
+            loadRandomWords(0);
+        }
     }
 
     private void loadRandomWords(int i) {
         randomWords.setText(wordsEveryDay.get(i).getWord());
         randomDefinitions.getEngine().loadContent(wordsEveryDay.get(i).getDef());
+        leftBtn.setVisible(i != 0);
+        rightBtn.setVisible(i != WORDS_EVERY_DAY - 1);
     }
 
-    private int i = 0;
+    private int currentWord = 0;
 
-    private void initComponents() {
-        loadRandomWords(0);
-
-        rightBtn.setOnMouseClicked(event -> {
-            loadRandomWords(++i);
-            leftBtn.setVisible(true);
-            if (i == WORDS_EVERY_DAY - 1)
-                rightBtn.setVisible(false);
-        });
-
-        leftBtn.setOnMouseClicked(event -> {
-            loadRandomWords(--i);
-            rightBtn.setVisible(true);
-            if (i == 0)
-                leftBtn.setVisible(false);
-        });
-
-        randomWords.setOnMouseClicked(e -> TextToSpeech.textToSpeech(randomWords.getText()));
-
-        listView.getSelectionModel().selectedItemProperty().addListener(
-                (a, b, c) -> {
-                    if (c != null) {
-                        deleteBtn.setVisible(true);
-                        editBtn.setVisible(true);
-                        searchBtn.setVisible(true);
-                        definitionView.getEngine().loadContent(UserManager.getInstance().getCurrentUser().getWords().get(c).getDef());
-                        searchBtn.setOnAction(event -> {
-                            PrimaryWindow.getInstance().changeScene(SceneEnum.TRANSLATE);
-                            TranslateController.getInstance().find(c);
-                        });
-                    } else {
-                        deleteBtn.setVisible(false);
-                        editBtn.setVisible(false);
-                        searchBtn.setVisible(false);
-                        definitionView.getEngine().loadContent("");
-                    }
-                }
-        );
-
-        deleteBtn.setOnAction(event -> {
-            Alert a = new Alert(Alert.AlertType.CONFIRMATION, "Bạn có muốn xóa từ này không?");
-            Optional<ButtonType> result = a.showAndWait();
-            if (result.isPresent() && result.get() == ButtonType.OK) {
-                UserManager.getInstance().getCurrentUser().removeWord(listView.getSelectionModel().getSelectedItem());
-                loadWordList();
-            }
-        });
-
-        editBtn.setOnAction(event -> {
-            EditorController.getInstance().loadData(listView.getSelectionModel().getSelectedItem(),
-                    UserManager.getInstance().getCurrentUser().getWords().get(listView.getSelectionModel().getSelectedItem()).getDef(), 0);
-            Application.getInstance().showWindow(WindowEnum.EDITOR);
-        });
-
-        addBtn.setOnAction(event -> {
-            EditorController.getInstance().loadData("", "", 0);
-            Application.getInstance().showWindow(WindowEnum.EDITOR);
-        });
-
-        wordToFind.textProperty().addListener((a, b, c) -> loadWordList());
-
-        showDictionaryBtn.setOnAction(event -> Application.getInstance().showWindow(WindowEnum.DICTIONARY));
-    }
-
-    public void handleEdited(String newWord, String newDefinition, String oldWord) {
-        UserManager.getInstance().getCurrentUser().removeWord(oldWord);
-        UserManager.getInstance().getCurrentUser().addWord(new Word(newWord, newDefinition));
-        loadWordList();
-        listView.getSelectionModel().select(newWord);
+    protected void initComponents() {
+        super.initComponents();
+        Utils.Drag(div3);
+        datePicker.valueProperty().setValue(LocalDate.now());
+        speakImg.setImage(new Image(getClass().getResourceAsStream("speaker.png")));
     }
 
     public void loadWordList() {
@@ -161,13 +274,78 @@ public class HomeController {
         listView.getItems().addAll(UserManager.getInstance().getCurrentUser().getTrie().getAllWordsStartWith(wordToFind.getText()));
     }
 
-    public void handleLogin() {
-        loadWordList();
-        initUserImage();
+    private void welcomeUser() {
+        welcome.setLayoutY(-welcome.getHeight());
+        welcome.setOpacity(0);
+        welcome.setText("Xin chào " + UserManager.getInstance().getCurrentUser().getUsername());
+
+        FadeTransition fadeTransition = new FadeTransition(Duration.millis(2000), welcome);
+        fadeTransition.setToValue(1);
+        fadeTransition.setAutoReverse(true);
+        fadeTransition.setCycleCount(2);
+
+        TranslateTransition transition = new TranslateTransition(Duration.millis(2000), welcome);
+        transition.setByY(30);
+        transition.setAutoReverse(true);
+        transition.setCycleCount(2);
+
+        transition.play();
+        fadeTransition.play();
     }
 
-    public void initUserImage() {
-        ImagePattern imagePattern = new ImagePattern(UserManager.getInstance().getCurrentUser().getImage());
-        userNav.setFill(imagePattern);
+    public void initDailyTask() {
+        taskContainer.getChildren().clear();
+        for(DailyTask key : DailyTask.values()) {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            try {
+                Node node = fxmlLoader.load(getClass().getResourceAsStream("dailyTask.fxml"));
+                ((Label) node.lookup("#name")).setText(key.getName());
+                ((Label) node.lookup("#detail")).setText(key.getCurrent() + "/" + key.getMax());
+                ((Label) node.lookup("#gem")).setText("x" + key.getCoin());
+                ((ImageView) node.lookup("#gemImg")).setImage(new Image(getClass().getResourceAsStream("gem.png")));
+                ((ImageView) node.lookup("#img")).setImage(key.getImage());
+                ((ProgressBar) node.lookup("#bar")).setProgress(1.0 * key.getCurrent() / key.getMax());
+                Label btn = (Label) node.lookup("#btn");
+
+                switch (key.getState()) {
+                    case 0 -> {
+                        btn.getStyleClass().clear();
+                        btn.setText("Thực hiện");
+                        btn.getStyleClass().add("btn-2");
+                        btn.setOnMouseClicked(e -> {
+                            key.handleEvent();
+                        });
+                    }
+                    case 1 -> {
+                        btn.getStyleClass().clear();
+                        btn.setText("Nhận ngay");
+                        btn.getStyleClass().add("btn-2");
+                        btn.setOnMouseClicked(e -> {
+                            key.handleEvent();
+                            btn.getStyleClass().clear();
+                            btn.setText("Đã nhận");
+                            btn.getStyleClass().add("btn-22");
+                        });
+                    }
+                    case 2 -> {
+                        btn.getStyleClass().clear();
+                        btn.setText("Đã nhận");
+                        btn.getStyleClass().add("btn-22");
+                    }
+                }
+                taskContainer.getChildren().add(node);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+    }
+
+    @Override
+    protected void handleUserChange() {
+        super.handleUserChange();
+        loadWordList();
+        welcomeUser();
+        initDailyTask();
     }
 }

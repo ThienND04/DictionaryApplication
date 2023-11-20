@@ -1,5 +1,6 @@
 package com.example.dictionary.user;
 
+import com.example.dictionary.Application;
 import com.example.dictionary.controller.Controller;
 
 import java.io.*;
@@ -23,7 +24,6 @@ public class UserManager implements Serializable {
         }
         currentUser = user;
         user.login();
-        Controller.handleChangeUser();
     }
 
     public static UserManager getInstance() {
@@ -94,11 +94,18 @@ public class UserManager implements Serializable {
         try {
             UserManager userManager = new UserManager();
             userManager.users = new ArrayList<>();
+
+            User user1 = new User("admin", "admin");
+            userManager.users.add(user1);
+
             User user = new User("pmquy", "pmquy");
-            user.getLoginDays().add(LocalDate.of(2023,11,15));
+            user.getLoginDays().add(LocalDate.now().minusDays(1));
+            user.getLoginDays().add(LocalDate.now().minusDays(2));
+            user.getLoginDays().add(LocalDate.now().minusDays(3));
+            user.getLoginDays().add(LocalDate.now().minusDays(4));
             userManager.users.add(user);
 
-            System.out.println(user.getLoginDays());
+
 
             System.out.println(userManager);
             ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream(DATA_PATH));

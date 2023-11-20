@@ -3,33 +3,125 @@ package com.example.dictionary.controller;
 import com.example.dictionary.user.UserManager;
 import com.example.dictionary.scene.SceneEnum;
 import com.example.dictionary.stage.PrimaryWindow;
+import javafx.animation.Animation;
+import javafx.animation.Transition;
+import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Circle;
+import javafx.util.Duration;
 
-public class LoginController {
-    @FXML
-    Button createBtn;
-    @FXML
-    private TextField username;
-    @FXML
-    private Button loginBtn;
-    @FXML
-    private PasswordField password;
+public class LoginController extends SuperController{
 
     @FXML
-    void initialize() {
-        loginBtn.setOnAction(event -> {
-            boolean res = UserManager.getInstance().login(username.getText(), password.getText());
-            if (!res) {
-                new Alert(Alert.AlertType.WARNING, "Tên đăng nhập hoặc mật khẩu không chính xác").show();
+    private Circle lUsernameImg;
+    @FXML
+    private Circle sUsernameImg;
+    @FXML
+    private Circle lPasswordImg;
+    @FXML
+    private Circle sPasswordImg;
+    @FXML
+    private Circle sPassword1Img;
+    @FXML
+    private Label signupLabel;
+    @FXML
+    private Label loginLabel;
+    @FXML
+    private VBox signupView;
+    @FXML
+    private VBox loginView;
+    @FXML
+    private TextField lUsername;
+    @FXML
+    private Button lLoginBtn;
+    @FXML
+    private PasswordField lPassword;
+    @FXML
+    private Label bar;
+    @FXML
+    private Button sCreateBtn;
+    @FXML
+    private TextField sUsername;
+    @FXML
+    private PasswordField sPassword1;
+    @FXML
+    private PasswordField sPassword;
+
+    private void handleNavLogin() {
+
+        if (!loginView.isVisible()) {
+            TranslateTransition transition = new TranslateTransition();
+            transition.setNode(bar);
+            transition.setDuration(Duration.millis(500));
+            transition.setToX(loginLabel.getLayoutX());
+            loginLabel.setStyle("-fx-text-fill:#05386B;");
+            signupLabel.setStyle("-fx-text-fill:black;");
+            transition.play();
+            signupView.setVisible(false);
+            loginView.setVisible(true);
+        }
+    }
+
+    private void handleNavSignup() {
+        if (!signupView.isVisible()) {
+            TranslateTransition transition = new TranslateTransition();
+            transition.setNode(bar);
+            transition.setDuration(Duration.millis(500));
+            transition.setToX(signupLabel.getLayoutX());
+            transition.play();
+            loginLabel.setStyle("-fx-text-fill:black;");
+            signupLabel.setStyle("-fx-text-fill:#05386B;");
+            signupView.setVisible(true);
+            loginView.setVisible(false);
+        }
+    }
+
+    private void handleLogin() {
+        boolean res = UserManager.getInstance().login(lUsername.getText(), lPassword.getText());
+        if (!res) {
+            new Alert(Alert.AlertType.WARNING, "Tên đăng nhập hoặc mật khẩu không chính xác").show();
+        }
+    }
+
+    private void handleCreate() {
+        if (sUsername.getText().equals("") || sPassword1.getText().equals("") || sPassword.getText().equals("")) {
+            new Alert(Alert.AlertType.WARNING, "Không được để trống").show();
+            return;
+        }
+
+        if (sPassword1.getText().equals(sPassword.getText())) {
+            if (!UserManager.getInstance().create(sUsername.getText(), sPassword.getText())) {
+                new Alert(Alert.AlertType.WARNING, "Tên đăng nhập đã tồn tại").show();
             }
-        });
+        } else {
+            new Alert(Alert.AlertType.WARNING, "Mật khẩu không khớp").show();
+        }
+    }
 
-        createBtn.setOnAction(event -> {
-            PrimaryWindow.getInstance().changeScene(SceneEnum.SIGNUP);
-        });
+    private void initImages() {
+        ImagePattern user = new ImagePattern(new Image(getClass().getResourceAsStream("user.png")));
+        ImagePattern pw = new ImagePattern(new Image(getClass().getResourceAsStream("password.png")));
+        lUsernameImg.setFill(user);
+        sUsernameImg.setFill(user);
+        lPasswordImg.setFill(pw);
+        sPassword1Img.setFill(pw);
+        sPasswordImg.setFill(pw);
+    }
+
+    @Override
+    protected void initComponents() {
+        initImages();
+    }
+
+    @Override
+    protected void initEvents() {
+        loginLabel.setOnMouseClicked(event -> handleNavLogin());
+        signupLabel.setOnMouseClicked(event -> handleNavSignup());
+        lLoginBtn.setOnAction(event -> handleLogin());
+        sCreateBtn.setOnAction(event -> handleCreate());
     }
 }

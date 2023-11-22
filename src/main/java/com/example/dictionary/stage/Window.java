@@ -18,6 +18,15 @@ public abstract class Window {
     public void changeScene(SceneEnum sceneType) {
         window.setScene(scenes.get(sceneType).getScene());
         window.setMaximized(false);
+
+        switch (sceneType) {
+            case GAME, GAME_1, GAME_2, GAME_3 -> {
+                window.setResizable(false);
+            }
+            default -> {
+                window.setResizable(true);
+            }
+        }
     }
 
     /**

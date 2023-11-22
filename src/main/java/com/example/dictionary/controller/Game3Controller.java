@@ -140,7 +140,7 @@ public class Game3Controller {
         nextBtn.setVisible(false);
         timeline.pause();
         double playedTime = 1.0 * time.get() / 10;
-        GameManager.getInstance().getPlayersHistory().add(new GameInfo(Game3.GAME_ID, playedTime, GameInfo.Status.WIN));
+        GameManager.getInstance().addToPlayersHistory(new GameInfo(Game3.GAME_ID, playedTime, GameInfo.Status.WIN));
         time.set(0);
         updateBXH();
     }
@@ -189,10 +189,7 @@ public class Game3Controller {
     }
 
     public void updateBXH() {
-        ObservableList<User> players = FXCollections.observableArrayList(UserManager.getInstance().getUsers()).
-                filtered(user -> GameManager.getInstance().getPlayersHistory().stream().
-                        anyMatch(gameInfo -> gameInfo.getPlayerId() == user.getId() && gameInfo.getGameId() == Game3.GAME_ID)).
-                sorted(Comparator.comparingDouble(u -> GameManager.getInstance().getBestTime(Game3.GAME_ID, u.getId())));
+        ObservableList<User> players = GameManager.getInstance().getPlayersWon(Game3.GAME_ID);
         topPlayer.getItems().clear();
         topPlayer.setItems(FXCollections.observableArrayList(
                 players.stream().filter(player -> players.indexOf(player) < MAX_PLAYER_SHOW).collect(Collectors.toList())));

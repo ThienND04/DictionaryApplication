@@ -59,12 +59,12 @@ public enum AchievementEnum {
             case LEARN1, LEARN2, LEARN3, LEARN4, LEARN5 -> {
                 return UserManager.getInstance().getCurrentUser().getCountOfAddWords();
             }
-            case PERSIST1, PERSIST2, PERSIST3 -> {
+            case PERSIST1, PERSIST2, PERSIST3, PERSIST4, PERSIST5 -> {
                 return GameManager.getInstance().getPlayersHistory().stream().filter(gameInfo ->
                         gameInfo.getPlayerId() == UserManager.getInstance().getCurrentUser().getId()
                 ).toList().size();
             }
-            case CHALLENGE1, CHALLENGE2, CHALLENGE3 -> {
+            case CHALLENGE1, CHALLENGE2, CHALLENGE3, CHALLENGE4, CHALLENGE5 -> {
                 return GameManager.getInstance().getPlayersHistory().stream().filter(gameInfo ->
                         gameInfo.getPlayerId() == UserManager.getInstance().getCurrentUser().getId()
                         && gameInfo.getStatus() == GameInfo.Status.WIN

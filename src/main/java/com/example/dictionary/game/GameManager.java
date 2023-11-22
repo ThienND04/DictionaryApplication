@@ -1,10 +1,14 @@
 package com.example.dictionary.game;
 
+import com.example.dictionary.controller.UserController;
 import com.example.dictionary.user.User;
 import com.example.dictionary.user.UserManager;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 public class GameManager implements Serializable {
     public static final String DATA_PATH = "data/games.dat";
@@ -29,8 +33,23 @@ public class GameManager implements Serializable {
                 map(GameInfo::getTime).min(Double::compare).orElse(Double.MAX_VALUE);
     }
 
+    public ObservableList<User> getPlayersWon(int gameId) {
+        ObservableList<User> players = FXCollections.observableArrayList(UserManager.getInstance().getUsers()).
+                filtered(user -> GameManager.getInstance().getPlayersHistory().stream().
+                        anyMatch(gameInfo ->
+                                gameInfo.getPlayerId() == user.getId() &&
+                                        gameInfo.getGameId() == gameId && gameInfo.getStatus() == GameInfo.Status.WIN
+                        )).sorted(Comparator.comparingDouble(u -> GameManager.getInstance().getBestTime(gameId, u.getId())));
+        return players;
+    }
+
     public ArrayList<GameInfo> getPlayersHistory() {
         return playersHistory;
+    }
+
+    public void addToPlayersHistory(GameInfo gameInfo) {
+        playersHistory.add(gameInfo);
+        UserController.getInstance().initAchievements();
     }
 
     public static void writeData() {

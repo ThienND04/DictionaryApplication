@@ -25,7 +25,7 @@ homework<::>bài tập về nhà<::>
 unspecified<::>không xác định<::>
 ddd<::>444<::>
 super idol<::>siêu thần tượng<::>
-query<::>truy vấnfdfs<::>
+query<::>truy vấn<::>
 hello world<::>Chào thế giới<::>
 let me love you<::>hãy để tôi yêu bạn<::>
 heart<::>trái tim<::>

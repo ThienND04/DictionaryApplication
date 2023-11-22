@@ -12,9 +12,19 @@ public enum SceneEnum {
     LOGIN("login-view.fxml"),
     THEME("theme.fxml");
     private final String value;
+    /**
+     * Retrieves the value associated with the scene.
+     *
+     * @return The value of the scene.
+     */
     public String getValue() {
         return value;
     }
+    /**
+     * Constructs a SceneEnum with a specific value.
+     *
+     * @param v The value associated with the scene.
+     */
     SceneEnum(String v) {
         value = v;
     }

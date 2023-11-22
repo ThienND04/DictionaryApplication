@@ -36,11 +36,20 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 public class Game1Controller {
+    /**
+     * Singleton instance of the Game1Controller class.
+     */
     private final Game1 game1 = new Game1();
 
+    /**
+     * Retrieves the singleton instance of the Game1Controller.
+     *
+     * @return The singleton instance of the Game1Controller.
+     */
     public static Game1Controller getInstance() {
         return instance;
     }
+
     private static Game1Controller instance;
     private final String BUTTON_COLOR = "#05386B";
     private final int MAX_PLAYER_SHOW = 5;
@@ -86,12 +95,18 @@ public class Game1Controller {
     private final Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.1),
             event -> timeLabel.setText(String.valueOf(1.0 * time.incrementAndGet() / 10))));
 
+    /**
+     * Initializes the Game1 view and sets up event handlers.
+     */
     @FXML
     public void initialize() {
         instance = this;
         this.initComponents();
     }
 
+    /**
+     * Initializes the components and sets up event handlers for the Game1 view.
+     */
     private void initComponents() {
         hintImg.setImage(new Image(getClass().getResourceAsStream("hint.png")));
 
@@ -127,11 +142,16 @@ public class Game1Controller {
         updateBXH();
     }
 
+    /**
+     * Starts a new game session, initializing game elements.
+     * Displays necessary UI elements, and begins the game.
+     * If there are not enough words available for the game, it displays a warning.
+     */
     private void newGame() {
         game1.init();
         cntHint = 0;
         progressBar.setProgress(0);
-        if(! game1.isReady()) {
+        if (!game1.isReady()) {
             new Alert(Alert.AlertType.WARNING, "Không đủ số lượng từ").show();
             return;
         }
@@ -148,11 +168,18 @@ public class Game1Controller {
         timeline.play();
     }
 
+    /**
+     * Stops the timeline, and updates game-related attributes.
+     * Determines the game result based on remaining questions, records game history, and updates UI visibility accordingly.
+     */
     private void finish() {
         timeline.stop();
         double playedTime = 1.0 * time.get() / 10;
+
         if(game1.questionRemain() == 0) {
             GameManager.getInstance().addToPlayersHistory(new GameInfo(Game1.GAME_ID, playedTime, GameInfo.Status.WIN));
+
+
         } else {
             GameManager.getInstance().addToPlayersHistory(new GameInfo(Game1.GAME_ID, playedTime, GameInfo.Status.LOSE));
         }
@@ -168,12 +195,15 @@ public class Game1Controller {
         updateBXH();
     }
 
+    /**
+     * Updates the UI with the current question and available answer options for the game.
+     */
     private void updateQuestion() {
         skipBtn.setVisible(game1.questionRemain() > 1);
         checkBtn.setDisable(false);
         quesLabel.setText(game1.getQuestion());
         ansSelections.getButtons().clear();
-        for(int i = 0; i < 3; i ++) {
+        for (int i = 0; i < 3; i++) {
             ToggleButton btn = new ToggleButton(game1.getSelections().get(i));
             btn.setDisable(false);
             btn.setVisible(true);
@@ -181,22 +211,28 @@ public class Game1Controller {
             final int finalI = i;
             btn.setOnAction(actionEvent -> {
                 ToggleButton selectedAns = getSelectedAns();
-                if(selectedAns != null) getSelectedAns().setSelected(false);
+                if (selectedAns != null) getSelectedAns().setSelected(false);
                 game1.selectAns(finalI);
             });
             ansSelections.getButtons().add(btn);
         }
     }
 
+    /**
+     * Updates the status indicators and progress bar in the game UI.
+     */
     private void updateStatus() {
         progressBar.setVisible(true);
         progressBar.setProgress(game1.getProgress());
         solved.setVisible(true);
         fault.setVisible(true);
-        solved.setText(String.format("Solved: %02d / %02d", game1.getSolved() , Game1.NUM_QUESTION));
+        solved.setText(String.format("Solved: %02d / %02d", game1.getSolved(), Game1.NUM_QUESTION));
         fault.setText(String.format("Fault: %02d / %02d", game1.getFault(), Game1.MAX_FAULT));
     }
 
+    /**
+     * Checks the user's answer in the game and updates the UI accordingly.
+     */
     private void checkAns() {
         ansSelections.getButtons().get(game1.getAnswerIndex()).setStyle("-fx-background-color: lawngreen; -fx-text-fill: black");
         ansSelections.getButtons().forEach(btn -> {
@@ -208,7 +244,7 @@ public class Game1Controller {
         skipBtn.setVisible(false);
         hintBtn.setVisible(false);
         checkBtn.setText("Tiếp tục");
-        if(game1.checkFinish()) {
+        if (game1.checkFinish()) {
             checkBtn.setOnAction(actionEvent -> finish());
         } else {
             checkBtn.setOnAction(actionEvent -> {
@@ -221,14 +257,17 @@ public class Game1Controller {
         }
     }
 
+    /**
+     * Handles the logic behind providing hints during the game.
+     */
     private void hint() {
         ArrayList<Integer> slt = new ArrayList<>(Arrays.asList(0, 1, 2));
         slt.removeIf(i ->
-            ! ansSelections.getButtons().get(i).isVisible()
-            || i == game1.getAnswerIndex());
-        if(slt.isEmpty() || cntHint == Game1.MAX_HINT) {
+                !ansSelections.getButtons().get(i).isVisible()
+                        || i == game1.getAnswerIndex());
+        if (slt.isEmpty() || cntHint == Game1.MAX_HINT) {
             new Alert(Alert.AlertType.WARNING, "Không thể dùng ").show();
-        } else if (UserManager.getInstance().getCurrentUser().getHint() == 0){
+        } else if (UserManager.getInstance().getCurrentUser().getHint() == 0) {
             new Alert(Alert.AlertType.WARNING, "Hết rồi :((. Nạp tiền đi").show();
         } else {
             // giam hint
@@ -237,10 +276,13 @@ public class Game1Controller {
             Random rd = new Random();
             int i = slt.get(rd.nextInt(slt.size()));
             ansSelections.getButtons().get(i).setVisible(false);
-            cntHint ++;
+            cntHint++;
         }
     }
 
+    /**
+     * Updates the leaderboard with the top players for Game1.
+     */
     public void updateBXH() {
         ObservableList<User> players = GameManager.getInstance().getPlayersWon(Game1.GAME_ID);
         topPlayer.getItems().clear();
@@ -248,8 +290,13 @@ public class Game1Controller {
                 players.stream().filter(player -> players.indexOf(player) < MAX_PLAYER_SHOW).collect(Collectors.toList())));
     }
 
+    /**
+     * Retrieves the currently selected answer button.
+     *
+     * @return The ToggleButton representing the currently selected answer, or null if no answer is selected.
+     */
     private ToggleButton getSelectedAns() {
-        if(game1.getSelectedAns() >= 0) return (ToggleButton) ansSelections.getButtons().get(game1.getSelectedAns());
+        if (game1.getSelectedAns() >= 0) return (ToggleButton) ansSelections.getButtons().get(game1.getSelectedAns());
         else return null;
     }
 }

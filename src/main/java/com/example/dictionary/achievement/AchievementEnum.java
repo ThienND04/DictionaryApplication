@@ -42,6 +42,17 @@ public enum AchievementEnum {
     private final String description;
     private final int max;
 
+    /**
+     * Retrieves the current value based on the specific case.
+     *
+     * @return An integer representing different metrics based on the case:
+     * - LOGIN: Returns the count of login days for the current user.
+     * - GAME: Returns the count of games won by the current user.
+     * - FIND: Returns the count of search words by the current user.
+     * - LEARN: Returns the count of words added by the current user.
+     * - PERSIST: Returns the count of games played by the current user.
+     * - CHALLENGE: Returns the count of challenging games won by the current user within 5 minutes.
+     */
     public int getCurrent() {
         switch (this) {
             case LOGIN1, LOGIN2, LOGIN3, LOGIN4, LOGIN5 -> {
@@ -75,22 +86,50 @@ public enum AchievementEnum {
         return 0;
     }
 
+    /**
+     * Retrieves the maximum threshold associated with achievement.
+     *
+     * @return An integer representing the maximum value.
+     */
     public int getMax() {
         return max;
     }
 
+    /**
+     * Retrieves the description associated with achievement.
+     *
+     * @return A string containing the description of the achievement.
+     */
     public String getDescription() {
         return description;
     }
 
+    /**
+     * Retrieves the name of achievement.
+     *
+     * @return A string representing the name of the achievement.
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Retrieves the image associated with achievement.
+     *
+     * @return An Image object representing the visual representation of the achievement.
+     */
     public Image getImage() {
         return image;
     }
 
+    /**
+     * Constructor to create an AchievementEnum instance.
+     *
+     * @param name is the name/title of the achievement.
+     * @param path is the path to the image file representing the achievement.
+     * @param description is the description of the achievement.
+     * @param max is the maximum threshold value associated with this achievement.
+     */
     AchievementEnum(String name, String path, String description, int max) {
         this.name = name;
         this.image = new Image(getClass().getResourceAsStream(path));

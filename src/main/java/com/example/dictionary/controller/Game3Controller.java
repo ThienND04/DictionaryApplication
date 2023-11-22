@@ -76,6 +76,9 @@ public class Game3Controller {
     private final Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.1),
             event -> timeLabel.setText(String.valueOf((double) time.incrementAndGet() / 10))));
 
+    /**
+     * Initializes the Game3 interface with event handlers, visibility configurations, and leaderboard updates.
+     */
     @FXML
     void initialize() {
         instance = this;
@@ -95,14 +98,14 @@ public class Game3Controller {
             rule.setVisible(false);
         });
         pauseBtn.setOnAction(actionEvent -> {
-            isPaused = ! isPaused;
+            isPaused = !isPaused;
             pauseBtn.setText(isPaused ? "Tiếp tục" : "Dừng");
-            guessWord.setVisible(! isPaused);
-            input.setVisible(! isPaused);
-            nextBtn.setVisible(! isPaused);
-            hintBtn.setVisible(! isPaused);
-            meaning.setVisible(! isPaused);
-            if(isPaused) timeline.pause();
+            guessWord.setVisible(!isPaused);
+            input.setVisible(!isPaused);
+            nextBtn.setVisible(!isPaused);
+            hintBtn.setVisible(!isPaused);
+            meaning.setVisible(!isPaused);
+            if (isPaused) timeline.pause();
             else timeline.play();
         });
         sttCol.setCellValueFactory(collumn -> new ReadOnlyObjectWrapper<>(topPlayer.getItems().indexOf(collumn.getValue()) + 1));
@@ -111,11 +114,15 @@ public class Game3Controller {
                 GameManager.getInstance().getBestTime(Game3.GAME_ID, collumn.getValue().getId())));
         updateBXH();
     }
+
     private final Game3 game = new Game3();
 
+    /**
+     * Initiates a new game in the Game3 interface.
+     */
     private void newGame() {
         game.newGame();
-        if(! game.isReady()) {
+        if (!game.isReady()) {
             new Alert(Alert.AlertType.WARNING, "Không đủ số lượng từ").show();
             return;
         }
@@ -134,6 +141,10 @@ public class Game3Controller {
         cntHint = 0;
     }
 
+    /**
+     * Handles the completion of the game in the Game3 interface.
+     * Update the leaderboard.
+     */
     private void finish() {
         newGame.setVisible(true);
         pauseBtn.setVisible(false);
@@ -145,6 +156,9 @@ public class Game3Controller {
         updateBXH();
     }
 
+    /**
+     * Handles the display of the next question in the Game3 interface.
+     */
     private void nextQuestion() {
         game.nextQuestion();
         meaning.setText(game.getMeaning());
@@ -169,7 +183,7 @@ public class Game3Controller {
 
                 if (guessWord.getChildren().size() == game.getGuessWord().length()) {
                     StringBuilder playerGuess = new StringBuilder();
-                    guessWord.getChildren().stream().map(button -> ((Button)button).getText()).
+                    guessWord.getChildren().stream().map(button -> ((Button) button).getText()).
                             reduce(playerGuess, (StringBuilder::append), StringBuilder::append);
                     if (game.isGuessedWord(playerGuess.toString())) {
                         game.increaseSolvedQuestion();
@@ -188,6 +202,9 @@ public class Game3Controller {
         }
     }
 
+    /**
+     * Updates the leaderboard with player information and their best times for Game3.
+     */
     public void updateBXH() {
         ObservableList<User> players = GameManager.getInstance().getPlayersWon(Game3.GAME_ID);
         topPlayer.getItems().clear();
@@ -195,23 +212,24 @@ public class Game3Controller {
                 players.stream().filter(player -> players.indexOf(player) < MAX_PLAYER_SHOW).collect(Collectors.toList())));
     }
 
+    /**
+     * Provides a hint to the user based on their current progress in the game.
+     * Checks various conditions and provides hints accordingly.
+     */
     private void hint() {
         StringBuilder playerGuess = new StringBuilder();
-        guessWord.getChildren().stream().map(button -> ((Button)button).getText()).
+        guessWord.getChildren().stream().map(button -> ((Button) button).getText()).
                 reduce(playerGuess, (StringBuilder::append), StringBuilder::append);
-        if(game.isGuessedWord(playerGuess.toString())) {
+        if (game.isGuessedWord(playerGuess.toString())) {
             new Alert(Alert.AlertType.WARNING, "Đáp án đã đúng, không cần dùng :))").show();
-        }
-        else if(UserManager.getInstance().getCurrentUser().getHint() >= 0) {
+        } else if (UserManager.getInstance().getCurrentUser().getHint() >= 0) {
             new Alert(Alert.AlertType.WARNING, "Hết tiền rồi :((").show();
-        }
-        else if(cntHint == Game3.MAX_HINT) {
+        } else if (cntHint == Game3.MAX_HINT) {
             new Alert(Alert.AlertType.WARNING, "Đã dùng hết lượt").show();
-        }
-        else if(game.getGuessWord().startsWith(playerGuess.toString())) {
+        } else if (game.getGuessWord().startsWith(playerGuess.toString())) {
             input.getChildren().stream().filter(Node::isVisible).map(btn -> (Button) btn).filter(btn -> {
                 playerGuess.append(btn.getText());
-                if(game.getGuessWord().startsWith(playerGuess.toString())) {
+                if (game.getGuessWord().startsWith(playerGuess.toString())) {
                     btn.setStyle("-fx-background-color: #66FF66");
                     UserManager.getInstance().getCurrentUser().setHint(UserManager.getInstance().getCurrentUser().getHint() - 1);
                     hintBtn.setText("x " + UserManager.getInstance().getCurrentUser().getHint());
@@ -226,10 +244,21 @@ public class Game3Controller {
     }
 
     private static final int MAX_PLAYER_SHOW = 10;
+
+    /**
+     * Singleton instance of the Game3Controller class.
+     */
     private static Game3Controller instance;
+
+    /**
+     * Retrieves the singleton instance of the Game3Controller.
+     *
+     * @return The singleton instance of the Game3Controller.
+     */
     public static Game3Controller getInstance() {
         return instance;
     }
+
     public static void setInstance(Game3Controller instance) {
         Game3Controller.instance = instance;
     }

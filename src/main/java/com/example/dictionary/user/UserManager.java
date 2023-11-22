@@ -15,10 +15,20 @@ public class UserManager implements Serializable {
 
     private transient User currentUser;
 
+    /**
+     * Retrieves the currently logged-in user.
+     *
+     * @return The currently logged-in user.
+     */
     public User getCurrentUser() {
         return currentUser;
     }
 
+    /**
+     * Sets the currently logged-in user.
+     *
+     * @param user The user to be set as the currently logged-in user.
+     */
     private void setCurrentUser(User user) {
         if (currentUser != null) {
             currentUser.writeData();
@@ -29,6 +39,11 @@ public class UserManager implements Serializable {
         Application.getInstance().changeTheme(user.getTheme());
     }
 
+    /**
+     * Retrieves the instance of the UserManager.
+     *
+     * @return The instance of the UserManager.
+     */
     public static UserManager getInstance() {
         if (instance == null) {
             try {
@@ -44,6 +59,13 @@ public class UserManager implements Serializable {
         return instance;
     }
 
+    /**
+     * Logs in a user with the provided username and password.
+     *
+     * @param username The username of the user trying to log in.
+     * @param password The password of the user trying to log in.
+     * @return True if login is successful, false otherwise.
+     */
     public boolean login(String username, String password) {
         for (User user : users) {
             if (user.getPassword().equals(password) && user.getUsername().equals(username)) {
@@ -54,6 +76,13 @@ public class UserManager implements Serializable {
         return false;
     }
 
+    /**
+     * Creates a new user with the provided username and password.
+     *
+     * @param username The username of the new user.
+     * @param password The password of the new user.
+     * @return True if user creation is successful, false if the username already exists.
+     */
     public boolean create(String username, String password) {
         for (User user : users) {
             if (user.getUsername().equals(username)) {
@@ -66,12 +95,20 @@ public class UserManager implements Serializable {
         return true;
     }
 
+    /**
+     * Removes the current user and their associated data.
+     */
     public void remove() {
         currentUser.remove();
         users.remove(currentUser);
         currentUser = null;
     }
 
+    /**
+     * Provides a string representation of the UserManager object.
+     *
+     * @return A string representation of the UserManager object.
+     */
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder("Users:");
@@ -82,6 +119,9 @@ public class UserManager implements Serializable {
         return builder.toString();
     }
 
+    /**
+     * Writes data associated with the UserManager and the currently logged-in user to storage.
+     */
     public void writeData() {
         try {
             if(currentUser != null)

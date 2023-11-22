@@ -58,6 +58,11 @@ public class TranslateController extends MainController {
     @FXML
     private ImageView loadingImg;
 
+    /**
+     * Finds and sets the word for translation, triggering translation if a valid word is provided.
+     *
+     * @param word The word to be translated.
+     */
     public void find(String word) {
         if (word != null && word.trim().length() > 0) {
             wordToTranslate.setText(word);
@@ -65,6 +70,11 @@ public class TranslateController extends MainController {
         }
     }
 
+    /**
+     * Retrieves the instance of the TranslateController.
+     *
+     * @return The TranslateController instance.
+     */
     public static TranslateController getInstance() {
         return instance;
     }
@@ -80,6 +90,9 @@ public class TranslateController extends MainController {
 
     private String meaning = "";
 
+    /**
+     * Initializes the components and settings for translation.
+     */
     @Override
     protected void initComponents() {
         super.initComponents();
@@ -98,6 +111,11 @@ public class TranslateController extends MainController {
 
     RotateTransition transition;
 
+    /**
+     * Retrieves suggestions for a given string.
+     *
+     * @param c The string for which suggestions are sought.
+     */
     private void getSuggestions(String c) {
         if (c.trim().length() > 0) {
             try {
@@ -121,6 +139,9 @@ public class TranslateController extends MainController {
         }
     }
 
+    /**
+     * Handles various translation-related functionalities.
+     */
     private void handleTranslate() {
         String word = wordToTranslate.getText();
 
@@ -170,6 +191,9 @@ public class TranslateController extends MainController {
             new Alert(Alert.AlertType.WARNING, "Không được để trống").show();
     }
 
+    /**
+     * Initiates the speech synthesis of the word being translated.
+     */
     private void speakWord() {
         if (!wordToTranslate.getText().equals(""))
             TextToSpeech.textToSpeech(wordToTranslate.getText());
@@ -178,6 +202,9 @@ public class TranslateController extends MainController {
         }
     }
 
+    /**
+     * Adds a word to the user's list with its translation.
+     */
     private void handleAddWord() {
         if (!wordToTranslate.getText().equals("") && !meaning.equals("")) {
             Alert a = new Alert(Alert.AlertType.INFORMATION, "Đã thêm thành công");
@@ -188,6 +215,9 @@ public class TranslateController extends MainController {
             new Alert(Alert.AlertType.WARNING, "Không được để trống").show();
     }
 
+    /**
+     * Handles editing of a word's translation.
+     */
     private void handleEditWord() {
         if (!wordToTranslate.getText().trim().equals("") && !meaning.trim().equals("")) {
             showEditor();
@@ -198,18 +228,27 @@ public class TranslateController extends MainController {
         }
     }
 
+    /**
+     * Hides the word editor by animating its transition out of view.
+     */
     private void hideEditor() {
         TranslateTransition transition = new TranslateTransition(Duration.millis(500), div3);
         transition.setToX(-1000);
         transition.play();
     }
 
+    /**
+     * Displays the word editor by animating its transition into view.
+     */
     private void showEditor() {
         TranslateTransition transition = new TranslateTransition(Duration.millis(500), div3);
         transition.setToX(1000);
         transition.play();
     }
 
+    /**
+     * Saves the edited word and its translation, updates the displayed content, and hides the editor after saving the changes.
+     */
     private void handleSaveEditWord() {
         String newWord = word.getText().trim();
         String newDefinition = definition.getHtmlText().replace("contenteditable=\"true\"", "contenteditable=\"false\"");
@@ -223,6 +262,9 @@ public class TranslateController extends MainController {
         meaning = newDefinition;
     }
 
+    /**
+     * Initializes the event handlers for various UI components related to translation and editing.
+     */
     @Override
     protected void initEvents() {
         super.initEvents();
@@ -235,6 +277,9 @@ public class TranslateController extends MainController {
         saveBtn.setOnAction(event -> handleSaveEditWord());
     }
 
+    /**
+     * Initializes the controller upon its initialization, setting it as an instance of itself.
+     */
     @Override
     public void initialize() {
         super.initialize();

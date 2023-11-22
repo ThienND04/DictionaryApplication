@@ -1,5 +1,6 @@
 package com.example.dictionary.controller;
 
+import com.example.dictionary.Application;
 import com.example.dictionary.game.Game1;
 import com.example.dictionary.game.GameInfo;
 import com.example.dictionary.game.GameManager;
@@ -24,6 +25,8 @@ import javafx.scene.effect.InnerShadow;
 import javafx.scene.effect.Lighting;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.web.WebView;
 import javafx.util.Callback;
 import javafx.util.Duration;
@@ -55,6 +58,8 @@ public class Game1Controller {
     @FXML
     Button hintBtn;
     @FXML
+    Button ruleBtn;
+    @FXML
     ProgressBar progressBar;
     @FXML
     Label solved;
@@ -62,6 +67,10 @@ public class Game1Controller {
     Label fault;
     @FXML
     Label timeLabel;
+    @FXML
+    VBox rule;
+    @FXML
+    VBox gameContent;
     @FXML
     TableView<User> topPlayer;
     @FXML
@@ -75,7 +84,7 @@ public class Game1Controller {
     private int cntHint = 0;
     private final AtomicLong time = new AtomicLong(0);
     private final Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.1),
-            event -> timeLabel.setText(String.valueOf((double) time.incrementAndGet() / 10))));
+            event -> timeLabel.setText(String.valueOf(1.0 * time.incrementAndGet() / 10))));
 
     @FXML
     public void initialize() {
@@ -84,7 +93,7 @@ public class Game1Controller {
     }
 
     private void initComponents() {
-        hintImg.setImage(new Image(UserController.getInstance().getClass().getResourceAsStream("hint.png")));
+        hintImg.setImage(new Image(getClass().getResourceAsStream("hint.png")));
 
         newGameBtn.setVisible(true);
         hintBtn.setVisible(false);
@@ -92,11 +101,19 @@ public class Game1Controller {
         fault.setVisible(false);
         checkBtn.setVisible(false);
         quesLabel.setVisible(false);
-        timeLabel.setStyle("-fx-text-fill: white");
+        progressBar.setVisible(false);
         timeline.setCycleCount(Animation.INDEFINITE);
 
         newGameBtn.setOnAction(actionEvent -> newGame());
         hintBtn.setOnAction(actionEvent -> hint());
+        ruleBtn.setOnAction(actionEvent -> {
+            rule.setVisible(true);
+            gameContent.setVisible(false);
+        });
+        rule.setOnMouseClicked(mouseEvent -> {
+            rule.setVisible(false);
+            gameContent.setVisible(true);
+        });
         skipBtn.setOnAction(actionEvent -> {
             game1.toNextQuestion();
             updateQuestion();
@@ -118,7 +135,7 @@ public class Game1Controller {
             new Alert(Alert.AlertType.WARNING, "Không đủ số lượng từ").show();
             return;
         }
-        hintBtn.setText("x " + String.valueOf(UserManager.getInstance().getCurrentUser().getHint()));
+        hintBtn.setText("x " + UserManager.getInstance().getCurrentUser().getHint());
         newGameBtn.setVisible(false);
         hintBtn.setVisible(true);
         updateQuestion();
@@ -127,6 +144,7 @@ public class Game1Controller {
         skipBtn.setVisible(true);
         quesLabel.setVisible(true);
         timeLabel.setVisible(true);
+        progressBar.setVisible(true);
         timeline.play();
     }
 
@@ -188,6 +206,7 @@ public class Game1Controller {
         game1.submit();
         updateStatus();
         skipBtn.setVisible(false);
+        hintBtn.setVisible(false);
         checkBtn.setText("Tiếp tục");
         if(game1.checkFinish()) {
             checkBtn.setOnAction(actionEvent -> finish());
@@ -196,6 +215,7 @@ public class Game1Controller {
                 game1.toNextQuestion();
                 checkBtn.setText("Kiểm tra");
                 checkBtn.setOnAction(actionEvent1 -> checkAns());
+                hintBtn.setVisible(true);
                 updateQuestion();
             });
         }
@@ -213,6 +233,7 @@ public class Game1Controller {
         } else {
             // giam hint
             UserManager.getInstance().getCurrentUser().setHint(UserManager.getInstance().getCurrentUser().getHint() - 1);
+            hintBtn.setText("x " + UserManager.getInstance().getCurrentUser().getHint());
             Random rd = new Random();
             int i = slt.get(rd.nextInt(slt.size()));
             ansSelections.getButtons().get(i).setVisible(false);

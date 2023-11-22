@@ -6,6 +6,8 @@ import com.example.dictionary.game.Game3;
 import com.example.dictionary.stage.WindowEnum;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.layout.*;
 
 public class GameController extends MainController{
     @FXML
@@ -14,7 +16,8 @@ public class GameController extends MainController{
     Button game2Nav;
     @FXML
     Button game3Nav;
-
+    @FXML
+    VBox window;
 
     @Override
     protected void initComponents() {

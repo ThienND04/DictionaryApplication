@@ -1,13 +1,11 @@
-aaa<::>111<::>
 gun<::>súng<::>
 expert<::>chuyên gia<::>
-ccc<::><html dir="ltr"><head></head><body contenteditable="false"><p><span style="font-family: &quot;&quot;;">333</span></p></body></html><::>
+ccc<::>333<::>
 bicycle<::>xe đạp<::>
 about<::>Về<::>
 captain american<::>đội trưởng mỹ<::>
 aorist<::><html>người theo thuyết bất thường</html><::>
 malfunction<::>sự cố<::>
-computer<::>computer Phát âm : /kəmˈpjuːtə/ /kəmˈpjutɚ/ Nghĩa : Loại : danh từ Các định nghĩa : Nghĩa : A person employed to perform computations; one who computes. Nghĩa : (by restriction) A male computer, where the female computer is called a computress. Nghĩa : A programmable electronic device that performs mathematical calculations and logical operations, especially one that can process, store and retrieve large amounts of data very quickly; now especially, a small one for personal or home use employed for manipulating text or graphics, accessing the Internet, or playing games or media. Từ đồng nghĩa : 'puter box calculator machine processor Từ trái nghĩa :<::>
 so far away<::>quá đỗi xa vời<::>
 helper<::>người giúp đỡ<::>
 car<::>xe hơi<::>
@@ -18,7 +16,7 @@ how are you<::>Bạn khỏe không<::>
 helpful<::>hữu ích<::>
 bullet<::>đạn<::>
 sacred<::>Linh thiêng<::>
-between<::>between Phát âm : /bɪˈtwiːn/ /bəˈtwin/ Nghĩa : Loại : danh từ Các định nghĩa : Nghĩa : A kind of needle, shorter than a sharp, with a small rounded eye, used for making fine stitches on heavy fabrics. Từ đồng nghĩa : Từ trái nghĩa : Loại : giới từ Các định nghĩa : Nghĩa : In the position or interval that separates (two things), or intermediate in quantity or degree. (See Usage notes below.) Ví dụ : I want to buy one that costs somewhere between forty and fifty dollars. Nghĩa : Done together or reciprocally. Ví dụ : conversation between friends Nghĩa : Shared in confidence. Ví dụ : Between you and me, I think the boss is crazy.  Let's keep this between ourselves. Nghĩa : In transit from (one to the other, or connecting places). Ví dụ : He's between jobs right now.  The shuttle runs between the town and the airport. Nghĩa : Combined (by effort or ownership). Ví dụ : Between the leaky taps and the peeling wallpaper, there isn't much about this house to appeal to a buyer. Nghĩa : One of (representing a choice). Ví dụ : Some colour-blind people can't distinguish between red and green. Từ đồng nghĩa : atween atwix atwixt betwixt Từ trái nghĩa :<::>
+between<::>giua<::>
 summary<::>bản tóm tắt<::>
 where are you now<::>Giờ bạn đang ở đâu<::>
 a<::>Một<::>
@@ -35,6 +33,6 @@ heart<::>trái tim<::>
 shellfish<::>động vật có vỏ<::>
 supervise<::>giám sát<::>
 campaign<::>chiến dịch<::>
-hello<::>Xin chào<::>
+hello<::><html>Xin chào</html><::>
 supervisor<::>người giám sát<::>
 helperess<::>người giúp việc<::>

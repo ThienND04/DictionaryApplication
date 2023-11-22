@@ -12,11 +12,13 @@ public class Controller {
         ThemeController.getInstance().handleUserChange();
         PrimaryWindow.getInstance().changeScene(SceneEnum.HOME);
     }
+
     public static void handleChangeImage() {
         HomeController.getInstance().initUserImage();
         GameController.getInstance().initUserImage();
         TranslateController.getInstance().initUserImage();
         UserController.getInstance().initUserImage();
+        ThemeController.getInstance().initUserImage();
     }
 
     public static void handleChangeStreak() {
@@ -24,6 +26,7 @@ public class Controller {
         GameController.getInstance().initStreak();
         TranslateController.getInstance().initStreak();
         UserController.getInstance().initStreak();
+        ThemeController.getInstance().initStreak();
     }
 
     public static void handleChangeStatics() {

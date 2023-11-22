@@ -19,6 +19,7 @@ import javafx.geometry.Point3D;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.transform.Rotate;
 import javafx.scene.web.WebView;
 import javafx.util.Duration;
@@ -43,10 +44,16 @@ public class Game2Controller {
     @FXML
     Button newGameBtn;
     @FXML
+    Button pauseBtn;
+    @FXML
+    Button ruleBtn;
+    @FXML
+    VBox gameContent;
+    @FXML
+    VBox rule;
+    @FXML
     Label timeLabel;
     private final Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.1), event -> timeLabel.setText(String.valueOf((double) time.incrementAndGet() / 10))));
-    @FXML
-    Button pauseBtn;
     @FXML
     TableView<User> topPlayer;
     @FXML
@@ -65,6 +72,14 @@ public class Game2Controller {
     public void initialize() {
         instance = this;
         newGameBtn.setOnAction(event -> newGame());
+        ruleBtn.setOnAction(event -> {
+            gameContent.setVisible(false);
+            rule.setVisible(true);
+        });
+        rule.setOnMouseClicked(event -> {
+            gameContent.setVisible(true);
+            rule.setVisible(false);
+        });
         pauseBtn.setOnAction(event -> handlePauseBtn());
         timeline.setCycleCount(Animation.INDEFINITE);
 

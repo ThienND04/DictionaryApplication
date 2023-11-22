@@ -16,6 +16,7 @@ public class Game3 extends AGame {
     public static final int NUM_QUESTION = 5;
     private int solvedQuestion = 0;
     private int currentQuestionI = 0;
+    public static int MAX_HINT = 3;
 
     public Game3() {
 

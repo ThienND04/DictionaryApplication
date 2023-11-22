@@ -4,7 +4,7 @@ ccc<::>333<::>
 bicycle<::>xe đạp<::>
 about<::>Về<::>
 captain american<::>đội trưởng mỹ<::>
-aorist<::><html>người theo thuyết bất thường</html><::>
+aorist<::>người theo thuyết bất thường<::>
 malfunction<::>sự cố<::>
 so far away<::>quá đỗi xa vời<::>
 helper<::>người giúp đỡ<::>

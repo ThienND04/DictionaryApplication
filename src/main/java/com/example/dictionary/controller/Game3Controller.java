@@ -15,12 +15,14 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.effect.Lighting;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.web.WebView;
 import javafx.util.Duration;
 
@@ -46,6 +48,12 @@ public class Game3Controller {
     @FXML
     Button pauseBtn;
     @FXML
+    Button ruleBtn;
+    @FXML
+    VBox gameContent;
+    @FXML
+    VBox rule;
+    @FXML
     ProgressBar bar;
     @FXML
     Label timeLabel;
@@ -59,6 +67,8 @@ public class Game3Controller {
     TableColumn<User, Double> timeCol;
     @FXML
     ImageView hintImg;
+
+    private int cntHint = 0;
 
     private boolean isPaused = false;
 
@@ -76,12 +86,22 @@ public class Game3Controller {
         newGame.setOnAction(event -> newGame());
         hintBtn.setOnAction(event -> hint());
         nextBtn.setOnAction(event -> nextQuestion());
+        ruleBtn.setOnAction(event -> {
+            gameContent.setVisible(false);
+            rule.setVisible(true);
+        });
+        rule.setOnMouseClicked(event -> {
+            gameContent.setVisible(true);
+            rule.setVisible(false);
+        });
         pauseBtn.setOnAction(actionEvent -> {
             isPaused = ! isPaused;
             pauseBtn.setText(isPaused ? "Tiếp tục" : "Dừng");
             guessWord.setVisible(! isPaused);
             input.setVisible(! isPaused);
             nextBtn.setVisible(! isPaused);
+            hintBtn.setVisible(! isPaused);
+            meaning.setVisible(! isPaused);
             if(isPaused) timeline.pause();
             else timeline.play();
         });
@@ -110,6 +130,8 @@ public class Game3Controller {
         pauseBtn.setText("Dừng");
         nextBtn.setVisible(true);
         hintBtn.setVisible(true);
+        hintBtn.setText("x " + UserManager.getInstance().getCurrentUser().getHint());
+        cntHint = 0;
     }
 
     private void finish() {
@@ -181,17 +203,28 @@ public class Game3Controller {
         guessWord.getChildren().stream().map(button -> ((Button)button).getText()).
                 reduce(playerGuess, (StringBuilder::append), StringBuilder::append);
         if(game.isGuessedWord(playerGuess.toString())) {
-            new Alert(Alert.AlertType.WARNING, "Không thể dùng ").show();
-        } else if(game.getGuessWord().startsWith(playerGuess.toString())) {
-            input.getChildren().stream().filter(btn -> btn.isVisible()).map(btn -> (Button) btn).filter(btn -> {
+            new Alert(Alert.AlertType.WARNING, "Đáp án đã đúng, không cần dùng :))").show();
+        }
+        else if(UserManager.getInstance().getCurrentUser().getHint() >= 0) {
+            new Alert(Alert.AlertType.WARNING, "Hết tiền rồi :((").show();
+        }
+        else if(cntHint == Game3.MAX_HINT) {
+            new Alert(Alert.AlertType.WARNING, "Đã dùng hết lượt").show();
+        }
+        else if(game.getGuessWord().startsWith(playerGuess.toString())) {
+            input.getChildren().stream().filter(Node::isVisible).map(btn -> (Button) btn).filter(btn -> {
                 playerGuess.append(btn.getText());
                 if(game.getGuessWord().startsWith(playerGuess.toString())) {
                     btn.setStyle("-fx-background-color: #66FF66");
+                    UserManager.getInstance().getCurrentUser().setHint(UserManager.getInstance().getCurrentUser().getHint() - 1);
+                    hintBtn.setText("x " + UserManager.getInstance().getCurrentUser().getHint());
                     return true;
                 }
                 playerGuess.deleteCharAt(playerGuess.length() - 1);
                 return false;
             }).findFirst();
+        } else {
+            new Alert(Alert.AlertType.WARNING, "Không thể tính toán").show();
         }
     }
 

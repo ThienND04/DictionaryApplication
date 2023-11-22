@@ -108,6 +108,7 @@ public class UserManager implements Serializable {
             user.getLoginDays().add(LocalDate.now().minusDays(2));
             user.getLoginDays().add(LocalDate.now().minusDays(3));
             user.getLoginDays().add(LocalDate.now().minusDays(4));
+            user.setCoin(1000);
             userManager.users.add(user);
             System.out.println(user.getLoginDays());
 

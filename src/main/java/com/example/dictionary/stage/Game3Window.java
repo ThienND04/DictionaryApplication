@@ -16,9 +16,9 @@ public class Game3Window extends Window {
         window.setResizable(false);
         changeScene(SceneEnum.GAME_3);
         window.setOnHiding(windowEvent -> {
-            scenes.put(SceneEnum.GAME_2, new SuperScene(SceneEnum.GAME_2));
+            scenes.put(SceneEnum.GAME_3, new SuperScene(SceneEnum.GAME_3));
             scenes.get(SceneEnum.GAME_3).initTheme(SceneEnum.GAME_3, UserManager.getInstance().getCurrentUser().getTheme());
-            changeScene(SceneEnum.GAME_2);
+            changeScene(SceneEnum.GAME_3);
         });
     }
 }

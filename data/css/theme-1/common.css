@@ -90,6 +90,28 @@ Button, .navBar > Label, .btn-1, .btn-2, #userNav{
     -fx-font-weight : bold;
 }
 
+TableView {
+    -fx-background-color: -fx-blue-2;
+}
+
+TableView .column-header {
+    -fx-background-color: -fx-blue-2;
+    -fx-text-fill: -fx-white-2;
+}
+
+TableView .table-cell:even{
+    -fx-background-color : -fx-green-1;
+}
+
+TableView .table-cell:odd{
+    -fx-background-color : -fx-white-2;
+}
+
+TableView .table-cell:hover {
+    -fx-background-color : -fx-blue-1;
+    -fx-text-fill : -fx-white-2;
+}
+
 
 
 ListView .list-cell:selected, Button, .btn-2:hover, .btn-1, .btn-11 {

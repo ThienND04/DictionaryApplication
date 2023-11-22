@@ -23,23 +23,3 @@ ToggleButton:hover, ToggleButton:selected{
     -fx-text-fill : -fx-green-2;
 }
 
-TableView {
-    -fx-background-color: -fx-blue-2;
-}
-
-TableView .column-header {
-    -fx-background-color: -fx-blue-2;
-}
-
-TableView .table-cell:even{
-    -fx-background-color : -fx-green-1;
-}
-
-TableView .table-cell:odd{
-    -fx-background-color : -fx-white-2;
-}
-
-TableView .table-cell:hover {
-    -fx-background-color : -fx-blue-1;
-    -fx-text-fill : -fx-white-2;
-}

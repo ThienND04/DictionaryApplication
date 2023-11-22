@@ -172,3 +172,13 @@ body {
     -fx-background-color : -fx-blue-2;
     -fx-text-fill : -fx-white-1;
 }
+
+#game1Nav, #game2Nav, #game3Nav{
+    -fx-background-color: #00c6ff;
+    -fx-text-fill: #000024;
+}
+
+#game1Nav:hover, #game2Nav:hover, #game3Nav:hover{
+    -fx-background-color: #00fefe;
+    -fx-text-fill: #000024;
+}

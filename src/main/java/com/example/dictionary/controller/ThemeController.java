@@ -51,12 +51,12 @@ public class ThemeController extends MainController{
     @Override
     protected void initComponents() {
         super.initComponents();
-        img1.setImage(new Image(getClass().getResourceAsStream("theme1.png")));
+        img1.setImage(new Image(getClass().getResourceAsStream("theme0.png")));
         img2.setImage(new Image(getClass().getResourceAsStream("theme1.png")));
-        img3.setImage(new Image(getClass().getResourceAsStream("theme1.png")));
-        img4.setImage(new Image(getClass().getResourceAsStream("theme1.png")));
-        img5.setImage(new Image(getClass().getResourceAsStream("theme1.png")));
-        img6.setImage(new Image(getClass().getResourceAsStream("theme1.png")));
+        img3.setImage(new Image(getClass().getResourceAsStream("theme2.png")));
+        img4.setImage(new Image(getClass().getResourceAsStream("theme3.png")));
+        img5.setImage(new Image(getClass().getResourceAsStream("theme4.png")));
+        img6.setImage(new Image(getClass().getResourceAsStream("theme5.png")));
     }
 
     @Override

@@ -115,7 +115,7 @@
                                           <Label fx:id="searchBtn" alignment="CENTER" prefHeight="34.0" prefWidth="154.0" styleClass="btn-1" text="Tìm kiếm online" visible="false" />
                                                   </children>
                                        <padding>
-                                          <Insets left="7.0" right="7.0" top="7.0" />
+                                          <Insets bottom="1.0" left="7.0" right="7.0" top="7.0" />
                                        </padding>
                                               </VBox>
                                               <VBox spacing="5.0">

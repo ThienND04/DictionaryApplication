@@ -1,10 +1,10 @@
 .root {
     -fx-white-1 : #FFFBF5;
     -fx-white-2: #EDF5E1;
-    -fx-blue-2 : #05386B;
-    -fx-green-2 : #5CDB95;
-    -fx-green-1 : #8EE4AF;
-    -fx-blue-1 : #379683;
+    -fx-blue-2 : #008fb3;
+    -fx-green-2 : #99ff99;
+    -fx-green-1 : #b3b3ff;
+    -fx-blue-1 : #99ebff;
 }
 
 #div2 {

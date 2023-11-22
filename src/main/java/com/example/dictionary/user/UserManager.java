@@ -2,9 +2,6 @@ package com.example.dictionary.user;
 
 import com.example.dictionary.Application;
 import com.example.dictionary.controller.Controller;
-import com.example.dictionary.game.Game1;
-import com.example.dictionary.game.Game2;
-import com.example.dictionary.game.Game3;
 import com.example.dictionary.game.GameManager;
 
 import java.io.*;
@@ -28,6 +25,8 @@ public class UserManager implements Serializable {
         }
         currentUser = user;
         user.login();
+        Controller.handleChangeUser();
+        Application.getInstance().changeTheme(user.getTheme());
     }
 
     public static UserManager getInstance() {

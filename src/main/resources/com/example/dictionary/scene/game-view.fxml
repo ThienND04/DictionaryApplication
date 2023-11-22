@@ -13,7 +13,7 @@
 
 <StackPane xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.dictionary.controller.GameController">
    <children>
-      <AnchorPane prefHeight="577.0" prefWidth="1000.0">
+      <AnchorPane prefHeight="700" prefWidth="1000.0">
          <children>
             <VBox prefWidth="1000.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <HBox fx:id="navBar" alignment="CENTER" prefHeight="54.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
@@ -58,28 +58,23 @@
                      <Insets bottom="20.0" />
                   </VBox.margin>
                </HBox>
-               <VBox fx:id="window" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="508.0" prefWidth="1000.0">
+               <VBox fx:id="window" alignment="CENTER" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" VBox.vgrow="ALWAYS">
                   <children>
-                     <VBox prefHeight="154.0" prefWidth="1000.0" />
-                     <VBox alignment="TOP_CENTER" prefHeight="487.0" prefWidth="1000.0">
-                        <children>
-                           <Button fx:id="game1Nav" focusTraversable="false" mnemonicParsing="false" prefHeight="71.0" prefWidth="342.0" text="Game 1">
-                              <VBox.margin>
-                                 <Insets top="20.0" />
-                              </VBox.margin>
-                           </Button>
-                           <Button fx:id="game2Nav" focusTraversable="false" mnemonicParsing="false" prefHeight="64.0" prefWidth="344.0" text="Game 2">
-                              <VBox.margin>
-                                 <Insets top="20.0" />
-                              </VBox.margin>
-                           </Button>
-                           <Button fx:id="game3Nav" focusTraversable="false" mnemonicParsing="false" prefHeight="71.0" prefWidth="341.0" text="Game 3">
-                              <VBox.margin>
-                                 <Insets top="20.0" />
-                              </VBox.margin>
-                           </Button>
-                        </children>
-                     </VBox>
+                     <Button fx:id="game1Nav" focusTraversable="false" mnemonicParsing="false" prefHeight="71.0" prefWidth="342.0" text="Game 1">
+                        <VBox.margin>
+                           <Insets top="20.0" />
+                        </VBox.margin>
+                     </Button>
+                     <Button fx:id="game2Nav" focusTraversable="false" mnemonicParsing="false" prefHeight="64.0" prefWidth="344.0" text="Game 2">
+                        <VBox.margin>
+                           <Insets top="20.0" />
+                        </VBox.margin>
+                     </Button>
+                     <Button fx:id="game3Nav" focusTraversable="false" mnemonicParsing="false" prefHeight="71.0" prefWidth="341.0" text="Game 3">
+                        <VBox.margin>
+                           <Insets top="20.0" />
+                        </VBox.margin>
+                     </Button>
                   </children>
                </VBox>
             </VBox>

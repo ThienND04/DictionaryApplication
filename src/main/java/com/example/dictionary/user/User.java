@@ -257,8 +257,6 @@ public class User implements Serializable {
         tasksTrack.add(false);
         tasksTrack.add(false);
         tasksTrack.add(false);
-
-        login();
     }
 
     public void login() {
@@ -274,8 +272,6 @@ public class User implements Serializable {
         loginDays.add(LocalDate.now());
         readData();
         readImage();
-        Application.getInstance().changeTheme(theme);
-        Controller.handleChangeUser();
     }
 
     public void setPassword(String password) {

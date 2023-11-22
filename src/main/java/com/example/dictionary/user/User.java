@@ -17,6 +17,11 @@ import java.util.stream.Collectors;
 public class User implements Serializable {
     private int theme = 0;
 
+    /**
+     * Retrieves the theme set for the user interface.
+     *
+     * @return The theme value.
+     */
     public int getTheme() {
         return theme;
     }
@@ -28,15 +33,30 @@ public class User implements Serializable {
     public static int lastUserId;
     private boolean isReceiveCoin = false;
 
+    /**
+     * Sets the theme for the user interface.
+     *
+     * @param theme The theme value to set.
+     */
     public void setTheme(int theme) {
         this.theme = theme;
         Application.getInstance().changeTheme(theme);
     }
 
+    /**
+     * Retrieves the count of tasks.
+     *
+     * @return An ArrayList representing task counts.
+     */
     public ArrayList<Integer> getTasksCount() {
         return tasksCount;
     }
 
+    /**
+     * Retrieves the tracking status of tasks.
+     *
+     * @return An ArrayList representing task tracking status.
+     */
     public ArrayList<Boolean> getTasksTrack() {
         return tasksTrack;
     }
@@ -45,24 +65,47 @@ public class User implements Serializable {
     private final ArrayList<Boolean> tasksTrack = new ArrayList<>();
     private int hint = 0;
 
+    /**
+     * Sets the hint count for the user.
+     *
+     * @param hint The new hint count to be set.
+     */
     public void setHint(int hint) {
         this.hint = hint;
         UserController.getInstance().initUserDetail();
     }
 
+    /**
+     * Checks whether the user has received a coin.
+     *
+     * @return True if the user has received a coin, otherwise false.
+     */
     public boolean isReceiveCoin() {
         return isReceiveCoin;
     }
 
+    /**
+     * Marks that the user has received a coin and handles the streak change.
+     */
     public void setReceiveCoin() {
         isReceiveCoin = true;
         Controller.handleChangeStreak();
     }
 
+    /**
+     * Retrieves the current coin count of the user.
+     *
+     * @return The total count of coins the user possesses.
+     */
     public int getCoin() {
         return coin;
     }
 
+    /**
+     * Sets the coin count for the user and updates user details.
+     *
+     * @param coin The new coin count to be set.
+     */
     public void setCoin(int coin) {
         this.coin = coin;
         UserController.getInstance().initUserDetail();
@@ -75,27 +118,49 @@ public class User implements Serializable {
     private final Set<LocalDate> loginDays = new HashSet<>();
     private int countOfAddWords;
 
+    /**
+     * Retrieves the count of added words.
+     *
+     * @return The count of added words.
+     */
     public int getCountOfAddWords() {
         return countOfAddWords;
     }
 
+    /**
+     * Retrieves the number of searched words by the user.
+     *
+     * @return The count of searched words.
+     */
     public int getCountOfSearchWords() {
         return countOfSearchWords;
     }
 
 
+    /**
+     * Handles the addition of a word, increments the count of added words,
+     * updates task count, and triggers a change in statistics.
+     */
     public void handleAddWord() {
         countOfAddWords++;
         tasksCount.set(2, tasksCount.get(2) + 1);
         Controller.handleChangeStatics();
     }
 
+    /**
+     * Handles the searching of a word, increments the count of searched words,
+     * updates the task count, and triggers a change in statistics.
+     */
     public void handleSearchWord() {
         tasksCount.set(0, tasksCount.get(0) + 1);
         countOfSearchWords++;
         Controller.handleChangeStatics();
     }
 
+    /**
+     * Handles the completion of a game, increments the game finish count,
+     * and triggers a change in statistics.
+     */
     public void handleFinishGame() {
         tasksCount.set(1, tasksCount.get(1) + 1);
         Controller.handleChangeStatics();
@@ -103,22 +168,47 @@ public class User implements Serializable {
 
     private int countOfSearchWords;
 
+    /**
+     * Retrieves the set of login dates for the user.
+     *
+     * @return The set containing the login dates.
+     */
     public Set<LocalDate> getLoginDays() {
         return loginDays;
     }
 
+    /**
+     * Retrieves the image associated with the user profile.
+     *
+     * @return The user's profile image.
+     */
     public Image getImage() {
         return image;
     }
 
+    /**
+     * Retrieves the username of the user.
+     *
+     * @return The username.
+     */
     public String getUsername() {
         return username;
     }
 
+    /**
+     * Sets the username for the user.
+     *
+     * @param username The username to set.
+     */
     public void setUsername(String username) {
         this.username = username;
     }
 
+    /**
+     * Retrieves the password of the user.
+     *
+     * @return The password.
+     */
     public String getPassword() {
         return password;
     }
@@ -127,6 +217,11 @@ public class User implements Serializable {
     private transient Map<String, Word> words;
     private transient Trie trie;
 
+    /**
+     * Adds a word to the user's dictionary.
+     *
+     * @param word The word object to be added.
+     */
     public void addWord(Word word) {
         if (word != null) {
             words.put(word.getWord(), word);
@@ -135,6 +230,11 @@ public class User implements Serializable {
         }
     }
 
+    /**
+     * Removes a word from the user's dictionary.
+     *
+     * @param word The word to be removed.
+     */
     public void removeWord(String word) {
         if (word != null) {
             words.remove(word.trim());
@@ -142,6 +242,9 @@ public class User implements Serializable {
         }
     }
 
+    /**
+     * Reads the user's word data from the file.
+     */
     private void readData() {
         words = new HashMap<>();
         trie = new Trie();
@@ -170,14 +273,28 @@ public class User implements Serializable {
         }
     }
 
+    /**
+     * Retrieves the map of words in the user's dictionary.
+     *
+     * @return A map containing words as keys and their corresponding definitions as values.
+     */
     public Map<String, Word> getWords() {
         return words;
     }
 
+    /**
+     * Retrieves the trie structure used for the user's dictionary.
+     *
+     * @return The Trie structure containing the words stored in the dictionary.
+     */
     public Trie getTrie() {
         return trie;
     }
 
+    /**
+     * Writes the user's word data to the file, persisting the dictionary.
+     * This method is used internally to save the dictionary data.
+     */
     public void writeData() {
         try {
             FileWriter fw = new FileWriter(WORDS_PATH + id + ".txt");
@@ -197,6 +314,13 @@ public class User implements Serializable {
         }
     }
 
+    /**
+     * Retrieves a list of random words from the user's dictionary based on a given predicate.
+     *
+     * @param n The number of random words to retrieve.
+     * @param predicate The predicate condition to filter the words.
+     * @return An ArrayList of Word objects that satisfy the given predicate, chosen randomly.
+     */
     public ArrayList<Word> getRandomWords(int n, Predicate<? super Word> predicate) {
         Random random = new Random();
         ArrayList<Word> res = new ArrayList<>();
@@ -213,6 +337,10 @@ public class User implements Serializable {
         return res;
     }
 
+    /**
+     * Reads the user's image data from the filesystem and initializes the 'image' property.
+     * If the user-specific image is not found, the default image is used instead.
+     */
     private void readImage() {
         try {
             File file;
@@ -229,6 +357,11 @@ public class User implements Serializable {
         }
     }
 
+    /**
+     * Sets the user's image using the provided image file path.
+     *
+     * @param path The path to the image file to set for the user.
+     */
     public void setImage(String path) {
         try {
             Files.copy(Paths.get(path), Paths.get(IMAGE_PATH + id + ".jpg"), StandardCopyOption.REPLACE_EXISTING);
@@ -239,6 +372,12 @@ public class User implements Serializable {
         Controller.handleChangeImage();
     }
 
+    /**
+     * Initializes a new User object with the provided username and password.
+     *
+     * @param username The username of the new user.
+     * @param password The password of the new user.
+     */
     public User(String username, String password) {
         this.username = username;
         this.password = password;
@@ -261,6 +400,9 @@ public class User implements Serializable {
         login();
     }
 
+    /**
+     * Logs the user into the system, updating login-related data and initializing user-specific settings.
+     */
     public void login() {
         if (!loginDays.contains(LocalDate.now())) {
             isReceiveCoin = false;
@@ -278,10 +420,18 @@ public class User implements Serializable {
         Controller.handleChangeUser();
     }
 
+    /**
+     * Sets the password for the user.
+     *
+     * @param password The new password to be set for the user.
+     */
     public void setPassword(String password) {
         this.password = password;
     }
 
+    /**
+     * Removes user-specific data files associated with the user, including word and image files.
+     */
     public void remove() {
         try {
             new File(WORDS_PATH + id + ".txt").delete();
@@ -291,15 +441,31 @@ public class User implements Serializable {
         }
     }
 
+    /**
+     * Retrieves the unique identifier (ID) of the user.
+     *
+     * @return The user's ID.
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     * Provides a string representation of the User object.
+     * The string contains the username, password, and user ID.
+     *
+     * @return A string representation of the User object.
+     */
     @Override
     public String toString() {
         return "User{" + "username='" + username + '\'' + ", password='" + password + '\'' + ", id=" + id + '}';
     }
 
+    /**
+     * Retrieves the number of hints available to the user.
+     *
+     * @return The number of hints the user has.
+     */
     public int getHint() {
         return hint;
     }

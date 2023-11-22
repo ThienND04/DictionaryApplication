@@ -33,12 +33,18 @@ public class ThemeController extends MainController{
     private Button btn;
     private int t = 0;
 
+    /**
+     * Controller managing the theme selection functionality.
+     */
     @Override
     public void initialize() {
         super.initialize();
         instance = this;
     }
 
+    /**
+     * Handles the change in the user's theme selection.
+     */
     @Override
     protected void handleUserChange() {
 
@@ -48,6 +54,9 @@ public class ThemeController extends MainController{
         container.getChildren().get(t).getStyleClass().add("btn-11");
     }
 
+    /**
+     * Initializes the components related to theme selection.
+     */
     @Override
     protected void initComponents() {
         super.initComponents();
@@ -59,6 +68,9 @@ public class ThemeController extends MainController{
         img6.setImage(new Image(getClass().getResourceAsStream("theme1.png")));
     }
 
+    /**
+     * Initializes the event handling for theme selection.
+     */
     @Override
     protected void initEvents() {
         super.initEvents();

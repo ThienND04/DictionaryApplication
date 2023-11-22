@@ -30,10 +30,20 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 public class Game2Controller {
+    /**
+     * Singleton instance of the Game2Controller class.
+     */
     private static Game2Controller instance;
+
+    /**
+     * Retrieves the singleton instance of the Game2Controller.
+     *
+     * @return The singleton instance of the Game2Controller.
+     */
     public static Game2Controller getInstance() {
         return instance;
     }
+
     public static final int NUMBER_OF_QUESTIONS = 10;
     private static final int MAX_PLAYER_SHOW = 10;
     private Game2 game = new Game2();
@@ -68,6 +78,9 @@ public class Game2Controller {
     private String clickedText;
 
 
+    /**
+     * Initializes the game interface and sets up event handlers.
+     */
     @FXML
     public void initialize() {
         instance = this;
@@ -112,6 +125,9 @@ public class Game2Controller {
         updateBXH();
     }
 
+    /**
+     * Starts a new game, generating a list of words and initializing the game interface.
+     */
     private void newGame() {
         pauseBtn.setVisible(true);
         list = game.generate();
@@ -132,17 +148,24 @@ public class Game2Controller {
         timeline.play();
     }
 
+    /**
+     * Toggles between pausing and resuming the game.
+     */
     @FXML
     void handlePauseBtn() {
         isPaused = !isPaused;
         if (isPaused) timeline.pause();
         else timeline.play();
         pauseBtn.setText(isPaused ? "Tiếp tục" : "Tạm dừng");
-        grid.setVisible(! isPaused);
+        grid.setVisible(!isPaused);
     }
 
+    /**
+     * If all questions are solved, records the player's win in the game history.
+     * Updates the leaderboard.
+     */
     private void finishGame() {
-        if(solvedQuestion == NUMBER_OF_QUESTIONS) {
+        if (solvedQuestion == NUMBER_OF_QUESTIONS) {
             double playedTime = 1.0 * time.get() / 10;
             GameManager.getInstance().getPlayersHistory().add(new GameInfo(Game2.GAME_ID, playedTime, GameInfo.Status.WIN));
         }
@@ -159,6 +182,9 @@ public class Game2Controller {
         updateBXH();
     }
 
+    /**
+     * Updates the leaderboard with player information and their best times for Game2.
+     */
     public void updateBXH() {
         ObservableList<User> players = FXCollections.observableArrayList(UserManager.getInstance().getUsers()).
                 filtered(user -> GameManager.getInstance().getPlayersHistory().stream().

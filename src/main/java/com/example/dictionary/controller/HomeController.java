@@ -35,6 +35,10 @@ enum DailyTask {
     private final int max;
     private final Image image;
 
+    /**
+     * Handles the event associated with the task.
+     * Depending on the task state, switches scenes or updates user information.
+     */
     public void handleEvent() {
         switch (getState()) {
             case 0 -> {
@@ -51,6 +55,11 @@ enum DailyTask {
         }
     }
 
+    /**
+     * Gets the current state of the task.
+     *
+     * @return An integer representing the state of the task.
+     */
     public int getState() {
         if(UserManager.getInstance().getCurrentUser().getTasksCount().get(index) < max) {
             return 0;
@@ -59,26 +68,60 @@ enum DailyTask {
     }
 
 
+    /**
+     * Gets the coin reward for completing the task.
+     *
+     * @return The coin reward for the task.
+     */
     public int getCoin() {
         return coin;
     }
 
+    /**
+     * Gets the name of the task.
+     *
+     * @return The name of the task.
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Gets the maximum count required to complete the task.
+     *
+     * @return The maximum count required to complete the task.
+     */
     public int getMax() {
         return max;
     }
 
+    /**
+     * Gets the image associated with the task.
+     *
+     * @return The image associated with the task.
+     */
     public Image getImage() {
         return image;
     }
 
+    /**
+     * Gets the current count of the task.
+     *
+     * @return The current count of the task.
+     */
     public int getCurrent() {
         return UserManager.getInstance().getCurrentUser().getTasksCount().get(index);
     }
 
+    /**
+     * Constructor for DailyTask enum elements.
+     *
+     * @param index Index of the task.
+     * @param name Name of the task.
+     * @param coin Coin reward for the task.
+     * @param max Maximum count required to complete the task.
+     * @param img Image file associated with the task.
+     */
     DailyTask(int index, String name, int coin, int max, String img) {
         this.name = name;
         this.coin = coin;
@@ -145,12 +188,20 @@ public class HomeController extends MainController {
         return instance;
     }
 
+    /**
+     * Initializes the HomeController.
+     */
     @FXML
     public void initialize() {
         super.initialize();
         instance = this;
     }
 
+    /**
+     * Handles the selection of a word.
+     *
+     * @param word The selected word.
+     */
     private void handleSelectWord(String word) {
         if (word != null) {
             deleteBtn.setVisible(true);
@@ -167,11 +218,17 @@ public class HomeController extends MainController {
         }
     }
 
+    /**
+     * Handles the search for a word.
+     */
     private void handelSearchWord() {
         PrimaryWindow.getInstance().changeScene(SceneEnum.TRANSLATE);
         TranslateController.getInstance().find(listView.getSelectionModel().getSelectedItem());
     }
 
+    /**
+     * Handles the deletion of a word.
+     */
     private void handleDeleteWord() {
         Alert a = new Alert(Alert.AlertType.CONFIRMATION, "Bạn có muốn xóa từ này không?");
         Optional<ButtonType> result = a.showAndWait();
@@ -181,6 +238,9 @@ public class HomeController extends MainController {
         }
     }
 
+    /**
+     * Handles the editing of a word.
+     */
     private void handleEditWord() {
         showEditor();
         String txt = listView.getSelectionModel().getSelectedItem();
@@ -189,6 +249,9 @@ public class HomeController extends MainController {
         definition.setHtmlText(UserManager.getInstance().getCurrentUser().getWords().get(txt).getDef());
     }
 
+    /**
+     * Handles the addition of a new word.
+     */
     public void handleAddNewWord() {
         showEditor();
         saveBtn.setText("Add");
@@ -196,18 +259,27 @@ public class HomeController extends MainController {
         definition.setHtmlText("");
     }
 
+    /**
+     * Hides the word editor UI component.
+     */
     private void hideEditor() {
         TranslateTransition transition = new TranslateTransition(Duration.millis(500), div3);
         transition.setToY(-1000);
         transition.play();
     }
 
+    /**
+     * Shows the word editor UI component.
+     */
     private void showEditor() {
         TranslateTransition transition = new TranslateTransition(Duration.millis(500), div3);
         transition.setToY(1000);
         transition.play();
     }
 
+    /**
+     * Handles saving and editing word definitions, as well as UI interactions related to word management.
+     */
     private void handleSaveEditWord() {
         String newWord = word.getText().trim();
         String newDefinition = definition.getHtmlText().replace("contenteditable=\"true\"", "contenteditable=\"false\"");
@@ -223,6 +295,9 @@ public class HomeController extends MainController {
         listView.getSelectionModel().select(newWord);
     }
 
+    /**
+     * Initializes and configures event handlers for UI elements.
+     */
     protected void initEvents() {
         super.initEvents();
         saveBtn.setOnAction(e -> handleSaveEditWord());
@@ -241,6 +316,11 @@ public class HomeController extends MainController {
         datePicker.valueProperty().addListener((a, b, c) -> handleDateChange(c));
     }
 
+    /**
+     * Handles date change event.
+     *
+     * @param date The selected date from the date picker.
+     */
     private void handleDateChange(LocalDate date) {
         if (date != null) {
             if (date.isAfter(LocalDate.now())) {
@@ -253,6 +333,9 @@ public class HomeController extends MainController {
         }
     }
 
+    /**
+     * Loads the random words to display.
+     */
     private void loadRandomWords(int i) {
         randomWords.setText(wordsEveryDay.get(i).getWord());
         randomDefinitions.getEngine().loadContent(wordsEveryDay.get(i).getDef());
@@ -262,6 +345,9 @@ public class HomeController extends MainController {
 
     private int currentWord = 0;
 
+    /**
+     * Initializes the components, sets up drag functionality, and loads initial data.
+     */
     protected void initComponents() {
         super.initComponents();
         Utils.Drag(div3);
@@ -269,11 +355,17 @@ public class HomeController extends MainController {
         speakImg.setImage(new Image(getClass().getResourceAsStream("speaker.png")));
     }
 
+    /**
+     * Loads the word list.
+     */
     public void loadWordList() {
         listView.getItems().clear();
         listView.getItems().addAll(UserManager.getInstance().getCurrentUser().getTrie().getAllWordsStartWith(wordToFind.getText()));
     }
 
+    /**
+     * Displays a welcome message for the current user with animation effects.
+     */
     private void welcomeUser() {
         welcome.setLayoutY(-welcome.getHeight());
         welcome.setOpacity(0);
@@ -293,6 +385,9 @@ public class HomeController extends MainController {
         fadeTransition.play();
     }
 
+    /**
+     * Initializes the daily task containers and their respective UI components based on the defined daily tasks.
+     */
     public void initDailyTask() {
         taskContainer.getChildren().clear();
         for(DailyTask key : DailyTask.values()) {
@@ -341,6 +436,9 @@ public class HomeController extends MainController {
 
     }
 
+    /**
+     * Handles changes in the user's session by performing necessary updates in the interface.
+     */
     @Override
     protected void handleUserChange() {
         super.handleUserChange();

@@ -53,12 +53,20 @@ public class MainController extends SuperController{
     @FXML
     protected ImageView nav3Img;
 
+    /**
+     * Initializes the user image displayed in the navigation bar.
+     */
     protected void initUserImage() {
         ImagePattern imagePattern = new ImagePattern(UserManager.getInstance().getCurrentUser().getImage());
         userNav.setFill(imagePattern);
     }
 
 
+    /**
+     * Initializes the streak feature for tracking user login days and bonuses.
+     * Generates a streak indicating the consecutive login days.
+     * Sets the visual representation of daily login streaks, including earned bonuses and interactions for claiming bonuses.
+     */
     protected void initStreak() {
         ArrayList<LocalDate> list = new ArrayList<>(UserManager.getInstance().getCurrentUser().getLoginDays());
         Collections.sort(list);
@@ -98,7 +106,7 @@ public class MainController extends SuperController{
                     transition.setAutoReverse(true);
                     transition.play();
 
-                    ((Label) node.lookup("#t")).setText("x" + 5*i);
+                    ((Label) node.lookup("#t")).setText("x" + 5 * i);
                     ((ImageView) node.lookup("#img")).setImage(new Image(getClass().getResourceAsStream("gem.png")));
 
                     int finalI = i;
@@ -123,7 +131,7 @@ public class MainController extends SuperController{
                         rotateTransition.setOnFinished(e -> {
                             c.setTranslateY(0);
                             UserManager.getInstance().getCurrentUser().setReceiveCoin();
-                            UserManager.getInstance().getCurrentUser().setCoin(UserManager.getInstance().getCurrentUser().getCoin() + 5* finalI);
+                            UserManager.getInstance().getCurrentUser().setCoin(UserManager.getInstance().getCurrentUser().getCoin() + 5 * finalI);
                         });
                     });
                 }
@@ -135,6 +143,10 @@ public class MainController extends SuperController{
         }
     }
 
+    /**
+     * Initializes the component settings for various navigation icons and visibility states.
+     * Sets images for different navigation icons.
+     */
     @Override
     protected void initComponents() {
         div2.setVisible(false);
@@ -144,10 +156,17 @@ public class MainController extends SuperController{
         streakImg.setImage(new Image(getClass().getResourceAsStream("streak.png")));
     }
 
+    /**
+     * Handles the user's click action on the user navigation icon, toggling the visibility of a specific section (div2).
+     */
     private void handleClickUserNav() {
         div2.setVisible(!div2.isVisible());
     }
 
+    /**
+     * Initializes the event handlers related to navigation and scene changes.
+     * Configures actions upon clicking different navigation icons to switch scenes or perform specific actions.
+     */
     @Override
     protected void initEvents() {
         streakImg.setOnMouseClicked(e -> dailyContainer.setVisible(!dailyContainer.isVisible()));
@@ -170,6 +189,10 @@ public class MainController extends SuperController{
             div2.setVisible(false);
         });
     }
+
+    /**
+     * Handles changes related to the user, updates for the user image and login streak upon user modifications.
+     */
     protected void handleUserChange() {
         initUserImage();
         initStreak();

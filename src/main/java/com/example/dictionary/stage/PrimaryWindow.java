@@ -7,10 +7,21 @@ public class PrimaryWindow extends Window {
 
     private static PrimaryWindow instance;
 
+    /**
+     * Retrieves the instance of the PrimaryWindow.
+     *
+     * @return The instance of the PrimaryWindow.
+     */
     public static PrimaryWindow getInstance() {
         return instance;
     }
 
+    /**
+     * Constructs the PrimaryWindow with the provided stage.
+     * Initializes the scenes associated with the application.
+     *
+     * @param stage The primary stage of the application.
+     */
     public PrimaryWindow(Stage stage) {
         super(stage, "Dictionary Application");
         instance = this;
@@ -18,6 +29,9 @@ public class PrimaryWindow extends Window {
     }
 
 
+    /**
+     * Initializes the scenes associated with the PrimaryWindow.
+     */
     @Override
     public void initScenes() {
         scenes.put(SceneEnum.LOGIN, new SuperScene(SceneEnum.LOGIN));

@@ -14,7 +14,7 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 
-public class LoginController extends SuperController{
+public class LoginController extends SuperController {
 
     @FXML
     private Circle lUsernameImg;
@@ -51,6 +51,9 @@ public class LoginController extends SuperController{
     @FXML
     private PasswordField sPassword;
 
+    /**
+     * Handles the navigation to the login view by animating the transition between login and signup views.
+     */
     private void handleNavLogin() {
 
         if (!loginView.isVisible()) {
@@ -66,6 +69,9 @@ public class LoginController extends SuperController{
         }
     }
 
+    /**
+     * Handles the navigation to the signup view by animating the transition between login and signup views.
+     */
     private void handleNavSignup() {
         if (!signupView.isVisible()) {
             TranslateTransition transition = new TranslateTransition();
@@ -80,6 +86,9 @@ public class LoginController extends SuperController{
         }
     }
 
+    /**
+     * Handles the login process by using the entered username and password fields to authenticate the user.
+     */
     private void handleLogin() {
         boolean res = UserManager.getInstance().login(lUsername.getText(), lPassword.getText());
         if (!res) {
@@ -87,6 +96,9 @@ public class LoginController extends SuperController{
         }
     }
 
+    /**
+     * Handles the creation of a new user account by verifying the entered username and password fields.
+     */
     private void handleCreate() {
         if (sUsername.getText().equals("") || sPassword1.getText().equals("") || sPassword.getText().equals("")) {
             new Alert(Alert.AlertType.WARNING, "Không được để trống").show();
@@ -102,6 +114,9 @@ public class LoginController extends SuperController{
         }
     }
 
+    /**
+     * Initializes images for user and password icons used in the login and signup views.
+     */
     private void initImages() {
         ImagePattern user = new ImagePattern(new Image(getClass().getResourceAsStream("user.png")));
         ImagePattern pw = new ImagePattern(new Image(getClass().getResourceAsStream("password.png")));
@@ -112,11 +127,17 @@ public class LoginController extends SuperController{
         sPasswordImg.setFill(pw);
     }
 
+    /**
+     * Initializes the components required for the login and signup views.
+     */
     @Override
     protected void initComponents() {
         initImages();
     }
 
+    /**
+     * Initializes the event handlers for user interactions within the login and signup views.
+     */
     @Override
     protected void initEvents() {
         loginLabel.setOnMouseClicked(event -> handleNavLogin());

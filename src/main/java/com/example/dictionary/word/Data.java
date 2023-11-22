@@ -8,10 +8,18 @@ import java.util.*;
 public final class Data {
     private static Data instance = new Data();
 
+    /**
+     * Retrieves the instance of the Data class.
+     *
+     * @return The instance of the Data class.
+     */
     public static Data getInstance() {
         return instance;
     }
 
+    /**
+     * Constructor for the Data class.
+     */
     public Data() {
         readSubWords();
     }
@@ -21,15 +29,28 @@ public final class Data {
     private final Trie subTrie = new Trie();
 
 
+    /**
+     * Retrieves the sub word data.
+     *
+     * @return The map containing sub word data.
+     */
     public Map<String, Word> getSubData() {
         return subWords;
     }
 
+    /**
+     * Retrieves the trie structure containing sub words.
+     *
+     * @return The trie structure of sub words.
+     */
     public Trie getSubTrie() {
         return subTrie;
     }
 
 
+    /**
+     * Reads and processes sub words data from a file.
+     */
     private void readSubWords() {
         try {
             FileReader fr = new FileReader("data/words/E_V.txt");
@@ -53,6 +74,12 @@ public final class Data {
         }
     }
 
+    /**
+     * Retrieves a list of random sub words based on the current day.
+     *
+     * @param n The number of sub words to retrieve.
+     * @return An ArrayList containing randomly selected sub words.
+     */
     public ArrayList<Word> getRandomWordsByDay(int n) {
         ArrayList<Word> res = new ArrayList<>();
 
@@ -73,6 +100,13 @@ public final class Data {
         return res;
     }
 
+    /**
+     * Retrieves a list of random sub words based on the given date.
+     *
+     * @param n The number of sub words to retrieve.
+     * @param date The specific date to use for randomization.
+     * @return An ArrayList containing randomly selected sub words.
+     */
     public ArrayList<Word> getRandomWordsByDay(int n, LocalDate date) {
         ArrayList<Word> res = new ArrayList<>();
 

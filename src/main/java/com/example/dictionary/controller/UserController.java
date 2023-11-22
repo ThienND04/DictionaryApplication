@@ -101,6 +101,9 @@ public class UserController extends MainController {
     @FXML
     private ImageView streakImg1;
 
+    /**
+     * Initializes various image components in the user interface.
+     */
     @Override
     protected void initComponents() {
         super.initComponents();
@@ -134,6 +137,10 @@ public class UserController extends MainController {
         binImg.setImage(new Image(getClass().getResourceAsStream("bin.png")));
     }
 
+    /**
+     * Handles the process of changing the user's password by verifying the input passwords
+     * and updating the user's password if the verification is successful.
+     */
     private void handleChangePassword() {
         if (pw1.getText().equals("") || pw2.getText().equals("") || pw3.getText().equals("")) {
             new Alert(Alert.AlertType.WARNING, "Không được để trống").show();
@@ -151,6 +158,9 @@ public class UserController extends MainController {
         new Alert(Alert.AlertType.INFORMATION, "Đổi mật khẩu thành công").show();
     }
 
+    /**
+     * Initializes the event handling.
+     */
     @Override
     protected void initEvents() {
         super.initEvents();
@@ -163,6 +173,13 @@ public class UserController extends MainController {
         transferBtn4.setOnAction(e -> handleTransfer(1000, 200));
     }
 
+    /**
+     * Handles the transfer of coins and hints between the user's resources based on specified values.
+     * Updates the user's coin and hint counts after successful transfer and displays a confirmation message.
+     *
+     * @param coin The amount of coins to transfer.
+     * @param hint The amount of hints to receive.
+     */
     public void handleTransfer(int coin, int hint) {
         int c = UserManager.getInstance().getCurrentUser().getCoin();
         int h = UserManager.getInstance().getCurrentUser().getHint();
@@ -175,12 +192,18 @@ public class UserController extends MainController {
         new Alert(Alert.AlertType.INFORMATION, "Đã đổi thành công").show();
     }
 
+    /**
+     * Initializes the controller when the view is loaded by setting the instance to this instance.
+     */
     @Override
     public void initialize() {
         super.initialize();
         instance = this;
     }
 
+    /**
+     * Handles the display of the user menu.
+     */
     public void handleClickMenu() {
         if (removeUserBtn.isVisible()) {
             removeUserBtn.setVisible(false);
@@ -191,6 +214,9 @@ public class UserController extends MainController {
         }
     }
 
+    /**
+     * Initializes the user achievements in the UI.
+     */
     public void initAchievements() {
         achievements.getChildren().clear();
         for (AchievementEnum value : AchievementEnum.values()) {
@@ -209,6 +235,9 @@ public class UserController extends MainController {
         }
     }
 
+    /**
+     * Initializes the user's profile image.
+     */
     @Override
     protected void initUserImage() {
         super.initUserImage();
@@ -216,6 +245,9 @@ public class UserController extends MainController {
         userImg.setFill(imagePattern);
     }
 
+    /**
+     * Initializes the user's details in the UI.
+     */
     public void initUserDetail() {
         gem.setText("x" + UserManager.getInstance().getCurrentUser().getCoin());
         hint.setText("x" + UserManager.getInstance().getCurrentUser().getHint());
@@ -223,6 +255,9 @@ public class UserController extends MainController {
     }
 
 
+    /**
+     * Handles changes related to the user's account.
+     */
     @Override
     public void handleUserChange() {
         super.handleUserChange();
@@ -240,6 +275,9 @@ public class UserController extends MainController {
         streak1.setText("x" + count);
     }
 
+    /**
+     * Handles the process of removing the current user's account confirmed and performs a logout from the application.
+     */
     private void handleRemoveUser() {
         Alert a = new Alert(Alert.AlertType.CONFIRMATION, "Bạn có muốn xóa tài khoản này không?");
         Optional<ButtonType> result = a.showAndWait();
@@ -249,6 +287,10 @@ public class UserController extends MainController {
         }
     }
 
+    /**
+     * Handles the selection of a new image for the user's profile.
+     * Allows the user to select an image file (in JPG format) to set as their profile picture.
+     */
     private void handleChooseImg() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JPG", "*.jpg"));

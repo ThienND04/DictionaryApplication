@@ -9,7 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 
-public class GameController extends MainController{
+public class GameController extends MainController {
     @FXML
     Button game1Nav;
     @FXML
@@ -19,11 +19,18 @@ public class GameController extends MainController{
     @FXML
     VBox window;
 
+    /**
+     * Initializes the components.
+     */
     @Override
     protected void initComponents() {
         super.initComponents();
     }
 
+    /**
+     * Initializes the events by calling the parent class's event initialization method.
+     * Sets up event handling for navigation buttons to switch between game windows.
+     */
     @Override
     protected void initEvents() {
         super.initEvents();
@@ -40,20 +47,38 @@ public class GameController extends MainController{
             currentGameId = Game3.GAME_ID;
         });
     }
+
     @FXML
     public void initialize() {
         super.initialize();
-        instance = this;        
+        instance = this;
     }
 
 
+    /**
+     * Represents the current active game's ID.
+     */
     public static int currentGameId;
 
+    /**
+     * Retrieves the ID of the currently active game.
+     *
+     * @return The ID of the currently active game.
+     */
     public static int getCurrentGameId() {
         return currentGameId;
     }
 
+    /**
+     * Singleton instance of the GameController class.
+     */
     private static GameController instance;
+
+    /**
+     * Retrieves the singleton instance of the GameController.
+     *
+     * @return The singleton instance of the GameController.
+     */
     public static GameController getInstance() {
         return instance;
     }

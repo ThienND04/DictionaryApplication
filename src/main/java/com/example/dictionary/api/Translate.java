@@ -15,6 +15,16 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class Translate {
+
+    /**
+     * Translates a word from one language to another.
+     *
+     * @param word The word to be translated.
+     * @param sl The source language code.
+     * @param tl The target language code.
+     * @return The translated word.
+     * @throws Exception If an error occurs during translation.
+     */
     public static String translate(String word, String sl, String tl) throws Exception {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(getURL(word, sl, tl)))
@@ -25,6 +35,14 @@ public class Translate {
         return response.body().split("\"")[1];
     }
 
+    /**
+     * Get a URL for translation using Google Translate API.
+     *
+     * @param word The word to be translated.
+     * @param sl The source language code.
+     * @param tl The target language code.
+     * @return A string representing the URL for translation.
+     */
     private static String getURL(String word, String sl, String tl) {
         return "https://translate.googleapis.com/translate_a/single?client=gtx&dt=t" + "&q=" +
                 URLEncoder.encode(word, StandardCharsets.UTF_8) +
@@ -32,6 +50,13 @@ public class Translate {
                 "&tl=" + tl;
     }
 
+    /**
+     * Retrieves suggestions or word based on the provided word and type.
+     *
+     * @param word The word for which suggestions are required.
+     * @param type The type of suggestion service.
+     * @return An ArrayList containing suggested words.
+     */
     public static ArrayList<String> getSuggestions(String word, int type) {
         word = word.replace(" ", "%20");
         ArrayList<String> res = new ArrayList<>();
@@ -75,7 +100,13 @@ public class Translate {
 
     }
 
-
+    /**
+     * Retrieves detailed information about words in a given sentence.
+     *
+     * @param sentence The sentence containing words.
+     * @return details about the words in the sentence.
+     * @throws Exception If an error occurs while retrieving word details.
+     */
     public static String getDetail(String sentence) throws Exception {
         StringBuilder res = new StringBuilder("<html><head><style>::selection{background-color:#8EE4AF; color:#FFFBF5}body {padding : 120px 20px}.container {padding: 10px;background-color : #FFFBF5;border: 2px #05386B solid;display: none;position: absolute;background-color: #5CDB95; color : #EDF5E1;border-radius: 10px;} button {border-radius: 10px;padding: 5px; background-color : #05386B; color : #EDF5E1}</style></head><body><ul>");
         String[] words = sentence.split("\\W+");
@@ -111,6 +142,12 @@ public class Translate {
         return res.toString();
     }
 
+    /**
+     * Processes phonetic information.
+     *
+     * @param res The StringBuilder to which the HTML content is appended.
+     * @param phonetics The JSONArray containing phonetic information.
+     */
     private static void processPhonetics(StringBuilder res, JSONArray phonetics) {
         JSONObject temp;
         res.append("<ul>");
@@ -137,6 +174,13 @@ public class Translate {
         map.put("conjunction", "liên từ");
     }
 
+    /**
+     * Processes meanings and constructs representation with details like definitions, examples,
+     * synonyms, and antonyms.
+     *
+     * @param res The StringBuilder to which the HTML content is appended.
+     * @param meanings The JSONArray containing meaning information.
+     */
     private static void processMeanings(StringBuilder res, JSONArray meanings) {
         JSONObject temp;
         res.append("<ul>");
